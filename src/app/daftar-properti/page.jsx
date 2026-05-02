@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { Search } from "lucide-react";
 import { properties } from "@/data/properties";
@@ -9,23 +9,25 @@ export default function DaftarPropertiPage() {
   const [activeFilter, setActiveFilter] = useState("semua");
   const [search, setSearch] = useState("");
 
-  // 🔍 FILTER + SEARCH
-  const filteredData = properties.filter((item) => {
-    const matchType =
-      activeFilter === "semua" || item.type === activeFilter;
+  // 🔍 FILTER + SEARCH (SAFE)
+  const filteredData = useMemo(() => {
+    return properties.filter((item) => {
+      const matchType =
+        activeFilter === "semua" || item.type === activeFilter;
 
-    const matchSearch = item.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
+      const matchSearch = (item.title || "")
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
-    return matchType && matchSearch;
-  });
+      return matchType && matchSearch;
+    });
+  }, [activeFilter, search]);
 
   return (
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
 
-        {/* HEADER */}
+        {/* ================= HEADER ================= */}
         <div className="mb-10 md:mb-12 text-center md:text-left">
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
             Daftar Properti
@@ -35,7 +37,7 @@ export default function DaftarPropertiPage() {
           </p>
         </div>
 
-        {/* SEARCH + FILTER */}
+        {/* ================= SEARCH + FILTER ================= */}
         <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-10">
 
           {/* SEARCH */}
@@ -45,7 +47,7 @@ export default function DaftarPropertiPage() {
               placeholder="Cari properti..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 outline-none text-sm"
+              className="flex-1 outline-none text-sm bg-transparent border-none focus:ring-0"
             />
           </div>
 
@@ -72,14 +74,14 @@ export default function DaftarPropertiPage() {
 
         </div>
 
-        {/* GRID */}
+        {/* ================= GRID ================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {filteredData.map((item) => (
             <PropertyCard key={item.id} {...item} />
           ))}
         </div>
 
-        {/* EMPTY */}
+        {/* ================= EMPTY ================= */}
         {filteredData.length === 0 && (
           <div className="text-center mt-12">
             <p className="text-gray-500 text-sm">

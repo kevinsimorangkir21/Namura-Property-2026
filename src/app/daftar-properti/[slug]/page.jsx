@@ -1,11 +1,14 @@
+import Link from "next/link";
 import { properties } from "@/data/properties";
 import PropertyGallery from "@/components/PropertyGallery";
 import RelatedProperties from "@/components/RelatedProperties";
 
-export default function PropertyDetail({ params }) {
-  const { slug } = params;
+export default async function PropertyDetail({ params }) {
+  const { slug } = await params;
 
-  const property = properties.find((p) => p.id === slug);
+  const property = properties.find(
+    (p) => String(p.id) === String(slug)
+  );
 
   if (!property) {
     return (
@@ -16,17 +19,26 @@ export default function PropertyDetail({ params }) {
   }
 
   const wa = `https://wa.me/6281234567890?text=${encodeURIComponent(
-    `Halo, saya tertarik dengan ${property.title}`
+    `Halo, saya tertarik dengan properti ${property.title}`
   )}`;
 
   return (
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
 
-        {/* 🔹 GALLERY */}
-        <PropertyGallery images={property.images} />
+        {/* ================= BREADCRUMB ================= */}
+        <div className="text-sm text-gray-400 mb-6">
+          <Link href="/" className="hover:text-gray-900">Home</Link> /{" "}
+          <Link href="/daftar-properti" className="hover:text-gray-900">
+            Properti
+          </Link>{" "}
+          / <span className="text-gray-600">{property.title}</span>
+        </div>
 
-        {/* 🔹 CONTENT */}
+        {/* ================= GALLERY ================= */}
+        <PropertyGallery images={property.images || []} />
+
+        {/* ================= CONTENT ================= */}
         <div className="grid md:grid-cols-2 gap-12 mt-12">
 
           {/* LEFT */}
@@ -37,18 +49,35 @@ export default function PropertyDetail({ params }) {
             </h1>
 
             <p className="text-gray-400 text-sm mb-4">
-              {property.location}
+              {property.location || "Lokasi tidak tersedia"}
             </p>
 
             <p className="text-[var(--primary)] text-xl md:text-2xl font-semibold mb-6">
               {property.price}
             </p>
 
-            {/* MINI INFO */}
-            <div className="flex flex-wrap gap-6 text-sm text-gray-500 mb-6">
-              <span>{property.bedrooms} Kamar Tidur</span>
-              <span>{property.bathrooms} Kamar Mandi</span>
-              <span>{property.area}</span>
+            {/* INFO */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm text-gray-500 mb-8">
+              <div>
+                <p className="text-gray-400">Kamar Tidur</p>
+                <p className="font-medium text-gray-900">
+                  {property.bedrooms || "-"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-400">Kamar Mandi</p>
+                <p className="font-medium text-gray-900">
+                  {property.bathrooms || "-"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-400">Luas</p>
+                <p className="font-medium text-gray-900">
+                  {property.area || "-"}
+                </p>
+              </div>
             </div>
 
             {/* DESC */}
@@ -58,8 +87,8 @@ export default function PropertyDetail({ params }) {
 
           </div>
 
-          {/* RIGHT — CONTACT */}
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm">
+          {/* RIGHT */}
+          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 h-fit">
 
             <h3 className="mb-5 font-semibold text-gray-900">
               Hubungi Agen
@@ -85,22 +114,23 @@ export default function PropertyDetail({ params }) {
 
             </div>
 
-
-            {/* WHATSAPP */}
+            {/* CTA */}
             <a
               href={wa}
               target="_blank"
-              className="block text-center mt-3 py-3 rounded-full text-sm border border-[var(--primary)] text-[var(--primary)] font-medium hover:bg-[var(--primary)] hover:text-white transition"
+              className="block text-center mt-5 py-3 rounded-full text-sm font-medium bg-[var(--primary)] text-white hover:opacity-90 transition"
             >
-              Kirim Pesan via WhatsApp
+              Chat via WhatsApp
             </a>
 
           </div>
 
         </div>
 
-        {/* 🔹 RELATED */}
-        <RelatedProperties currentId={property.id} />
+        {/* ================= RELATED ================= */}
+        <div className="mt-16">
+          <RelatedProperties currentId={property.id} />
+        </div>
 
       </div>
     </section>
