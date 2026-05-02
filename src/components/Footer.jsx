@@ -11,7 +11,7 @@ export default function Footer() {
 
         {/* LOGO + DESKRIPSI */}
         <div>
-          <img src="/logo.png" alt="Namura Property" className="h-8 mb-4" />
+          <img src="/Logo/Namura.png" alt="Namura Property" className="h-8 mb-4" />
 
           <p className="text-gray-500 text-sm leading-relaxed mb-4">
             Portal properti modern yang memudahkan kamu menemukan hunian terbaik masa kini. Dengan pengalaman lebih dari satu dekade, kami berkomitmen memberikan layanan terbaik dan properti berkualitas untuk setiap pelanggan.
