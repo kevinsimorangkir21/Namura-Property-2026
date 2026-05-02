@@ -1,60 +1,93 @@
 "use client";
-import { motion } from "framer-motion";
+
+import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0b0f15] text-white">
-      <div className="max-w-6xl mx-auto px-6 py-32 md:py-40 relative z-10">
-        <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
-          Membangun{" "}
-          <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-            Talenta Muda
-          </span>{" "}
-          Indonesia
-        </h1>
+    <section className="bg-[var(--primary)]">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+        
+        <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
 
-        <p className="mt-6 text-gray-400 max-w-2xl text-lg">
-          MagangHub membantu mahasiswa dan perusahaan terhubung untuk
-          menciptakan pengalaman magang yang bermakna dan berdampak bagi masa
-          depan Indonesia.
-        </p>
+          {/* LEFT */}
+          <div className="text-center md:text-left">
 
-        <div className="mt-10 flex flex-wrap gap-4">
-          <button className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 transition font-semibold">
-            Cari Magang Sekarang
-          </button>
-          <button className="px-6 py-3 rounded-xl border border-blue-500 text-blue-400 hover:bg-blue-500/10 transition font-semibold">
-            Pelajari Alur Pendaftaran
-          </button>
+            {/* Badge */}
+            <span className="text-xs text-white/70 tracking-wide uppercase">
+              Perusahaan Properti Terpercaya
+            </span>
+
+            {/* Heading */}
+            <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight text-white">
+              Hunian Berkualitas <br className="hidden sm:block" />
+              untuk Masa Depan Anda
+            </h1>
+
+            {/* Description */}
+            <p className="mt-4 md:mt-5 text-white/80 max-w-md mx-auto md:mx-0 text-sm md:text-base leading-relaxed">
+              Menyediakan pilihan properti terbaik dengan desain modern,
+              lokasi strategis, dan nilai investasi yang terus berkembang.
+            </p>
+
+            {/* CTA */}
+            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
+              <button className="bg-white text-[var(--primary)] px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition w-full sm:w-auto">
+                Lihat Properti
+              </button>
+
+              <button className="px-6 py-3 rounded-full text-sm border border-white/40 text-white hover:bg-white/10 transition w-full sm:w-auto">
+                Tentang Kami
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="flex justify-center md:justify-start flex-wrap gap-6 sm:gap-8 md:gap-10 mt-8 md:mt-10 text-sm text-white">
+              <div>
+                <p className="font-semibold text-lg">120+</p>
+                <p className="text-white/70 text-xs md:text-sm">
+                  Properti Tersedia
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-lg">50+</p>
+                <p className="text-white/70 text-xs md:text-sm">
+                  Klien Puas
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-lg">10+</p>
+                <p className="text-white/70 text-xs md:text-sm">
+                  Tahun Pengalaman
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* RIGHT */}
+          <div className="relative mt-6 md:mt-0">
+
+            <Image
+              src="/Asset/Properti5/Asset1.png"
+              alt="Properti"
+              width={600}
+              height={420}
+              className="rounded-xl object-cover shadow-lg w-full h-[240px] sm:h-[300px] md:h-auto"
+            />
+
+            {/* Info Card */}
+            <div className="absolute bottom-4 left-4 bg-white px-4 py-3 rounded-lg border border-gray-100 shadow-sm text-xs sm:text-sm">
+              <p className="font-medium text-gray-900">Rp 750 Juta</p>
+              <p className="text-gray-500">
+                Rumah Subsidi di Lampung Selatan
+              </p>
+            </div>
+
+          </div>
+
         </div>
-      </div>
 
-      {/* Wave bawah */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
-        <svg
-          className="relative block w-full h-32 text-[#0b0f15]"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          viewBox="0 0 1200 120"
-        >
-          <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,
-            82.39-16.45,168.19-17.48,250.45-0.39,
-            59,12.27,113.79,31.89,172,47.78,
-            82.62,22.51,168.38,31.15,250.61,13.69V120H0V27.35
-            A600.21,600.21,0,0,0,321.39,56.44Z"
-            fill="currentColor"
-          ></path>
-        </svg>
       </div>
-
-      {/* Decorative light orb */}
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.15 }}
-        transition={{ duration: 2 }}
-        className="absolute right-20 top-32 w-64 h-64 bg-blue-600 rounded-full blur-3xl"
-      ></motion.div>
     </section>
   );
 }

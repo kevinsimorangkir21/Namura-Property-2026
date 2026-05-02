@@ -1,26 +1,107 @@
 @import "tailwindcss";
-@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
+/* 🎨 NAMURA DESIGN SYSTEM (UPGRADED) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-/* Removed invalid @theme at-rule — variables moved to :root */
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* BASE COLORS */
+  --background: #F7F8FA;
+  --surface: #FFFFFF;
+  --foreground: #111827;
+
+  /* BRAND */
+  --primary: #0F6A6A;
+  --primary-hover: #0C5A5A;
+
+  /* NEUTRAL */
+  --gray-500: #6B7280;
+  --gray-400: #9CA3AF;
+
+  --border: #E5E7EB;
+
+  /* UI TOKENS */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.06);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* 🌐 BASE */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 🧱 CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* 🔘 BUTTON SYSTEM */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 14px;
+  padding: 10px 20px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-outline {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.btn-outline:hover {
+  background: #F3F4F6;
+}
+
+/* 🧾 CARD SYSTEM */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 🧩 TEXT SYSTEM */
+.text-muted {
+  color: var(--gray-500);
+}
+
+.text-soft {
+  color: var(--gray-400);
+}
+
+/* ✨ OPTIONAL UTILITIES (BIAR FLEXIBLE) */
+.section {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.heading {
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
