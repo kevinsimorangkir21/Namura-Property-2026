@@ -9,7 +9,6 @@ export default function DaftarPropertiPage() {
   const [activeFilter, setActiveFilter] = useState("semua");
   const [search, setSearch] = useState("");
 
-  // 🔍 FILTER + SEARCH (SAFE)
   const filteredData = useMemo(() => {
     return properties.filter((item) => {
       const matchType =
@@ -25,42 +24,57 @@ export default function DaftarPropertiPage() {
 
   return (
     <section className="bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
-
-        {/* ================= HEADER ================= */}
-        <div className="mb-10 md:mb-12 text-center md:text-left">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
+      <div className="max-w-[1200px] mx-auto px-6 py-24">
+        <div className="text-center">
+          <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
             Daftar Properti
+          </span>
+
+          <h1 className="mt-6 text-4xl lg:text-5xl font-bold text-gray-900">
+            Temukan Properti
+            <br />
+            Impian Anda
           </h1>
-          <p className="text-gray-600 mt-2 max-w-xl mx-auto md:mx-0 text-sm md:text-base">
-            Temukan berbagai pilihan properti terbaik sesuai kebutuhan Anda.
+
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+            Jelajahi berbagai pilihan properti terbaik dengan lokasi strategis,
+            desain modern, dan nilai investasi yang menjanjikan.
           </p>
         </div>
 
-        {/* ================= SEARCH + FILTER ================= */}
-        <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-10">
+        <div className="mt-14 flex flex-col lg:flex-row gap-5 lg:items-center lg:justify-between">
+          <div className="relative w-full lg:max-w-md">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
 
-          {/* SEARCH */}
-          <div className="flex items-center gap-3 border border-gray-200 rounded-full px-4 py-2 w-full md:max-w-sm">
-            <Search className="w-4 h-4 text-gray-400" />
             <input
               placeholder="Cari properti..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 outline-none text-sm bg-transparent border-none focus:ring-0"
+              className="
+                w-full
+                h-14
+                pl-14
+                pr-5
+                rounded-full
+                border
+                border-gray-200
+                bg-white
+                outline-none
+                focus:border-[#0F6A6A]
+                transition
+              "
             />
           </div>
 
-          {/* FILTER */}
-          <div className="flex gap-4 text-sm justify-center md:justify-end">
+          <div className="flex flex-wrap gap-3">
             {["semua", "jual", "sewa"].map((item) => (
               <button
                 key={item}
                 onClick={() => setActiveFilter(item)}
-                className={`pb-1 capitalize transition ${
+                className={`h-11 px-5 rounded-full text-sm font-medium transition ${
                   activeFilter === item
-                    ? "text-gray-900 border-b-2 border-[var(--primary)] font-medium"
-                    : "text-gray-500 hover:text-gray-900"
+                    ? "bg-[#0F6A6A] text-white"
+                    : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
                 }`}
               >
                 {item === "semua"
@@ -71,25 +85,35 @@ export default function DaftarPropertiPage() {
               </button>
             ))}
           </div>
-
         </div>
 
-        {/* ================= GRID ================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {filteredData.map((item) => (
-            <PropertyCard key={item.id} {...item} />
-          ))}
+        <div className="mt-8 mb-10">
+          <p className="text-sm text-gray-500">
+            Menampilkan{" "}
+            <span className="font-semibold text-gray-900">
+              {filteredData.length}
+            </span>{" "}
+            properti
+          </p>
         </div>
 
-        {/* ================= EMPTY ================= */}
-        {filteredData.length === 0 && (
-          <div className="text-center mt-12">
-            <p className="text-gray-500 text-sm">
-              Properti tidak ditemukan.
+        {filteredData.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredData.map((item) => (
+              <PropertyCard key={item.id} {...item} />
+            ))}
+          </div>
+        ) : (
+          <div className="py-24 text-center border border-dashed border-gray-200 rounded-[32px]">
+            <h3 className="text-xl font-semibold text-gray-900">
+              Properti Tidak Ditemukan
+            </h3>
+
+            <p className="mt-2 text-gray-500">
+              Coba gunakan kata kunci lain atau ubah filter pencarian.
             </p>
           </div>
         )}
-
       </div>
     </section>
   );

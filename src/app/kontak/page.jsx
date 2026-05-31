@@ -1,117 +1,129 @@
 "use client";
 
-import { Mail, Phone, MapPin } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  MessageCircle,
+} from "lucide-react";
 
 export default function KontakPage() {
   return (
     <section className="bg-white">
+      <div className="max-w-[1200px] mx-auto px-6 py-24">
+        <div className="text-center">
+          <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
+            Hubungi Kami
+          </span>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
-
-        {/* ================= HEADER ================= */}
-        <div className="text-center md:text-left mb-12">
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
-            Kontak Kami
+          <h1 className="mt-6 text-4xl lg:text-6xl font-bold text-gray-900">
+            Kami Siap Membantu
+            <br />
+            Kebutuhan Properti Anda
           </h1>
-          <p className="text-gray-500 mt-2 max-w-xl mx-auto md:mx-0 text-sm md:text-base">
-            Punya pertanyaan atau ingin konsultasi properti? Hubungi kami sekarang.
+
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+            Punya pertanyaan, ingin konsultasi, atau mencari properti
+            impian? Tim Namura Property siap membantu Anda.
           </p>
         </div>
 
-        {/* ================= GRID ================= */}
-        <div className="grid md:grid-cols-2 gap-12">
-
-          {/* ================= FORM ================= */}
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 md:p-8 shadow-sm">
-
-            <h3 className="font-semibold text-gray-900 mb-6">
+        <div className="grid lg:grid-cols-2 gap-12 mt-16">
+          <div className="border border-gray-100 rounded-[32px] p-8 lg:p-10">
+            <h2 className="text-2xl font-semibold text-gray-900">
               Kirim Pesan
-            </h3>
+            </h2>
 
-            <div className="space-y-4">
+            <p className="mt-2 text-gray-500">
+              Isi formulir berikut dan tim kami akan segera menghubungi Anda.
+            </p>
 
+            <div className="space-y-5 mt-8">
               <input
-                placeholder="Nama"
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-sm outline-none focus:ring-0 border-none"
+                type="text"
+                placeholder="Nama Lengkap"
+                className="w-full h-14 px-5 rounded-2xl border border-gray-200 outline-none focus:border-[#0F6A6A] transition"
               />
 
               <input
-                placeholder="Email"
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-sm outline-none focus:ring-0 border-none"
+                type="email"
+                placeholder="Alamat Email"
+                className="w-full h-14 px-5 rounded-2xl border border-gray-200 outline-none focus:border-[#0F6A6A] transition"
+              />
+
+              <input
+                type="text"
+                placeholder="Nomor Telepon"
+                className="w-full h-14 px-5 rounded-2xl border border-gray-200 outline-none focus:border-[#0F6A6A] transition"
               />
 
               <textarea
-                placeholder="Pesan"
-                rows={5}
-                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-sm outline-none focus:ring-0 border-none"
+                rows={6}
+                placeholder="Tulis pesan Anda..."
+                className="w-full px-5 py-4 rounded-2xl border border-gray-200 outline-none focus:border-[#0F6A6A] transition resize-none"
               />
 
-              <button className="w-full bg-[var(--primary)] text-white py-3 rounded-full text-sm hover:opacity-90 transition">
+              <button className="w-full h-14 rounded-full bg-[#0F6A6A] text-white font-medium hover:bg-[#0C5A5A] transition">
                 Kirim Pesan
               </button>
-
             </div>
-
           </div>
 
-          {/* ================= INFO ================= */}
-          <div className="flex flex-col justify-between gap-8">
-
-            <div className="space-y-6">
-
-              <div className="flex gap-4 items-start">
-                <MapPin className="w-5 h-5 text-[var(--primary)] mt-1" />
-                <div>
-                  <p className="font-medium text-gray-900">
-                    Alamat
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Jakarta, Indonesia
-                  </p>
-                </div>
+          <div className="space-y-6">
+            <div className="border border-gray-100 rounded-[28px] p-6">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F6A6A]/10 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-[#0F6A6A]" />
               </div>
 
-              <div className="flex gap-4 items-start">
-                <Mail className="w-5 h-5 text-[var(--primary)] mt-1" />
-                <div>
-                  <p className="font-medium text-gray-900">
-                    Email
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    info@namura.com
-                  </p>
-                </div>
-              </div>
+              <h3 className="mt-5 text-lg font-semibold text-gray-900">
+                Alamat
+              </h3>
 
-              <div className="flex gap-4 items-start">
-                <Phone className="w-5 h-5 text-[var(--primary)] mt-1" />
-                <div>
-                  <p className="font-medium text-gray-900">
-                    Telepon
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    +62 812 3456 7890
-                  </p>
-                </div>
-              </div>
-
+              <p className="mt-2 text-gray-600">
+                Lampung Selatan,
+                <br />
+                Indonesia
+              </p>
             </div>
 
-          </div>
+            <div className="border border-gray-100 rounded-[28px] p-6">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F6A6A]/10 flex items-center justify-center">
+                <Mail className="w-6 h-6 text-[#0F6A6A]" />
+              </div>
 
+              <h3 className="mt-5 text-lg font-semibold text-gray-900">
+                Email
+              </h3>
+
+              <p className="mt-2 text-gray-600">
+                namuraproperty@gmail.com
+              </p>
+            </div>
+
+            <div className="border border-gray-100 rounded-[28px] p-6">
+              <div className="w-12 h-12 rounded-2xl bg-[#0F6A6A]/10 flex items-center justify-center">
+                <Phone className="w-6 h-6 text-[#0F6A6A]" />
+              </div>
+
+              <h3 className="mt-5 text-lg font-semibold text-gray-900">
+                Telepon
+              </h3>
+
+              <p className="mt-2 text-gray-600">
+                +62 813 6938 1111
+              </p>
+            </div>
+          </div>
         </div>
 
+        <div className="mt-20 overflow-hidden rounded-[32px] border border-gray-100">
+          <iframe
+            src="https://maps.google.com/maps?q=lampung&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            className="w-full h-[450px]"
+            loading="lazy"
+          />
+        </div>
       </div>
-
-      {/* ================= MAP ================= */}
-      <div className="w-full h-[300px] md:h-[400px]">
-        <iframe
-          src="https://maps.google.com/maps?q=jakarta&t=&z=13&ie=UTF8&iwloc=&output=embed"
-          className="w-full h-full border-0"
-          loading="lazy"
-        />
-      </div>
-
     </section>
   );
 }

@@ -1,107 +1,305 @@
 @import "tailwindcss";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-/* 🎨 NAMURA DESIGN SYSTEM (UPGRADED) */
+/* ==========================================
+   NAMURA PROPERTY DESIGN SYSTEM v2
+========================================== */
+
 :root {
-  /* BASE COLORS */
-  --background: #F7F8FA;
-  --surface: #FFFFFF;
-  --foreground: #111827;
-
   /* BRAND */
-  --primary: #0F6A6A;
-  --primary-hover: #0C5A5A;
+  --primary: #0f6a6a;
+  --primary-hover: #0c5a5a;
+  --primary-light: #e6f5f5;
 
-  /* NEUTRAL */
-  --gray-500: #6B7280;
-  --gray-400: #9CA3AF;
+  /* SURFACE */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
 
-  --border: #E5E7EB;
+  /* TEXT */
+  --foreground: #111827;
+  --foreground-muted: #6b7280;
+  --foreground-soft: #9ca3af;
 
-  /* UI TOKENS */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  /* BORDER */
+  --border: #e5e7eb;
+  --border-soft: #f1f5f9;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.06);
+  /* STATUS */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  /* RADIUS */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  /* SHADOW */
+  --shadow-sm:
+    0 2px 8px rgba(15, 23, 42, 0.04);
+
+  --shadow-md:
+    0 8px 24px rgba(15, 23, 42, 0.06);
+
+  --shadow-lg:
+    0 16px 48px rgba(15, 23, 42, 0.08);
+
+  /* SPACING */
+  --section-padding: 120px;
+  --container-width: 1280px;
+
+  /* EFFECT */
+  --blur: blur(16px);
 }
 
-/* 🌐 BASE */
+/* ==========================================
+   BASE
+========================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Inter, system-ui, Arial, sans-serif;
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 🧱 CONTAINER */
+/* ==========================================
+   CONTAINER
+========================================== */
+
 .container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--container-width);
   margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-inline: 24px;
 }
 
-/* 🔘 BUTTON SYSTEM */
+/* ==========================================
+   TYPOGRAPHY
+========================================== */
+
+.heading-xl {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.heading-lg {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.heading-md {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.text-muted {
+  color: var(--foreground-muted);
+}
+
+.text-soft {
+  color: var(--foreground-soft);
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+
+  height: 52px;
+  padding: 0 24px;
+
   border-radius: 9999px;
+
   font-size: 14px;
-  padding: 10px 20px;
-  transition: all 0.25s ease;
-  white-space: nowrap;
+  font-weight: 600;
+
+  transition: all .25s ease;
+  cursor: pointer;
 }
 
 .btn-primary {
   background: var(--primary);
-  color: #fff;
+  color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
+  transform: translateY(-2px);
 }
 
 .btn-outline {
   border: 1px solid var(--border);
+  background: white;
   color: var(--foreground);
 }
 
 .btn-outline:hover {
-  background: #F3F4F6;
+  background: var(--surface-soft);
 }
 
-/* 🧾 CARD SYSTEM */
+.btn-ghost {
+  color: var(--foreground);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-soft);
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
 .card {
   background: var(--surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+
   border: 1px solid var(--border);
-  transition: all 0.25s ease;
+  border-radius: var(--radius-md);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
 }
 
 .card:hover {
+  transform: translateY(-4px);
   box-shadow: var(--shadow-md);
 }
 
-/* 🧩 TEXT SYSTEM */
-.text-muted {
-  color: var(--gray-500);
+/* ==========================================
+   GLASS CARD
+========================================== */
+
+.glass {
+  background:
+    rgba(255, 255, 255, .75);
+
+  backdrop-filter: var(--blur);
+
+  border: 1px solid rgba(255, 255, 255, .4);
+
+  box-shadow: var(--shadow-md);
 }
 
-.text-soft {
-  color: var(--gray-400);
+/* ==========================================
+   PROPERTY CARD
+========================================== */
+
+.property-card {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: white;
+  border: 1px solid var(--border);
 }
 
-/* ✨ OPTIONAL UTILITIES (BIAR FLEXIBLE) */
+.property-card img {
+  transition: transform .4s ease;
+}
+
+.property-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   SECTION
+========================================== */
+
 .section {
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-block: var(--section-padding);
 }
 
-.heading {
+.section-sm {
+  padding-block: 80px;
+}
+
+/* ==========================================
+   BADGE
+========================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background: var(--primary-light);
+
+  color: var(--primary);
+
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+}
+
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  background:
+    rgba(255, 255, 255, .85);
+
+  backdrop-filter: blur(20px);
+
+  border-bottom:
+    1px solid rgba(229, 231, 235, .8);
+}
+
+/* ==========================================
+   HERO GRADIENT
+========================================== */
+
+.hero-gradient {
+  background:
+    radial-gradient(circle at top left,
+      rgba(15, 106, 106, .12),
+      transparent 40%),
+    radial-gradient(circle at bottom right,
+      rgba(15, 106, 106, .08),
+      transparent 40%);
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+.dark {
+  --background: #0f172a;
+  --surface: #111827;
+  --surface-soft: #1f2937;
+
+  --foreground: #f8fafc;
+  --foreground-muted: #cbd5e1;
+  --foreground-soft: #94a3b8;
+
+  --border: #334155;
 }

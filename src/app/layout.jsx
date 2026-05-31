@@ -1,6 +1,5 @@
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata = {
   title: {
@@ -15,25 +14,14 @@ export const metadata = {
     "investasi properti",
     "real estate Indonesia",
   ],
-  metadataBase: new URL("https://namura-property.com"), // ganti nanti domain kamu
+  metadataBase: new URL("https://namura-property.com"),
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
       <body className="bg-[var(--background)] text-gray-900 antialiased">
-
-        {/* NAVBAR */}
-        <Navbar />
-
-        {/* MAIN */}
-        <main className="min-h-screen">
-          {children}
-        </main>
-
-        {/* FOOTER */}
-        <Footer />
-
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );

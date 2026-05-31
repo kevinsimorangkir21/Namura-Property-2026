@@ -1,140 +1,180 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Users,
+  TrendingUp,
+  Briefcase,
+  HeartHandshake,
+} from "lucide-react";
+
 export default function KarirPage() {
+  const values = [
+    {
+      title: "Kolaboratif",
+      desc: "Kami percaya hasil terbaik lahir dari kerja sama tim yang kuat.",
+      icon: Users,
+    },
+    {
+      title: "Bertumbuh",
+      desc: "Setiap individu memiliki kesempatan untuk berkembang dan belajar.",
+      icon: TrendingUp,
+    },
+    {
+      title: "Profesional",
+      desc: "Kami menjunjung tinggi integritas dan kualitas dalam bekerja.",
+      icon: Briefcase,
+    },
+    {
+      title: "Peduli",
+      desc: "Kami membangun lingkungan kerja yang suportif dan positif.",
+      icon: HeartHandshake,
+    },
+  ];
+
   return (
     <section className="bg-white">
+      <div className="max-w-[1200px] mx-auto px-6 py-24">
+        <div className="text-center">
+          <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
+            Karir
+          </span>
 
-      {/* ================= HERO ================= */}
-      <div className="max-w-6xl mx-auto px-6 py-24 text-center">
+          <h1 className="mt-6 text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            Bangun Karir Bersama
+            <br />
+            Namura Property
+          </h1>
 
-        <p className="text-sm text-gray-400 uppercase mb-3">
-          Karir
-        </p>
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+            Kami percaya bahwa tim yang hebat adalah fondasi dari perusahaan
+            yang hebat. Bergabunglah bersama kami dan tumbuh dalam lingkungan
+            kerja yang profesional, kolaboratif, dan penuh peluang.
+          </p>
 
-        <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 mb-4 leading-tight">
-          Bangun Karir Bersama <br className="hidden md:block" />
-          Namura Property
-        </h1>
+          <Link
+            href="/kontak"
+            className="inline-flex items-center justify-center mt-8 h-12 px-8 rounded-full bg-[#0F6A6A] text-white font-medium hover:bg-[#0C5A5A] transition"
+          >
+            Lihat Peluang Karir
+          </Link>
+        </div>
 
-        <p className="text-gray-500 max-w-xl mx-auto text-sm md:text-base mb-10">
-          Kami percaya tim yang hebat menciptakan properti berkualitas.
-          Tumbuh bersama kami dan wujudkan masa depan yang lebih baik.
-        </p>
-
-        <a
-          href="https://your-career-page.com"
-          target="_blank"
-          className="inline-block px-6 py-3 rounded-full bg-[var(--primary)] text-white text-sm hover:opacity-90 transition"
-        >
-          Lihat Lowongan
-        </a>
-
-      </div>
-
-      {/* ================= TEAM PHOTO ================= */}
-      <div className="max-w-6xl mx-auto px-6 pb-24">
-
-        <div className="rounded-2xl overflow-hidden shadow-sm">
-          <img
+        <div className="mt-16 overflow-hidden rounded-[32px]">
+          <Image
             src="/team.jpg"
-            alt="Tim Namura"
-            className="w-full h-[300px] md:h-[450px] object-cover"
+            alt="Tim Namura Property"
+            width={1400}
+            height={800}
+            className="w-full h-[500px] object-cover"
           />
         </div>
 
-      </div>
-
-      {/* ================= CULTURE VIDEO ================= */}
-      <div className="max-w-5xl mx-auto px-6 pb-24 text-center">
-
-        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
-          Budaya Kami
-        </h2>
-
-        <p className="text-gray-500 text-sm mb-10">
-          Lihat bagaimana kami bekerja dan berkembang bersama.
-        </p>
-
-        <div className="rounded-2xl overflow-hidden shadow-sm">
-          <iframe
-            className="w-full h-[220px] md:h-[420px]"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Company Culture"
-            allowFullScreen
-          />
-        </div>
-
-      </div>
-
-      {/* ================= VALUES ================= */}
-      <div className="max-w-6xl mx-auto px-6 pb-24">
-
-        <div className="grid md:grid-cols-3 gap-8 text-center">
-
-          {[
-            {
-              title: "Kolaboratif",
-              desc: "Kami bekerja sebagai satu tim untuk mencapai tujuan bersama.",
-            },
-            {
-              title: "Bertumbuh",
-              desc: "Kami mendukung perkembangan karir setiap individu.",
-            },
-            {
-              title: "Profesional",
-              desc: "Kami menjunjung tinggi kualitas dan integritas.",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-2xl border border-gray-100 hover:shadow-md transition duration-300"
-            >
-              <h3 className="font-semibold mb-2 text-gray-900">
-                {item.title}
-              </h3>
-              <p className="text-gray-500 text-sm">
-                {item.desc}
-              </p>
-            </div>
-          ))}
-
-        </div>
-
-      </div>
-
-      {/* ================= GLASS CTA ================= */}
-      <div className="max-w-5xl mx-auto px-6 pb-24">
-
-        <div className="relative rounded-3xl p-10 text-center overflow-hidden">
-
-          {/* GLASS EFFECT */}
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-xl border border-white/30 rounded-3xl"></div>
-
-          {/* CONTENT */}
-          <div className="relative z-10">
-
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-3">
-              Siap Bergabung?
-            </h2>
-
-            <p className="text-gray-600 text-sm mb-6">
-              Temukan posisi yang cocok dan mulai perjalanan karirmu bersama kami.
+        <div className="grid md:grid-cols-4 gap-8 mt-16 text-center">
+          <div>
+            <h3 className="text-4xl font-bold text-[#0F6A6A]">
+              10+
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Tahun Pengalaman
             </p>
-
-            <a
-              href="https://your-career-page.com"
-              target="_blank"
-              className="inline-block px-6 py-3 rounded-full bg-[var(--primary)] text-white text-sm hover:opacity-90 transition"
-            >
-              Buka Halaman Karir
-            </a>
-
           </div>
 
-        </div>
+          <div>
+            <h3 className="text-4xl font-bold text-[#0F6A6A]">
+              100+
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Properti
+            </p>
+          </div>
 
+          <div>
+            <h3 className="text-4xl font-bold text-[#0F6A6A]">
+              50+
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Klien
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-4xl font-bold text-[#0F6A6A]">
+              20+
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Tim Profesional
+            </p>
+          </div>
+        </div>
       </div>
 
+      <section className="bg-[#F8FAFC]">
+        <div className="max-w-[1200px] mx-auto px-6 py-24">
+          <div className="text-center">
+            <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
+              Budaya Kerja
+            </span>
+
+            <h2 className="mt-6 text-4xl lg:text-5xl font-bold text-gray-900">
+              Nilai Yang Kami
+              <br />
+              Pegang Bersama
+            </h2>
+
+            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              Kami membangun budaya kerja yang mendukung pertumbuhan,
+              kolaborasi, dan profesionalisme.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+            {values.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.title}
+                  className="bg-white rounded-[28px] p-8 border border-gray-100 hover:shadow-lg hover:-translate-y-2 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-[#0F6A6A]/10 flex items-center justify-center">
+                    <Icon className="w-7 h-7 text-[#0F6A6A]" />
+                  </div>
+
+                  <h3 className="mt-6 text-xl font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 text-gray-600 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-[1200px] mx-auto px-6 py-24">
+        <div className="bg-[#0F6A6A] rounded-[32px] p-12 text-center">
+          <h2 className="text-4xl font-bold text-white">
+            Siap Menjadi Bagian Dari Tim Kami?
+          </h2>
+
+          <p className="mt-4 text-white/80 max-w-2xl mx-auto">
+            Kami selalu terbuka untuk talenta terbaik yang ingin berkembang
+            bersama dan menciptakan dampak positif melalui industri properti.
+          </p>
+
+          <a
+            href="mailto:namuraproperty@gmail.com"
+            className="inline-flex items-center justify-center mt-8 h-12 px-8 rounded-full bg-white text-[#0F6A6A] font-semibold hover:opacity-90 transition"
+          >
+            Kirim CV Anda
+          </a>
+        </div>
+      </div>
     </section>
   );
 }
