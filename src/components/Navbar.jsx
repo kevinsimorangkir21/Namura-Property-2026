@@ -92,7 +92,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/admin/login"
+              href="/login"
               className="px-5 py-2.5 rounded-full bg-[#0F6A6A] text-white text-sm font-medium hover:bg-[#0C5A5A] transition hover:-translate-y-0.5 shadow-sm"
             >
               Login Admin
