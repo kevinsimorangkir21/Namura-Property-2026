@@ -1,92 +1,128 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="bg-[var(--primary)]">
-      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
-        
-        <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-center">
-
-          {/* LEFT */}
-          <div className="text-center md:text-left">
-
-            {/* Badge */}
-            <span className="text-xs text-white/70 tracking-wide uppercase">
+    <section className="bg-gradient-to-b from-white to-[#F4F8F8]">
+      <div className="max-w-[1200px] mx-auto px-6 py-20 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
               Perusahaan Properti Terpercaya
             </span>
 
-            {/* Heading */}
-            <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight tracking-tight text-white">
-              Hunian Berkualitas <br className="hidden sm:block" />
-              untuk Masa Depan Anda
+            <h1 className="mt-6 text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-gray-900">
+              Hunian Berkualitas
+              <br />
+              Untuk Masa Depan Anda
             </h1>
 
-            {/* Description */}
-            <p className="mt-4 md:mt-5 text-white/80 max-w-md mx-auto md:mx-0 text-sm md:text-base leading-relaxed">
-              Menyediakan pilihan properti terbaik dengan desain modern,
-              lokasi strategis, dan nilai investasi yang terus berkembang.
+            <p className="mt-6 max-w-[550px] text-lg leading-relaxed text-gray-600">
+              Menyediakan pilihan properti terbaik dengan lokasi strategis,
+              desain modern, serta nilai investasi yang terus berkembang untuk
+              keluarga Indonesia.
             </p>
 
-            {/* CTA */}
-            <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
-              <button className="bg-white text-[var(--primary)] px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition w-full sm:w-auto">
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/daftar-properti"
+                className="h-12 px-7 rounded-full bg-[#0F6A6A] text-white font-medium flex items-center justify-center hover:bg-[#0C5A5A] transition"
+              >
                 Lihat Properti
-              </button>
+              </Link>
 
-              <button className="px-6 py-3 rounded-full text-sm border border-white/40 text-white hover:bg-white/10 transition w-full sm:w-auto">
-                Tentang Kami
-              </button>
+              <Link
+                href="/kontak"
+                className="h-12 px-7 rounded-full border border-gray-200 text-gray-800 font-medium flex items-center justify-center hover:bg-white transition"
+              >
+                Hubungi Kami
+              </Link>
             </div>
 
-            {/* Stats */}
-            <div className="flex justify-center md:justify-start flex-wrap gap-6 sm:gap-8 md:gap-10 mt-8 md:mt-10 text-sm text-white">
-              <div>
-                <p className="font-semibold text-lg">120+</p>
-                <p className="text-white/70 text-xs md:text-sm">
-                  Properti Tersedia
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">50+</p>
-                <p className="text-white/70 text-xs md:text-sm">
-                  Klien Puas
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">10+</p>
-                <p className="text-white/70 text-xs md:text-sm">
-                  Tahun Pengalaman
-                </p>
+            <div className="mt-12 bg-white rounded-[24px] border border-gray-100 shadow-sm p-4">
+              <div className="grid md:grid-cols-4 gap-4">
+                <div>
+                  <label className="text-xs text-gray-500">
+                    Lokasi
+                  </label>
+
+                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
+                    <option>Lampung</option>
+                    <option>Jakarta</option>
+                    <option>Bandung</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs text-gray-500">
+                    Tipe Properti
+                  </label>
+
+                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
+                    <option>Rumah</option>
+                    <option>Ruko</option>
+                    <option>Tanah</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs text-gray-500">
+                    Harga
+                  </label>
+
+                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
+                    <option>Semua Harga</option>
+                    <option>&lt; Rp500 Juta</option>
+                    <option>Rp500 Juta - Rp1 Miliar</option>
+                  </select>
+                </div>
+
+                <button className="h-12 self-end rounded-xl bg-[#0F6A6A] text-white font-medium hover:bg-[#0C5A5A] transition">
+                  Cari Properti
+                </button>
               </div>
             </div>
-
           </div>
 
-          {/* RIGHT */}
-          <div className="relative mt-6 md:mt-0">
+          <div className="relative">
+            <div className="overflow-hidden rounded-[32px] shadow-xl">
+              <Image
+                src="/Asset/Properti5/Asset1.png"
+                alt="Properti Unggulan"
+                width={900}
+                height={700}
+                priority
+                className="w-full h-[600px] object-cover"
+              />
+            </div>
 
-            <Image
-              src="/Asset/Properti5/Asset1.png"
-              alt="Properti"
-              width={600}
-              height={420}
-              className="rounded-xl object-cover shadow-lg w-full h-[240px] sm:h-[300px] md:h-auto"
-            />
+            <div className="absolute bottom-6 left-6 bg-white rounded-2xl px-5 py-4 shadow-lg border border-gray-100">
+              <p className="text-xs uppercase tracking-wider text-gray-500">
+                Properti Unggulan
+              </p>
 
-            {/* Info Card */}
-            <div className="absolute bottom-4 left-4 bg-white px-4 py-3 rounded-lg border border-gray-100 shadow-sm text-xs sm:text-sm">
-              <p className="font-medium text-gray-900">Rp 750 Juta</p>
-              <p className="text-gray-500">
-                Rumah Subsidi di Lampung Selatan
+              <h3 className="mt-1 text-xl font-bold text-gray-900">
+                Rp 750 Juta
+              </h3>
+
+              <p className="text-sm text-gray-500">
+                Lampung Selatan
               </p>
             </div>
 
+            <div className="absolute top-6 right-6 bg-white rounded-2xl px-5 py-4 shadow-lg border border-gray-100">
+              <p className="text-xs text-gray-500">
+                Unit Tersedia
+              </p>
+
+              <h3 className="mt-1 text-2xl font-bold text-[#0F6A6A]">
+                120+
+              </h3>
+            </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );
