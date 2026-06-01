@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Save, Upload, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, API_URL, getImageUrl } from "@/lib/api";
 
 /* ================= FIELD COMPONENTS ================= */
 
@@ -143,7 +143,7 @@ export default function EditPropertiPage() {
 
         const token = localStorage.getItem("token");
         await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties/${params.id}/upload`,
+          `${API_URL}/api/properties/${params.id}/upload`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
@@ -270,7 +270,7 @@ export default function EditPropertiPage() {
           {currentImage && !imagePreview && (
             <div className="w-32 h-32 rounded-xl overflow-hidden border border-black/[0.06]">
               <img
-                src={`${process.env.NEXT_PUBLIC_API_URL}/${currentImage}`}
+                src={getImageUrl(currentImage)}
                 alt="Current"
                 className="w-full h-full object-cover"
               />

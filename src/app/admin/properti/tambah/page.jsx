@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Upload, X, MapPin } from "lucide-react";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, API_URL } from "@/lib/api";
 
 /* ================= FIELD COMPONENTS ================= */
 
@@ -113,7 +113,7 @@ export default function TambahPropertiPage() {
 
         const token = localStorage.getItem("token");
         await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties/${property.id}/upload`,
+          `${API_URL}/api/properties/${property.id}/upload`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },

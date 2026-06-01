@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { BedDouble, Bath, Ruler, MapPin } from "lucide-react";
+import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function PropertyDetail() {
   const params = useParams();
@@ -15,7 +16,7 @@ export default function PropertyDetail() {
     async function fetchProperty() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties/slug/${params.slug}`
+          `${API_URL}/api/properties/slug/${params.slug}`
         );
         if (!res.ok) {
           setError(true);
@@ -72,7 +73,7 @@ export default function PropertyDetail() {
         {property.image && (
           <div className="rounded-[32px] overflow-hidden mb-14">
             <img
-              src={`${process.env.NEXT_PUBLIC_API_URL}/${property.image}`}
+              src={getImageUrl(property.image)}
               alt={property.title}
               className="w-full h-[500px] object-cover"
             />

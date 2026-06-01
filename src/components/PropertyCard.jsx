@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getImageUrl } from "@/lib/api";
 
 export default function PropertyCard({
   id,
@@ -13,7 +14,7 @@ export default function PropertyCard({
 }) {
   // Support both: API single `image` string and legacy `images` array
   const imageSrc = image
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${image}`
+    ? getImageUrl(image)
     : images?.[0] || "/placeholder.jpg";
 
   // Use slug for URL if available, fallback to id

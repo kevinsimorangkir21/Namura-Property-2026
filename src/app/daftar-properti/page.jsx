@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { Search } from "lucide-react";
+import { API_URL } from "@/lib/api";
 
 export default function DaftarPropertiPage() {
   const [properties, setProperties] = useState([]);
@@ -15,7 +16,7 @@ export default function DaftarPropertiPage() {
     async function fetchProperties() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+          `${API_URL}/api/properties`
         );
         if (!res.ok) throw new Error("Gagal memuat data");
         const data = await res.json();
@@ -93,8 +94,8 @@ export default function DaftarPropertiPage() {
                 key={item}
                 onClick={() => setActiveFilter(item)}
                 className={`h-11 px-5 rounded-full text-sm font-medium transition ${activeFilter === item
-                    ? "bg-[#0F6A6A] text-white"
-                    : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                  ? "bg-[#0F6A6A] text-white"
+                  : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
                   }`}
               >
                 {item === "semua"

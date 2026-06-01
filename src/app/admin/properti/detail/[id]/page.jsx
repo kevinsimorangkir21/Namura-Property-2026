@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Pencil, Archive, BedDouble, Bath, Car, Ruler, MapPin, ArrowLeft } from "lucide-react";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, getImageUrl } from "@/lib/api";
 
 function SectionCard({ title, children }) {
   return (
@@ -92,7 +92,7 @@ export default function DetailPropertiPage() {
       {property.image && (
         <div className="h-[360px] rounded-2xl overflow-hidden bg-gray-100">
           <img
-            src={`${process.env.NEXT_PUBLIC_API_URL}/${property.image}`}
+            src={getImageUrl(property.image)}
             alt={property.title}
             className="w-full h-full object-cover"
           />

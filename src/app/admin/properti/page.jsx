@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Search, Plus, Pencil, Trash2, Eye } from "lucide-react";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, getImageUrl } from "@/lib/api";
 
 export default function PropertiPage() {
   const [search, setSearch] = useState("");
@@ -125,7 +125,7 @@ export default function PropertiPage() {
                         <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100">
                           {item.image ? (
                             <img
-                              src={`${process.env.NEXT_PUBLIC_API_URL}/${item.image}`}
+                              src={getImageUrl(item.image)}
                               alt={item.title}
                               className="w-full h-full object-cover"
                             />
@@ -147,8 +147,8 @@ export default function PropertiPage() {
                     <td className="py-4 text-sm">{formatPrice(item.price)}</td>
                     <td className="py-4">
                       <span className={`px-3 py-1 rounded-full text-xs ${(item.status || "").toLowerCase() === "aktif"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
                         }`}>
                         {item.status || "Draft"}
                       </span>
