@@ -4,35 +4,56 @@ import Image from "next/image";
 export default function PropertyCard({
   id,
   title,
+  slug,
   price,
   images = [],
+  image,
   location,
+  type,
 }) {
-  // fallback image
-  const imageSrc = images?.[0] || "/placeholder.jpg";
+  // Support both: API single `image` string and legacy `images` array
+  const imageSrc = image
+    ? `${process.env.NEXT_PUBLIC_API_URL}/${image}`
+    : images?.[0] || "/placeholder.jpg";
 
-  // 🔥 guard biar gak pernah /undefined
+  // Use slug for URL if available, fallback to id
+  const href = slug ? `/daftar-properti/${slug}` : `/daftar-properti/${id}`;
+
+  // Format price: if number, format as Rp; if string, use as-is
+  const formattedPrice =
+    typeof price === "number"
+      ? `Rp ${price.toLocaleString("id-ID")}`
+      : price;
+
   if (!id) return null;
 
   return (
-    <Link href={`/daftar-properti/${id}`}>
+    <Link href={href}>
       <div className="group cursor-pointer">
 
         <div className="relative overflow-hidden rounded-xl">
-          <Image
-            src={imageSrc}
-            alt={title}
-            width={400}
-            height={300}
-            className="w-full h-[220px] object-cover group-hover:scale-105 transition"
-          />
+          {image ? (
+            <img
+              src={imageSrc}
+              alt={title}
+              className="w-full h-[220px] object-cover group-hover:scale-105 transition"
+            />
+          ) : (
+            <Image
+              src={imageSrc}
+              alt={title}
+              width={400}
+              height={300}
+              className="w-full h-[220px] object-cover group-hover:scale-105 transition"
+            />
+          )}
         </div>
 
         <div className="mt-3">
           <h3 className="font-medium text-gray-900">{title}</h3>
           <p className="text-gray-400 text-sm">{location}</p>
           <p className="text-[var(--primary)] font-semibold mt-1">
-            {price}
+            {formattedPrice}
           </p>
         </div>
 

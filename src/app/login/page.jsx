@@ -7,48 +7,43 @@ import {
   Lock,
   CheckCircle2,
 } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const users = [
-    {
-      email: "admin@namura.com",
-      password: "admin123",
-      role: "admin",
-    },
-    {
-      email: "marketing@namura.com",
-      password: "marketing123",
-      role: "marketing",
-    },
-  ];
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const user = users.find(
-      (u) =>
-        u.email === email &&
-        u.password === password
-    );
+    try {
+      const res = await apiFetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!user) {
-      alert("Email atau password salah");
-      return;
-    }
-
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("role", user.role);
-    localStorage.setItem("email", user.email);
-
-    if (user.role === "admin") {
-      router.push("/admin");
-    } else {
-      router.push("/marketing");
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        localStorage.setItem("isLoggedIn", "true");
+        router.push("/admin");
+      }
+    } catch (err) {
+      if (err.status === 401) {
+        setError("Email atau password salah");
+      } else if (err.status === 400) {
+        setError("Email dan password harus diisi");
+      } else {
+        setError("Terjadi kesalahan. Coba lagi nanti.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -175,6 +170,12 @@ export default function LoginPage() {
 
             </div>
 
+            {error && (
+              <div className="mb-5 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-600 text-sm">
+                {error}
+              </div>
+            )}
+
             <form
               onSubmit={handleLogin}
               className="space-y-5"
@@ -228,9 +229,10 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="w-full h-14 rounded-2xl bg-[#0F6A6A] text-white font-semibold hover:bg-[#0C5A5A] transition"
+                disabled={loading}
+                className="w-full h-14 rounded-2xl bg-[#0F6A6A] text-white font-semibold hover:bg-[#0C5A5A] transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Masuk
+                {loading ? "Memproses..." : "Masuk"}
               </button>
 
             </form>

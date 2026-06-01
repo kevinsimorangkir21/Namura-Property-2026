@@ -1,9 +1,27 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { Search, Plus, Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Search, Plus, Eye, Pencil, Trash2 } from "lucide-react";
+import { apiFetch } from "@/lib/api";
+
+/* ================= STAT CARD ================= */
+
+function StatCard({ label, value, icon, accentIcon }) {
+  return (
+    <div className="bg-white rounded-2xl border border-black/[0.06] p-5 flex items-center gap-4">
+      <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${accentIcon}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-2xl font-semibold text-gray-900 tracking-tight leading-none">
+          {value}
+        </p>
+        <p className="text-xs text-gray-400 mt-1">{label}</p>
+      </div>
+    </div>
+  );
+}
 
 /* ================= ICONS ================= */
 
@@ -25,130 +43,127 @@ const IconDraft = () => (
   </svg>
 );
 
-const IconCategory = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-  </svg>
-);
-
-/* ================= STAT CARD ================= */
-
-function StatCard({ label, value, icon, accentIcon }) {
-  return (
-    <div className="bg-white rounded-2xl border border-black/[0.06] p-5 flex items-center gap-4">
-      <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${accentIcon}`}>
-        {icon}
-      </div>
-      <div>
-        <p className="text-2xl font-semibold text-gray-900 tracking-tight leading-none">
-          {value}
-        </p>
-        <p className="text-xs text-gray-400 mt-1">{label}</p>
-      </div>
-    </div>
-  );
-}
-
 /* ================= PAGE ================= */
 
 export default function ArtikelPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const articles = [
-    {
-      id: 1,
-      title: "Tips Investasi Properti untuk Pemula",
-      category: "Investasi",
-      status: "Published",
-      date: "12 Mei 2026",
-      image: "/a1.jpg",
-    },
-    {
-      id: 2,
-      title: "Tren Desain Rumah Modern 2026",
-      category: "Desain",
-      status: "Published",
-      date: "10 Mei 2026",
-      image: "/a2.jpg",
-    },
-    {
-      id: 3,
-      title: "Cara Memilih Lokasi Properti Strategis",
-      category: "Tips",
-      status: "Draft",
-      date: "08 Mei 2026",
-      image: "/a3.jpg",
-    },
-  ];
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  async function fetchArticles() {
+    try {
+      setLoading(true);
+      setError("");
+      const data = await apiFetch("/api/articles");
+      setArticles(data || []);
+    } catch (err) {
+      setError(err.message || "Gagal memuat data artikel.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const filtered = articles.filter((item) => {
-    const matchSearch = item.title
+    const matchSearch = (item.title || "")
       .toLowerCase()
       .includes(search.toLowerCase());
     const matchStatus =
-      statusFilter === "all" || item.status === statusFilter;
+      statusFilter === "all" ||
+      (item.status || "").toLowerCase() === statusFilter.toLowerCase();
     return matchSearch && matchStatus;
   });
 
+  const totalPublished = articles.filter(
+    (a) => (a.status || "").toLowerCase() === "published"
+  ).length;
+  const totalDraft = articles.filter(
+    (a) => (a.status || "").toLowerCase() === "draft"
+  ).length;
+
+  const handleDelete = async (id) => {
+    try {
+      await apiFetch(`/api/articles/${id}`, { method: "DELETE" });
+      setArticles((prev) => prev.filter((a) => a.id !== id));
+      setDeleteTarget(null);
+    } catch (err) {
+      setError(err.message || "Gagal menghapus artikel.");
+      setDeleteTarget(null);
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    return new Date(dateStr).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="flex flex-col gap-7">
-
       {/* HEADER */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">
-            Manage Artikel
-          </h1>
+          <h1 className="text-xl font-semibold text-gray-900">Manage Artikel</h1>
           <p className="text-sm text-gray-400 mt-0.5">
             Kelola artikel dan konten website Namura Property.
           </p>
         </div>
-        <button className="flex items-center gap-2 bg-[#0F6A6A] text-white text-sm font-medium px-4 py-2.5 rounded-xl hover:opacity-90 active:scale-[.98] transition flex-shrink-0">
+        <Link
+          href="/admin/artikel/tambah"
+          className="flex items-center gap-2 bg-[#0F6A6A] text-white text-sm font-medium px-4 py-2.5 rounded-xl hover:opacity-90 active:scale-[.98] transition flex-shrink-0"
+        >
           <Plus size={16} />
           <span className="hidden sm:inline">Tambah Artikel</span>
           <span className="sm:hidden">Tambah</span>
-        </button>
+        </Link>
       </div>
 
+      {/* ERROR */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+          {error}
+        </div>
+      )}
+
       {/* STATS */}
-      <div className="grid sm:grid-cols-4 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
         <StatCard
           label="Total Artikel"
-          value={24}
+          value={loading ? "..." : articles.length}
           icon={<IconNews />}
           accentIcon="bg-gray-100 text-gray-500"
         />
         <StatCard
           label="Published"
-          value={18}
+          value={loading ? "..." : totalPublished}
           icon={<IconCheck />}
           accentIcon="bg-emerald-50 text-emerald-600"
         />
         <StatCard
           label="Draft"
-          value={6}
+          value={loading ? "..." : totalDraft}
           icon={<IconDraft />}
           accentIcon="bg-amber-50 text-amber-600"
-        />
-        <StatCard
-          label="Kategori"
-          value={8}
-          icon={<IconCategory />}
-          accentIcon="bg-purple-50 text-purple-600"
         />
       </div>
 
       {/* TABLE CARD */}
       <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
-
         {/* TOOLBAR */}
         <div className="px-5 py-3.5 border-b border-black/[0.05] flex flex-wrap gap-3 items-center">
           <p className="text-sm font-medium text-gray-800 flex-1 min-w-0">
             Daftar Artikel
           </p>
 
-          {/* SEARCH */}
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
               <Search size={14} className="text-gray-400" />
@@ -162,15 +177,14 @@ export default function ArtikelPage() {
             />
           </div>
 
-          {/* STATUS FILTER */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0F6A6A]/20 focus:border-[#0F6A6A]/40 transition"
           >
             <option value="all">Semua status</option>
-            <option value="Published">Published</option>
-            <option value="Draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
           </select>
         </div>
 
@@ -179,101 +193,77 @@ export default function ArtikelPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-black/[0.05]">
-                {["Artikel", "Kategori", "Tanggal", "Status", ""].map(
-                  (h, i) => (
-                    <th
-                      key={i}
-                      className={`px-5 py-2.5 text-[11px] font-medium text-gray-400 uppercase tracking-wide ${
-                        i === 4 ? "text-right" : "text-left"
+                {["Judul", "Status", "Tanggal", "Penulis", ""].map((h, i) => (
+                  <th
+                    key={i}
+                    className={`px-5 py-2.5 text-[11px] font-medium text-gray-400 uppercase tracking-wide ${i === 4 ? "text-right" : "text-left"
                       }`}
-                    >
-                      {h}
-                    </th>
-                  )
-                )}
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-
             <tbody className="divide-y divide-black/[0.04]">
-              {filtered.length === 0 ? (
+              {loading ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="py-16 text-center text-sm text-gray-400"
-                  >
+                  <td colSpan={5} className="py-16 text-center text-sm text-gray-400">
+                    Memuat data...
+                  </td>
+                </tr>
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-16 text-center text-sm text-gray-400">
                     Tidak ada artikel ditemukan.
                   </td>
                 </tr>
               ) : (
                 filtered.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="hover:bg-gray-50/70 transition"
-                  >
-                    {/* ARTICLE */}
+                  <tr key={item.id} className="hover:bg-gray-50/70 transition">
                     <td className="px-5 py-3.5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-16 h-11 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-black/[0.05]">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            width={64}
-                            height={44}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="font-medium text-gray-900 truncate max-w-[220px]">
-                            {item.title}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-0.5">
-                            ID #{item.id}
-                          </p>
-                        </div>
+                      <div>
+                        <p className="font-medium text-gray-900 truncate max-w-[280px]">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          ID #{item.id}
+                        </p>
                       </div>
                     </td>
-
-                    {/* CATEGORY */}
-                    <td className="px-5 py-3.5">
-                      <span className="inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-black/[0.05]">
-                        {item.category}
-                      </span>
-                    </td>
-
-                    {/* DATE */}
-                    <td className="px-5 py-3.5 text-xs text-gray-500">
-                      {item.date}
-                    </td>
-
-                    {/* STATUS */}
                     <td className="px-5 py-3.5">
                       <span
-                        className={`inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full ${
-                          item.status === "Published"
-                            ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/80"
-                            : "bg-amber-50 text-amber-700 ring-1 ring-amber-200/80"
-                        }`}
+                        className={`inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full ring-1 ${(item.status || "").toLowerCase() === "published"
+                            ? "bg-emerald-50 text-emerald-700 ring-emerald-200/80"
+                            : "bg-amber-50 text-amber-700 ring-amber-200/80"
+                          }`}
                       >
-                        {item.status}
+                        {item.status || "Draft"}
                       </span>
                     </td>
-
-                    {/* ACTIONS */}
+                    <td className="px-5 py-3.5 text-xs text-gray-500">
+                      {formatDate(item.created_at)}
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-gray-500">
+                      {item.author_name || "-"}
+                    </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-  href={`/admin/artikel/detail/${item.id}`}
-  className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50"
->
-  <Eye size={16} />
-</Link>
+                          href={`/admin/artikel/detail/${item.id}`}
+                          className="w-8 h-8 rounded-lg border border-black/[0.08] flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition"
+                        >
+                          <Eye size={14} />
+                        </Link>
                         <Link
                           href={`/admin/artikel/edit/${item.id}`}
-                          className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50"
+                          className="w-8 h-8 rounded-lg border border-black/[0.08] flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition"
                         >
-                          <Pencil size={16} />
+                          <Pencil size={14} />
                         </Link>
-                        <button className="w-8 h-8 rounded-lg border border-red-200 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition">
+                        <button
+                          onClick={() => setDeleteTarget(item)}
+                          className="w-8 h-8 rounded-lg border border-red-200 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 transition"
+                        >
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -303,8 +293,33 @@ export default function ArtikelPage() {
             </button>
           )}
         </div>
-
       </div>
+
+      {/* DELETE MODAL */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm">
+            <h3 className="text-sm font-semibold text-gray-900">Hapus Artikel?</h3>
+            <p className="text-xs text-gray-500 mt-1.5">
+              <span className="font-medium text-gray-700">{deleteTarget.title}</span> akan dihapus permanen.
+            </p>
+            <div className="flex gap-2 mt-5">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                className="flex-1 px-4 py-2 text-sm rounded-xl border text-gray-600 hover:bg-gray-50"
+              >
+                Batal
+              </button>
+              <button
+                onClick={() => handleDelete(deleteTarget.id)}
+                className="flex-1 px-4 py-2 text-sm rounded-xl bg-red-500 text-white font-medium hover:bg-red-600"
+              >
+                Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

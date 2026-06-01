@@ -1,8 +1,36 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import PropertyCard from "./PropertyCard";
-import { properties } from "@/data/properties";
 import Link from "next/link";
 
 export default function PropertyList() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+        );
+        if (!res.ok) throw new Error("Gagal memuat properti");
+        const data = await res.json();
+        // Sort newest first by created_at, then take first 6
+        const sorted = (data || []).sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        setProperties(sorted.slice(0, 6));
+      } catch (err) {
+        setError("Gagal memuat properti");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProperties();
+  }, []);
+
   return (
     <section className="bg-white">
       <div className="max-w-[1200px] mx-auto px-6 py-24">
@@ -55,20 +83,34 @@ export default function PropertyList() {
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {properties.slice(0, 6).map((item) => (
-            <PropertyCard key={item.id} {...item} />
-          ))}
-        </div>
-
-        <div className="flex justify-center mt-14">
-          <Link
-            href="/daftar-properti"
-            className="h-12 px-8 rounded-full bg-[#0F6A6A] text-white font-medium flex items-center justify-center hover:bg-[#0C5A5A] transition"
-          >
-            Lihat Semua Properti
-          </Link>
-        </div>
+        {loading ? (
+          <div className="py-24 text-center text-gray-400">
+            Memuat properti...
+          </div>
+        ) : error ? (
+          <div className="py-24 text-center text-red-500">
+            {error}
+          </div>
+        ) : properties.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {properties.map((item) => (
+              <PropertyCard
+                key={item.id}
+                id={item.id}
+                slug={item.slug}
+                title={item.title}
+                price={item.price}
+                location={item.location}
+                image={item.image}
+                type={item.type}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="py-24 text-center text-gray-400">
+            Belum ada properti tersedia.
+          </div>
+        )}
       </div>
     </section>
   );
