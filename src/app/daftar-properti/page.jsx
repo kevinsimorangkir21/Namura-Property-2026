@@ -1,18 +1,39 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { Search } from "lucide-react";
-import { properties } from "@/data/properties";
 
 export default function DaftarPropertiPage() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeFilter, setActiveFilter] = useState("semua");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+        );
+        if (!res.ok) throw new Error("Gagal memuat data");
+        const data = await res.json();
+        setProperties(data || []);
+      } catch (err) {
+        setError("Gagal memuat data properti");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProperties();
+  }, []);
 
   const filteredData = useMemo(() => {
     return properties.filter((item) => {
       const matchType =
-        activeFilter === "semua" || item.type === activeFilter;
+        activeFilter === "semua" ||
+        (item.type || "").toLowerCase() === activeFilter;
 
       const matchSearch = (item.title || "")
         .toLowerCase()
@@ -20,7 +41,7 @@ export default function DaftarPropertiPage() {
 
       return matchType && matchSearch;
     });
-  }, [activeFilter, search]);
+  }, [activeFilter, search, properties]);
 
   return (
     <section className="bg-white">
@@ -71,17 +92,16 @@ export default function DaftarPropertiPage() {
               <button
                 key={item}
                 onClick={() => setActiveFilter(item)}
-                className={`h-11 px-5 rounded-full text-sm font-medium transition ${
-                  activeFilter === item
+                className={`h-11 px-5 rounded-full text-sm font-medium transition ${activeFilter === item
                     ? "bg-[#0F6A6A] text-white"
                     : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
-                }`}
+                  }`}
               >
                 {item === "semua"
                   ? "Semua"
                   : item === "jual"
-                  ? "Dijual"
-                  : "Disewa"}
+                    ? "Dijual"
+                    : "Disewa"}
               </button>
             ))}
           </div>
@@ -97,10 +117,27 @@ export default function DaftarPropertiPage() {
           </p>
         </div>
 
-        {filteredData.length > 0 ? (
+        {loading ? (
+          <div className="py-24 text-center text-gray-400">
+            Memuat properti...
+          </div>
+        ) : error ? (
+          <div className="py-24 text-center text-red-500">
+            {error}
+          </div>
+        ) : filteredData.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredData.map((item) => (
-              <PropertyCard key={item.id} {...item} />
+              <PropertyCard
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                slug={item.slug}
+                price={item.price}
+                location={item.location}
+                image={item.image}
+                type={item.type}
+              />
             ))}
           </div>
         ) : (

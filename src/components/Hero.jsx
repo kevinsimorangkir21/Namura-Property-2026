@@ -1,9 +1,60 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero() {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+        );
+        if (!res.ok) throw new Error("Failed");
+        const data = await res.json();
+        setProperties(data || []);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProperties();
+  }, []);
+
+  // Calculate unit available (active properties)
+  const unitAvailable = properties.filter(
+    (p) => (p.status || "").toLowerCase() === "aktif"
+  ).length || properties.length;
+
+  // Find featured property: prioritize featured=true, fallback to newest
+  const featuredProperty = properties.length > 0
+    ? properties.find((p) => p.featured) ||
+    [...properties].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0]
+    : null;
+
+  // Hero image
+  const getImageUrl = (img) => {
+    if (!img) return null;
+    if (img.startsWith("http")) return img;
+    return `${process.env.NEXT_PUBLIC_API_URL}/${img}`;
+  };
+
+  const heroImage = featuredProperty?.image
+    ? getImageUrl(featuredProperty.image)
+    : null;
+
+  // Format price
+  const formatPrice = (price) => {
+    if (!price) return "Rp -";
+    return `Rp ${Number(price).toLocaleString("id-ID")}`;
+  };
+
   return (
     <section className="bg-gradient-to-b from-white to-[#F4F8F8]">
       <div className="max-w-[1200px] mx-auto px-6 py-20 lg:py-24">
@@ -40,62 +91,26 @@ export default function Hero() {
                 Hubungi Kami
               </Link>
             </div>
-
-            <div className="mt-12 bg-white rounded-[24px] border border-gray-100 shadow-sm p-4">
-              <div className="grid md:grid-cols-4 gap-4">
-                <div>
-                  <label className="text-xs text-gray-500">
-                    Lokasi
-                  </label>
-
-                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
-                    <option>Lampung</option>
-                    <option>Jakarta</option>
-                    <option>Bandung</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs text-gray-500">
-                    Tipe Properti
-                  </label>
-
-                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
-                    <option>Rumah</option>
-                    <option>Ruko</option>
-                    <option>Tanah</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs text-gray-500">
-                    Harga
-                  </label>
-
-                  <select className="mt-2 w-full bg-transparent outline-none text-sm font-medium">
-                    <option>Semua Harga</option>
-                    <option>&lt; Rp500 Juta</option>
-                    <option>Rp500 Juta - Rp1 Miliar</option>
-                  </select>
-                </div>
-
-                <button className="h-12 self-end rounded-xl bg-[#0F6A6A] text-white font-medium hover:bg-[#0C5A5A] transition">
-                  Cari Properti
-                </button>
-              </div>
-            </div>
           </div>
 
           <div className="relative">
             <div className="overflow-hidden rounded-[32px] shadow-xl">
-              <Image
-                src="/Asset/Properti5/Asset1.png"
-                alt="Properti Unggulan"
-                width={900}
-                height={700}
-                priority
-                className="w-full h-[600px] object-cover"
-              />
+              {heroImage ? (
+                <img
+                  src={heroImage}
+                  alt="Properti Unggulan"
+                  className="w-full h-[600px] object-cover"
+                />
+              ) : (
+                <Image
+                  src="/Asset/Properti5/Asset1.png"
+                  alt="Properti Unggulan"
+                  width={900}
+                  height={700}
+                  priority
+                  className="w-full h-[600px] object-cover"
+                />
+              )}
             </div>
 
             <div className="absolute bottom-6 left-6 bg-white rounded-2xl px-5 py-4 shadow-lg border border-gray-100">
@@ -104,11 +119,11 @@ export default function Hero() {
               </p>
 
               <h3 className="mt-1 text-xl font-bold text-gray-900">
-                Rp 750 Juta
+                {featuredProperty ? formatPrice(featuredProperty.price) : "Rp 750.000.000"}
               </h3>
 
               <p className="text-sm text-gray-500">
-                Lampung Selatan
+                {featuredProperty?.location || "Lampung Selatan"}
               </p>
             </div>
 
@@ -118,7 +133,7 @@ export default function Hero() {
               </p>
 
               <h3 className="mt-1 text-2xl font-bold text-[#0F6A6A]">
-                120+
+                {loading ? "..." : unitAvailable > 0 ? `${unitAvailable}+` : "0"}
               </h3>
             </div>
           </div>

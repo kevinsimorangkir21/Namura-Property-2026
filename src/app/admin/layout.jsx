@@ -72,11 +72,10 @@ function NavItem({ item, pathname, sidebarOpen }) {
   return (
     <Link
       href={item.href}
-      className={`relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
-        isActive
-          ? "bg-white/15 text-white"
-          : "text-white/70 hover:bg-white/10 hover:text-white"
-      }`}
+      className={`relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${isActive
+        ? "bg-white/15 text-white"
+        : "text-white/70 hover:bg-white/10 hover:text-white"
+        }`}
     >
       {isActive && (
         <span className="absolute left-0 top-[20%] h-[60%] w-1 bg-white rounded-r-full" />
@@ -95,10 +94,10 @@ export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const role = localStorage.getItem("role");
 
-    if (!isLoggedIn || role !== "admin") {
+    if (!token || !isLoggedIn) {
       router.push("/login");
       return;
     }
@@ -107,9 +106,9 @@ export default function AdminLayout({ children }) {
   }, [router]);
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("role");
-    localStorage.removeItem("email");
     router.push("/login");
   };
 
@@ -133,9 +132,8 @@ export default function AdminLayout({ children }) {
 
       {/* Sidebar */}
       <aside
-        className={`hidden md:flex flex-col fixed top-0 left-0 h-screen bg-[#0F6A6A] transition-all duration-300 z-50 ${
-          sidebarOpen ? "w-[260px]" : "w-[80px]"
-        }`}
+        className={`hidden md:flex flex-col fixed top-0 left-0 h-screen bg-[#0F6A6A] transition-all duration-300 z-50 ${sidebarOpen ? "w-[260px]" : "w-[80px]"
+          }`}
       >
         <div className="px-4 py-5 border-b border-white/10 flex items-center justify-between">
           {sidebarOpen && (
@@ -193,9 +191,8 @@ export default function AdminLayout({ children }) {
 
       {/* Main */}
       <main
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
-          sidebarOpen ? "md:ml-[260px]" : "md:ml-[80px]"
-        }`}
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? "md:ml-[260px]" : "md:ml-[80px]"
+          }`}
       >
         {/* Topbar */}
         <div className="sticky top-0 z-40 bg-white border-b border-gray-200 h-16 px-6 flex items-center">
@@ -221,15 +218,17 @@ export default function AdminLayout({ children }) {
 
           <div className="ml-auto flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">Administrator</p>
-              <p className="text-xs text-gray-400">
-                {typeof window !== "undefined"
-                  ? localStorage.getItem("email")
-                  : ""}
+              <p className="text-sm font-medium text-gray-900">
+                {typeof window !== "undefined" && localStorage.getItem("user")
+                  ? JSON.parse(localStorage.getItem("user")).name
+                  : "Administrator"}
               </p>
+              <p className="text-xs text-gray-400">Admin</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-[#0F6A6A] text-white flex items-center justify-center font-semibold">
-              A
+              {typeof window !== "undefined" && localStorage.getItem("user")
+                ? JSON.parse(localStorage.getItem("user")).name?.charAt(0).toUpperCase()
+                : "A"}
             </div>
           </div>
         </div>

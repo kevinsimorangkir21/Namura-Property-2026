@@ -1,8 +1,8 @@
 "use client";
 
-import { properties } from "@/data/properties";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/lib/api";
 
 /* ================= ICONS ================= */
 
@@ -44,36 +44,27 @@ const IconBuilding = () => (
   </svg>
 );
 
-const IconTag = () => (
+const IconArticle = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
   </svg>
 );
 
-const IconKey = () => (
+const IconUsers = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
   </svg>
 );
 
-/* ================= META ================= */
-
-const typeMeta = {
-  jual: {
-    label: "Dijual",
-    className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/80",
-  },
-  sewa: {
-    label: "Disewa",
-    className: "bg-sky-50 text-sky-700 ring-1 ring-sky-200/80",
-  },
-};
-
-const filterLabels = { all: "Semua", jual: "Dijual", sewa: "Disewa" };
+const IconBell = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+  </svg>
+);
 
 /* ================= STAT CARD ================= */
 
-function StatCard({ label, value, icon, accentIcon }) {
+function StatCard({ label, value, icon, accentIcon, loading }) {
   return (
     <div className="bg-white rounded-2xl border border-black/[0.06] p-5 flex items-center gap-4">
       <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${accentIcon}`}>
@@ -81,7 +72,7 @@ function StatCard({ label, value, icon, accentIcon }) {
       </div>
       <div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight leading-none">
-          {value}
+          {loading ? "..." : value}
         </p>
         <p className="text-xs text-gray-400 mt-1">{label}</p>
       </div>
@@ -126,11 +117,32 @@ function DeleteModal({ item, onConfirm, onCancel }) {
 /* ================= PAGE ================= */
 
 export default function AdminPage() {
-  const [data, setData] = useState(properties);
+  const [properties, setProperties] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // Fetch dashboard stats and properties
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [statsData, propertiesData] = await Promise.all([
+          apiFetch("/api/dashboard/stats"),
+          apiFetch("/api/properties"),
+        ]);
+        setStats(statsData);
+        setProperties(propertiesData || []);
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   // debounce search
   useEffect(() => {
@@ -138,22 +150,32 @@ export default function AdminPage() {
     return () => clearTimeout(t);
   }, [searchInput]);
 
-  const total = data.length;
-  const jual = data.filter((p) => p.type === "jual").length;
-  const sewa = data.filter((p) => p.type === "sewa").length;
-
-  const filtered = data.filter((p) => {
+  const filtered = properties.filter((p) => {
     const matchSearch =
       (p.title || "").toLowerCase().includes(search.toLowerCase()) ||
       (p.location || "").toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === "all" || p.type === filter;
+    const matchFilter =
+      filter === "all" ||
+      (p.type || "").toLowerCase() === filter;
     return matchSearch && matchFilter;
   });
 
-  const handleDelete = (id) => {
-    setData((prev) => prev.filter((p) => p.id !== id));
-    setDeleteTarget(null);
+  const handleDelete = async (id) => {
+    try {
+      await apiFetch(`/api/properties/${id}`, { method: "DELETE" });
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+      setDeleteTarget(null);
+    } catch (err) {
+      console.error("Failed to delete property:", err);
+    }
   };
+
+  const formatPrice = (price) => {
+    if (!price) return "-";
+    return `Rp ${Number(price).toLocaleString("id-ID")}`;
+  };
+
+  const filterLabels = { all: "Semua", jual: "Dijual", sewa: "Disewa" };
 
   return (
     <>
@@ -184,24 +206,34 @@ export default function AdminPage() {
         </div>
 
         {/* STATS */}
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             label="Total Properti"
-            value={total}
+            value={stats?.total_properties ?? 0}
             icon={<IconBuilding />}
             accentIcon="bg-gray-100 text-gray-500"
+            loading={loading}
           />
           <StatCard
-            label="Dijual"
-            value={jual}
-            icon={<IconTag />}
+            label="Total Artikel"
+            value={stats?.total_articles ?? 0}
+            icon={<IconArticle />}
             accentIcon="bg-emerald-50 text-emerald-600"
+            loading={loading}
           />
           <StatCard
-            label="Disewa"
-            value={sewa}
-            icon={<IconKey />}
+            label="Total User"
+            value={stats?.total_users ?? 0}
+            icon={<IconUsers />}
             accentIcon="bg-sky-50 text-sky-600"
+            loading={loading}
+          />
+          <StatCard
+            label="Total Notifikasi"
+            value={stats?.total_notifications ?? 0}
+            icon={<IconBell />}
+            accentIcon="bg-amber-50 text-amber-600"
+            loading={loading}
           />
         </div>
 
@@ -233,11 +265,10 @@ export default function AdminPage() {
                 <button
                   key={val}
                   onClick={() => setFilter(val)}
-                  className={`px-3 py-1.5 rounded-md transition ${
-                    filter === val
+                  className={`px-3 py-1.5 rounded-md transition ${filter === val
                       ? "bg-white text-gray-900 shadow-sm"
                       : "text-gray-500 hover:text-gray-700"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -254,9 +285,8 @@ export default function AdminPage() {
                     (h, i) => (
                       <th
                         key={i}
-                        className={`px-5 py-2.5 text-[11px] font-medium text-gray-400 uppercase tracking-wide ${
-                          i === 4 ? "text-right" : "text-left"
-                        }`}
+                        className={`px-5 py-2.5 text-[11px] font-medium text-gray-400 uppercase tracking-wide ${i === 4 ? "text-right" : "text-left"
+                          }`}
                       >
                         {h}
                       </th>
@@ -266,67 +296,62 @@ export default function AdminPage() {
               </thead>
 
               <tbody className="divide-y divide-black/[0.04]">
-                {filtered.length === 0 ? (
+                {loading ? (
                   <tr>
-                    <td
-                      colSpan={5}
-                      className="py-16 text-center text-sm text-gray-400"
-                    >
+                    <td colSpan={5} className="py-16 text-center text-sm text-gray-400">
+                      Memuat data...
+                    </td>
+                  </tr>
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-16 text-center text-sm text-gray-400">
                       Tidak ada properti ditemukan.
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((item) => {
-                    const badge = typeMeta[item.type] ?? {
-                      label: item.type,
-                      className: "bg-gray-100 text-gray-600",
-                    };
-                    return (
-                      <tr
-                        key={item.id}
-                        className="hover:bg-gray-50/70 transition"
-                      >
-                        <td className="px-5 py-3.5 font-medium text-gray-900 max-w-[200px] truncate">
-                          {item.title}
-                        </td>
-                        <td className="px-5 py-3.5 text-gray-500 text-xs">
-                          {item.location}
-                        </td>
-                        <td className="px-5 py-3.5 text-gray-800 font-medium">
-                          {item.price}
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <span
-                            className={`inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full ${badge.className}`}
+                  filtered.map((item) => (
+                    <tr key={item.id} className="hover:bg-gray-50/70 transition">
+                      <td className="px-5 py-3.5 font-medium text-gray-900 max-w-[200px] truncate">
+                        {item.title}
+                      </td>
+                      <td className="px-5 py-3.5 text-gray-500 text-xs">
+                        {item.location}
+                      </td>
+                      <td className="px-5 py-3.5 text-gray-800 font-medium">
+                        {formatPrice(item.price)}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className={`inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full ${(item.type || "").toLowerCase() === "jual"
+                            ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/80"
+                            : "bg-sky-50 text-sky-700 ring-1 ring-sky-200/80"
+                          }`}>
+                          {(item.type || "").toLowerCase() === "jual" ? "Dijual" : "Disewa"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center justify-end gap-1">
+                          <Link
+                            href={`/admin/properti/detail/${item.id}`}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
                           >
-                            {badge.label}
-                          </span>
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <div className="flex items-center justify-end gap-1">
-                            <Link
-                              href={`/daftar-properti/${item.id}`}
-                              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
-                            >
-                              <IconView /> Lihat
-                            </Link>
-                            <Link
-                              href={`/admin/properti/${item.id}/edit`}
-                              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
-                            >
-                              <IconEdit /> Edit
-                            </Link>
-                            <button
-                              onClick={() => setDeleteTarget(item)}
-                              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-                            >
-                              <IconTrash /> Hapus
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
+                            <IconView /> Lihat
+                          </Link>
+                          <Link
+                            href={`/admin/properti/edit/${item.id}`}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
+                          >
+                            <IconEdit /> Edit
+                          </Link>
+                          <button
+                            onClick={() => setDeleteTarget(item)}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                          >
+                            <IconTrash /> Hapus
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
@@ -338,14 +363,11 @@ export default function AdminPage() {
               Menampilkan{" "}
               <span className="font-medium text-gray-600">{filtered.length}</span>{" "}
               dari{" "}
-              <span className="font-medium text-gray-600">{total}</span> properti
+              <span className="font-medium text-gray-600">{properties.length}</span> properti
             </span>
             {search && (
               <button
-                onClick={() => {
-                  setSearchInput("");
-                  setSearch("");
-                }}
+                onClick={() => { setSearchInput(""); setSearch(""); }}
                 className="text-[#0F6A6A] hover:opacity-70 transition font-medium"
               >
                 Reset pencarian
