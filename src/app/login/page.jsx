@@ -35,7 +35,9 @@ export default function LoginPage() {
         router.push("/admin");
       }
     } catch (err) {
-      if (err.status === 401) {
+      if (err.message === "API URL is not configured.") {
+        setError("API URL belum dikonfigurasi. Hubungi administrator.");
+      } else if (err.status === 401) {
         setError("Email atau password salah");
       } else if (err.status === 400) {
         setError("Email dan password harus diisi");

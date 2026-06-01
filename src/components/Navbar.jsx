@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { Bell } from "lucide-react";
+import { API_URL } from "@/lib/api";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -44,7 +45,7 @@ export default function Navbar() {
         setNotifLoading(true);
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/notifications`,
+          `${API_URL}/api/notifications`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (res.ok) {
@@ -97,8 +98,8 @@ export default function Navbar() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm"
-          : "bg-white"
+        ? "bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm"
+        : "bg-white"
         }`}
     >
       <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
@@ -127,15 +128,15 @@ export default function Navbar() {
                   key={item.name}
                   href={item.href}
                   className={`relative text-sm transition-all duration-200 group ${isActive
-                      ? "text-[#0F6A6A] font-semibold"
-                      : "text-gray-500 hover:text-black"
+                    ? "text-[#0F6A6A] font-semibold"
+                    : "text-gray-500 hover:text-black"
                     }`}
                 >
                   {item.name}
                   <span
                     className={`absolute left-1/2 -translate-x-1/2 -bottom-3 h-1 rounded-full bg-[#0F6A6A] transition-all duration-300 ${isActive
-                        ? "w-6 opacity-100"
-                        : "w-0 opacity-0 group-hover:w-6 group-hover:opacity-100"
+                      ? "w-6 opacity-100"
+                      : "w-0 opacity-0 group-hover:w-6 group-hover:opacity-100"
                       }`}
                   />
                 </Link>
@@ -305,8 +306,8 @@ export default function Navbar() {
                     href={item.href}
                     onClick={() => setOpen(false)}
                     className={`text-sm transition ${isActive
-                        ? "text-[#0F6A6A] font-semibold"
-                        : "text-gray-500"
+                      ? "text-[#0F6A6A] font-semibold"
+                      : "text-gray-500"
                       }`}
                   >
                     {item.name}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function ArtikelDetail() {
   const params = useParams();
@@ -14,7 +15,7 @@ export default function ArtikelDetail() {
     async function fetchArticle() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/articles/slug/${params.slug}`
+          `${API_URL}/api/articles/slug/${params.slug}`
         );
         if (!res.ok) {
           setError(true);
@@ -99,7 +100,7 @@ export default function ArtikelDetail() {
         {article.thumbnail && (
           <div className="mt-10 overflow-hidden rounded-[32px]">
             <img
-              src={`${process.env.NEXT_PUBLIC_API_URL}/${article.thumbnail}`}
+              src={getImageUrl(article.thumbnail)}
               alt={article.title}
               className="w-full h-[550px] object-cover"
             />

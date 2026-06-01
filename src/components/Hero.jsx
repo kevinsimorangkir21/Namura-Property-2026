@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function Hero() {
   const [properties, setProperties] = useState([]);
@@ -13,7 +14,7 @@ export default function Hero() {
     async function fetchProperties() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+          `${API_URL}/api/properties`
         );
         if (!res.ok) throw new Error("Failed");
         const data = await res.json();
@@ -39,12 +40,6 @@ export default function Hero() {
     : null;
 
   // Hero image
-  const getImageUrl = (img) => {
-    if (!img) return null;
-    if (img.startsWith("http")) return img;
-    return `${process.env.NEXT_PUBLIC_API_URL}/${img}`;
-  };
-
   const heroImage = featuredProperty?.image
     ? getImageUrl(featuredProperty.image)
     : null;

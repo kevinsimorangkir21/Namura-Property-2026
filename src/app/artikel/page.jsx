@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function ArtikelPage() {
   const [articles, setArticles] = useState([]);
@@ -18,7 +19,7 @@ export default function ArtikelPage() {
     async function fetchArticles() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/articles`
+          `${API_URL}/api/articles`
         );
         if (!res.ok) throw new Error("Gagal memuat artikel");
         const data = await res.json();
@@ -127,8 +128,8 @@ export default function ArtikelPage() {
                     setPage(1);
                   }}
                   className={`h-11 px-5 rounded-full text-sm font-medium capitalize transition ${tag === t
-                      ? "bg-[#0F6A6A] text-white"
-                      : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                    ? "bg-[#0F6A6A] text-white"
+                    : "bg-white border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
                     }`}
                 >
                   {t}
@@ -160,11 +161,7 @@ export default function ArtikelPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginated.map((item) => {
               const imageSrc = item.thumbnail || item.image;
-              const imageUrl = imageSrc
-                ? imageSrc.startsWith("http")
-                  ? imageSrc
-                  : `${process.env.NEXT_PUBLIC_API_URL}/${imageSrc}`
-                : null;
+              const imageUrl = getImageUrl(imageSrc);
 
               return (
                 <Link
@@ -255,8 +252,8 @@ export default function ArtikelPage() {
                 key={num}
                 onClick={() => setPage(num)}
                 className={`w-11 h-11 rounded-full text-sm font-medium transition ${page === num
-                    ? "bg-[#0F6A6A] text-white"
-                    : "border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                  ? "bg-[#0F6A6A] text-white"
+                  : "border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
                   }`}
               >
                 {num}

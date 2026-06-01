@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
+import { API_URL } from "@/lib/api";
 
 export default function PropertyList() {
   const [properties, setProperties] = useState([]);
@@ -13,7 +14,7 @@ export default function PropertyList() {
     async function fetchProperties() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+          `${API_URL}/api/properties`
         );
         if (!res.ok) throw new Error("Gagal memuat properti");
         const data = await res.json();

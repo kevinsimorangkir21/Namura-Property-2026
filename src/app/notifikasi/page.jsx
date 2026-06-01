@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell } from "lucide-react";
+import { API_URL } from "@/lib/api";
 
 export default function NotifikasiPage() {
     const [notifications, setNotifications] = useState([]);
@@ -22,7 +23,7 @@ export default function NotifikasiPage() {
                 }
 
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/notifications`,
+                    `${API_URL}/api/notifications`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 if (!res.ok) throw new Error("Gagal memuat notifikasi");
@@ -114,8 +115,8 @@ export default function NotifikasiPage() {
                                         </div>
                                         <span
                                             className={`inline-flex text-[10px] font-medium px-2 py-0.5 rounded-full flex-shrink-0 ${(notif.status || "").toLowerCase() === "terkirim"
-                                                    ? "bg-emerald-50 text-emerald-700"
-                                                    : "bg-amber-50 text-amber-700"
+                                                ? "bg-emerald-50 text-emerald-700"
+                                                : "bg-amber-50 text-amber-700"
                                                 }`}
                                         >
                                             {notif.status || "Draft"}
@@ -132,8 +133,8 @@ export default function NotifikasiPage() {
                                         key={num}
                                         onClick={() => setPage(num)}
                                         className={`w-11 h-11 rounded-full text-sm font-medium transition ${page === num
-                                                ? "bg-[#0F6A6A] text-white"
-                                                : "border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                                            ? "bg-[#0F6A6A] text-white"
+                                            : "border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
                                             }`}
                                     >
                                         {num}

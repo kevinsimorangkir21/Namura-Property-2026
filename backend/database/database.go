@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"namura-api/backend/config"
@@ -18,9 +19,15 @@ var DB *gorm.DB
 // Connect establishes a PostgreSQL connection with a 30-second timeout
 // and runs AutoMigrate for all models
 func Connect(cfg *config.Config) error {
+	// Determine SSL mode: use "require" in production, "disable" locally
+	sslMode := "disable"
+	if sslEnv := os.Getenv("DB_SSLMODE"); sslEnv != "" {
+		sslMode = sslEnv
+	}
+
 	dsn := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable connect_timeout=30",
-		cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName,
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s connect_timeout=30",
+		cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName, sslMode,
 	)
 
 	var err error

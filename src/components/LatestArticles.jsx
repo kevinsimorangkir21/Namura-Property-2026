@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function LatestArticles() {
     const [articles, setArticles] = useState([]);
@@ -12,7 +13,7 @@ export default function LatestArticles() {
         async function fetchArticles() {
             try {
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/articles`
+                    `${API_URL}/api/articles`
                 );
                 if (!res.ok) throw new Error("Gagal memuat artikel");
                 const data = await res.json();
@@ -81,11 +82,7 @@ export default function LatestArticles() {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {articles.map((item) => {
                             const imageSrc = item.thumbnail || item.image;
-                            const imageUrl = imageSrc
-                                ? imageSrc.startsWith("http")
-                                    ? imageSrc
-                                    : `${process.env.NEXT_PUBLIC_API_URL}/${imageSrc}`
-                                : null;
+                            const imageUrl = getImageUrl(imageSrc);
 
                             return (
                                 <Link

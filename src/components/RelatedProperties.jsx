@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PropertyCard from "./PropertyCard";
+import { API_URL } from "@/lib/api";
 
 export default function RelatedProperties({ currentId }) {
   const [properties, setProperties] = useState([]);
@@ -11,7 +12,7 @@ export default function RelatedProperties({ currentId }) {
     async function fetchProperties() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/properties`
+          `${API_URL}/api/properties`
         );
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
