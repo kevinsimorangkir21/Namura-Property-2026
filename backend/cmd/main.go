@@ -6,6 +6,7 @@ import (
 
 	"namura-api/backend/config"
 	"namura-api/backend/database"
+	"namura-api/backend/database/seeds"
 	"namura-api/backend/handlers"
 	"namura-api/backend/models"
 	"namura-api/backend/routes"
@@ -64,6 +65,9 @@ func main() {
 
 	// Seed admin user
 	seedAdmin()
+
+	// Seed legacy properties
+	seeds.SeedProperties(database.DB)
 
 	// Set JWT secret for handlers
 	handlers.JWTSecret = cfg.JWTSecret
