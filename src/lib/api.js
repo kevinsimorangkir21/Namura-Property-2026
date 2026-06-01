@@ -8,13 +8,19 @@ if (typeof window !== "undefined" && !process.env.NEXT_PUBLIC_API_URL) {
 }
 
 /**
- * Returns the full URL for an image path from the API.
- * Handles absolute URLs, relative paths, and null values.
+ * Returns the full URL for an image path.
+ * Handles three cases:
+ * 1. Absolute URLs (http/https) → use directly
+ * 2. Static assets (/Asset/...) → serve from Next.js public folder (use as-is)
+ * 3. Uploaded images (uploads/...) → prepend API_URL
  */
 export function getImageUrl(path) {
     if (!path) return null;
     if (path.startsWith("http")) return path;
-    return `${API_URL}/${path}`;
+    if (path.startsWith("/Asset")) return path;
+    // Remove leading slash for uploads path consistency
+    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+    return `${API_URL}/${cleanPath}`;
 }
 
 /**
