@@ -91,7 +91,6 @@ export default function Navbar() {
     { name: "Daftar Properti", href: "/daftar-properti" },
     { name: "Tentang Kami", href: "/tentang-kami" },
     { name: "Artikel", href: "/artikel" },
-    { name: "Karir", href: "/karir" },
     { name: "Kontak", href: "/kontak" },
   ];
 
