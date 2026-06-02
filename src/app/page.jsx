@@ -6,17 +6,15 @@ import About from "@/components/About";
 import PropertyList from "@/components/PropertyList";
 import LatestArticles from "@/components/LatestArticles";
 import Testimonials from "@/components/Testimonials";
-import Services from "@/components/Services";
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <About />
       <PropertyList />
+      <About />
       <LatestArticles />
       <Testimonials />
-      <Services />
 
     </main>
   );

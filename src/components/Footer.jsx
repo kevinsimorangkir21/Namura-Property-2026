@@ -18,7 +18,7 @@ export default function Footer() {
 
         <div className="grid lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
           <div>
-            
+
 
             <p className="mt-6 text-sm leading-relaxed text-white/60">
               Menyediakan solusi properti modern dengan kualitas terbaik,
@@ -159,7 +159,7 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="mt-0.5" />
                 <span>
-                  Lampung Selatan,
+                  Jl. Karimun Sukarame, Bandar Lampung,
                   <br />
                   Indonesia
                 </span>
