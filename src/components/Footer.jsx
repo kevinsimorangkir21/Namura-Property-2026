@@ -15,10 +15,28 @@ export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white">
       <div className="max-w-[1200px] mx-auto px-6 pt-20">
-
         <div className="grid lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
+          {/* LOGO & ABOUT */}
           <div>
+            <Link href="/" className="flex items-center gap-3">
+              <Image
+                src="/Logo/Namura_Property2.png"
+                alt="Namura Property"
+                width={60}
+                height={60}
+                className="object-contain"
+              />
 
+              <div>
+                <h2 className="text-xl font-bold text-white">
+                  Namura Property
+                </h2>
+
+                <p className="text-xs text-white/50">
+                  Property Investment & Development
+                </p>
+              </div>
+            </Link>
 
             <p className="mt-6 text-sm leading-relaxed text-white/60">
               Menyediakan solusi properti modern dengan kualitas terbaik,
@@ -49,6 +67,7 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* NAVIGATION */}
           <div>
             <h3 className="font-semibold text-lg mb-6">
               Navigasi
@@ -108,6 +127,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* COMPANY */}
           <div>
             <h3 className="font-semibold text-lg mb-6">
               Perusahaan
@@ -140,6 +160,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* CONTACT */}
           <div>
             <h3 className="font-semibold text-lg mb-6">
               Kontak
@@ -166,6 +187,7 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* BOTTOM */}
         <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
           <p>
             © {new Date().getFullYear()} Namura Property. All rights reserved.
