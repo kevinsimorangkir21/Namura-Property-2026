@@ -107,7 +107,7 @@ export default function Navbar() {
             <Image
               src="/Logo/Namura_Property1.png"
               alt="Namura Property"
-              width={50}
+              width={160}
               height={42}
               priority
               className="h-auto"
