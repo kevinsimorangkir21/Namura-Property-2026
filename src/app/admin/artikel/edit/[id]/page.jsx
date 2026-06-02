@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Save, ArrowLeft } from "lucide-react";
 import { apiFetch } from "@/lib/api";
+import { toast } from "sonner";
 
 /* ================= PAGE ================= */
 
@@ -67,6 +68,7 @@ export default function EditArtikelPage() {
           status: form.status,
         }),
       });
+      toast.success("✓ Artikel berhasil diperbarui");
       router.push("/admin/artikel");
     } catch (err) {
       setError(err.message || "Gagal menyimpan perubahan.");

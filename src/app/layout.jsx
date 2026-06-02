@@ -1,5 +1,6 @@
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: {
@@ -22,6 +23,13 @@ export default function RootLayout({ children }) {
     <html lang="id">
       <body className="bg-[var(--background)] text-gray-900 antialiased">
         <LayoutWrapper>{children}</LayoutWrapper>
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          expand={false}
+          duration={4000}
+        />
       </body>
     </html>
   );
