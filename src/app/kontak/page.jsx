@@ -80,9 +80,7 @@ export default function KontakPage() {
               </h3>
 
               <p className="mt-2 text-gray-600">
-                Jl. Karimun Sukarame, Bandar Lampung,
-                <br />
-                Indonesia
+                Jl. Karimun Sukarame, Bandar Lampung, Indonesia
               </p>
             </div>
 
@@ -118,7 +116,7 @@ export default function KontakPage() {
 
         <div className="mt-20 overflow-hidden rounded-[32px] border border-gray-100">
           <iframe
-            src="https://maps.google.com/maps?q=lampung&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=-5.3909822,105.3110481&z=17&output=embed"
             className="w-full h-[450px]"
             loading="lazy"
           />
