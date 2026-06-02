@@ -105,7 +105,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center">
             <Image
-              src="/Logo/Namura.png"
+              src="/Logo/Namura_Property1.png"
               alt="Namura Property"
               width={50}
               height={42}
