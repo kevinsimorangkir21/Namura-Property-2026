@@ -80,7 +80,7 @@ export default function KontakPage() {
               </h3>
 
               <p className="mt-2 text-gray-600">
-                Lampung Selatan,
+                Jl. Karimun Sukarame, Bandar Lampung,
                 <br />
                 Indonesia
               </p>
