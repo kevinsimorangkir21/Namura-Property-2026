@@ -22,20 +22,10 @@ export default function Footer() {
               <Image
                 src="/Logo/Namura_Property2.png"
                 alt="Namura Property"
-                width={60}
+                width={160}
                 height={60}
                 className="object-contain"
               />
-
-              <div>
-                <h2 className="text-xl font-bold text-white">
-                  Namura Property
-                </h2>
-
-                <p className="text-xs text-white/50">
-                  Property Investment & Development
-                </p>
-              </div>
             </Link>
 
             <p className="mt-6 text-sm leading-relaxed text-white/60">
