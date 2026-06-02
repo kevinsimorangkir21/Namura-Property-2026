@@ -12,15 +12,12 @@ export default function PropertyCard({
   location,
   type,
 }) {
-  // Support both: API single `image` string and legacy `images` array
   const imageSrc = image
     ? getImageUrl(image)
     : images?.[0] || "/placeholder.jpg";
 
-  // Use slug for URL if available, fallback to id
   const href = slug ? `/daftar-properti/${slug}` : `/daftar-properti/${id}`;
 
-  // Format price: if number, format as Rp; if string, use as-is
   const formattedPrice =
     typeof price === "number"
       ? `Rp ${price.toLocaleString("id-ID")}`
@@ -30,14 +27,15 @@ export default function PropertyCard({
 
   return (
     <Link href={href}>
-      <div className="group cursor-pointer">
-
+      <div
+        className="group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl"
+      >
         <div className="relative overflow-hidden rounded-xl">
           {image ? (
             <img
               src={imageSrc}
               alt={title}
-              className="w-full h-[220px] object-cover group-hover:scale-105 transition"
+              className="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <Image
@@ -45,19 +43,28 @@ export default function PropertyCard({
               alt={title}
               width={400}
               height={300}
-              className="w-full h-[220px] object-cover group-hover:scale-105 transition"
+              className="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105"
             />
+          )}
+          {type && (
+            <span className={`absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded-full ${(type || "").toLowerCase() === "jual"
+                ? "bg-emerald-500 text-white"
+                : "bg-sky-500 text-white"
+              }`}>
+              {(type || "").toLowerCase() === "jual" ? "Dijual" : "Disewa"}
+            </span>
           )}
         </div>
 
-        <div className="mt-3">
-          <h3 className="font-medium text-gray-900">{title}</h3>
-          <p className="text-gray-400 text-sm">{location}</p>
-          <p className="text-[var(--primary)] font-semibold mt-1">
+        <div className="mt-3 px-1">
+          <h3 className="font-medium text-gray-900 line-clamp-1 group-hover:text-[#0F6A6A] transition-colors duration-200">
+            {title}
+          </h3>
+          <p className="text-gray-400 text-sm mt-0.5">{location}</p>
+          <p className="text-[#0F6A6A] font-semibold mt-1">
             {formattedPrice}
           </p>
         </div>
-
       </div>
     </Link>
   );

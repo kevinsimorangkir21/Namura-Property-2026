@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
+import { StatCardSkeleton, TableRowSkeleton } from "@/components/ui/Skeleton";
+import DeleteModal from "@/components/ui/DeleteModal";
 
 /* ================= ICONS ================= */
 
@@ -64,15 +67,15 @@ const IconBell = () => (
 
 /* ================= STAT CARD ================= */
 
-function StatCard({ label, value, icon, accentIcon, loading }) {
+function StatCard({ label, value, icon, accentIcon }) {
   return (
-    <div className="bg-white rounded-2xl border border-black/[0.06] p-5 flex items-center gap-4">
+    <div className="bg-white rounded-2xl border border-black/[0.06] p-5 flex items-center gap-4 hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-default">
       <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${accentIcon}`}>
         {icon}
       </div>
       <div>
         <p className="text-2xl font-semibold text-gray-900 tracking-tight leading-none">
-          {loading ? "..." : value}
+          {value}
         </p>
         <p className="text-xs text-gray-400 mt-1">{label}</p>
       </div>
@@ -82,37 +85,7 @@ function StatCard({ label, value, icon, accentIcon, loading }) {
 
 /* ================= DELETE MODAL ================= */
 
-function DeleteModal({ item, onConfirm, onCancel }) {
-  if (!item) return null;
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl border border-black/[0.08] p-6 w-full max-w-sm">
-        <div className="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center mb-4">
-          <IconTrash />
-        </div>
-        <h3 className="text-sm font-semibold text-gray-900">Hapus Properti?</h3>
-        <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
-          <span className="font-medium text-gray-700">{item.title}</span> akan
-          dihapus secara permanen dan tidak bisa dikembalikan.
-        </p>
-        <div className="flex gap-2 mt-5">
-          <button
-            onClick={onCancel}
-            className="flex-1 px-4 py-2 text-sm rounded-xl border border-black/[0.08] text-gray-600 hover:bg-gray-50 transition"
-          >
-            Batal
-          </button>
-          <button
-            onClick={() => onConfirm(item.id)}
-            className="flex-1 px-4 py-2 text-sm rounded-xl bg-red-500 hover:bg-red-600 text-white font-medium transition"
-          >
-            Hapus
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+// Using the shared DeleteModal from @/components/ui/DeleteModal
 
 /* ================= PAGE ================= */
 
@@ -164,9 +137,10 @@ export default function AdminPage() {
     try {
       await apiFetch(`/api/properties/${id}`, { method: "DELETE" });
       setProperties((prev) => prev.filter((p) => p.id !== id));
+      toast.success("✓ Properti berhasil dihapus");
       setDeleteTarget(null);
     } catch (err) {
-      console.error("Failed to delete property:", err);
+      toast.error("Gagal menghapus properti");
     }
   };
 
@@ -266,8 +240,8 @@ export default function AdminPage() {
                   key={val}
                   onClick={() => setFilter(val)}
                   className={`px-3 py-1.5 rounded-md transition ${filter === val
-                      ? "bg-white text-gray-900 shadow-sm"
-                      : "text-gray-500 hover:text-gray-700"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
                     }`}
                 >
                   {label}
@@ -322,8 +296,8 @@ export default function AdminPage() {
                       </td>
                       <td className="px-5 py-3.5">
                         <span className={`inline-flex text-[11px] font-medium px-2.5 py-0.5 rounded-full ${(item.type || "").toLowerCase() === "jual"
-                            ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/80"
-                            : "bg-sky-50 text-sky-700 ring-1 ring-sky-200/80"
+                          ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/80"
+                          : "bg-sky-50 text-sky-700 ring-1 ring-sky-200/80"
                           }`}>
                           {(item.type || "").toLowerCase() === "jual" ? "Dijual" : "Disewa"}
                         </span>

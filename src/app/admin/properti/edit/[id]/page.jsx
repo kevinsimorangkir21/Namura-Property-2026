@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Save, Upload, X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { apiFetch, API_URL, getImageUrl } from "@/lib/api";
+import { toast } from "sonner";
 
 /* ================= FIELD COMPONENTS ================= */
 
@@ -152,6 +153,7 @@ export default function EditPropertiPage() {
         );
       }
 
+      toast.success("✓ Properti berhasil diperbarui");
       router.push("/admin/properti");
     } catch (err) {
       setError(err.data?.details ? Object.values(err.data.details).join(", ") : err.message);

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Upload, X, MapPin } from "lucide-react";
 import { apiFetch, API_URL } from "@/lib/api";
+import { toast } from "sonner";
 
 /* ================= FIELD COMPONENTS ================= */
 
@@ -122,6 +123,7 @@ export default function TambahPropertiPage() {
         );
       }
 
+      toast.success("✓ Properti berhasil ditambahkan");
       router.push("/admin/properti");
     } catch (err) {
       setError(err.data?.details ? Object.values(err.data.details).join(", ") : err.message);
