@@ -10,12 +10,8 @@ import (
 // SetupRoutes registers all API routes on the Fiber app.
 // Public routes are accessible without authentication.
 // Protected routes require a valid JWT token via the AuthRequired middleware.
+// NOTE: Root healthcheck "/" is defined in main.go to avoid duplicate handlers
 func SetupRoutes(app *fiber.App, jwtSecret string) {
-	// Health check (public)
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": "Namura Property API is running"})
-	})
-
 	// Auth routes (public)
 	app.Post("/api/auth/login", handlers.Login)
 
