@@ -4,165 +4,104 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 
 export default function Testimonials() {
+  const testimonials = [
+    {
+      name: "Andi Pratama",
+      location: "Jakarta",
+      image: "/user1.jpg",
+      text: "Proses pembelian rumah sangat mudah dan transparan. Tim selalu responsif dan membantu sampai proses serah terima.",
+    },
+    {
+      name: "Siti Rahma",
+      location: "Bandung",
+      image: "/user2.jpg",
+      text: "Lokasi strategis dan kualitas bangunan sangat memuaskan. Investasi yang tepat untuk keluarga kami.",
+    },
+    {
+      name: "Budi Santoso",
+      location: "Lampung",
+      image: "/user3.jpg",
+      text: "Pelayanan profesional dan proses administrasi sangat jelas. Sangat direkomendasikan bagi yang mencari properti.",
+    },
+  ];
+
   return (
     <section className="bg-white">
-      <div className="max-w-[1200px] mx-auto px-6 py-24">
-        <div className="text-center">
-          <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
+      <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+
+        {/* HEADER */}
+        <div className="mx-auto max-w-[720px] text-center">
+
+          {/* Badge */}
+          <span className="inline-flex items-center rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2 text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
             Testimoni Klien
           </span>
 
-          <h2 className="mt-6 text-4xl lg:text-5xl font-bold text-gray-900">
+          {/* Heading */}
+          <h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
             Apa Kata Klien Kami
           </h2>
 
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+          {/* Description */}
+          <p className="mx-auto mt-5 max-w-[650px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
             Kepercayaan pelanggan adalah prioritas utama kami. Dengarkan
             pengalaman mereka dalam menemukan hunian terbaik bersama kami.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 mt-16">
-          <div className="bg-white rounded-[28px] p-8 shadow-sm border border-gray-100">
-            <div className="flex gap-1 text-[#F59E0B]">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-5 h-5 fill-current"
-                />
-              ))}
-            </div>
-
-            <p className="mt-6 text-gray-600 leading-relaxed">
-              Proses pembelian rumah sangat mudah dan transparan. Tim
-              selalu responsif dan membantu sampai proses serah terima.
-            </p>
-
-            <div className="flex items-center gap-4 mt-8">
-              <Image
-                src="/user1.jpg"
-                alt="Client"
-                width={56}
-                height={56}
-                className="rounded-full object-cover"
-              />
-
-              <div>
-                <h4 className="font-semibold text-gray-900">
-                  Andi Pratama
-                </h4>
-
-                <p className="text-sm text-gray-500">
-                  Jakarta
-                </p>
+        {/* TESTIMONIAL CARDS */}
+        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-8">
+          {testimonials.map((item) => (
+            <article
+              key={item.name}
+              className="group flex h-full flex-col rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-[0_18px_45px_rgba(0,0,0,0.07)] sm:p-8"
+            >
+              {/* Rating */}
+              <div
+                className="flex items-center gap-1 text-[#F59E0B]"
+                aria-label="Rating 5 dari 5"
+              >
+                {[...Array(5)].map((_, index) => (
+                  <Star
+                    key={index}
+                    size={17}
+                    strokeWidth={1.8}
+                    className="fill-current"
+                  />
+                ))}
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-[28px] p-8 shadow-sm border border-gray-100">
-            <div className="flex gap-1 text-[#F59E0B]">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-5 h-5 fill-current"
-                />
-              ))}
-            </div>
+              {/* Quote */}
+              <p className="mt-6 flex-1 text-[15px] leading-7 text-gray-600">
+                “{item.text}”
+              </p>
 
-            <p className="mt-6 text-gray-600 leading-relaxed">
-              Lokasi strategis dan kualitas bangunan sangat memuaskan.
-              Investasi yang tepat untuk keluarga kami.
-            </p>
+              {/* Client */}
+              <div className="mt-8 flex items-center gap-4 border-t border-gray-100 pt-6">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-100">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
 
-            <div className="flex items-center gap-4 mt-8">
-              <Image
-                src="/user2.jpg"
-                alt="Client"
-                width={56}
-                height={56}
-                className="rounded-full object-cover"
-              />
+                <div className="min-w-0">
+                  <h4 className="truncate text-sm font-semibold text-gray-900 sm:text-base">
+                    {item.name}
+                  </h4>
 
-              <div>
-                <h4 className="font-semibold text-gray-900">
-                  Siti Rahma
-                </h4>
-
-                <p className="text-sm text-gray-500">
-                  Bandung
-                </p>
+                  <p className="mt-0.5 text-xs text-gray-400 sm:text-sm">
+                    {item.location}
+                  </p>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-[28px] p-8 shadow-sm border border-gray-100">
-            <div className="flex gap-1 text-[#F59E0B]">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-5 h-5 fill-current"
-                />
-              ))}
-            </div>
-
-            <p className="mt-6 text-gray-600 leading-relaxed">
-              Pelayanan profesional dan proses administrasi sangat jelas.
-              Sangat direkomendasikan bagi yang mencari properti.
-            </p>
-
-            <div className="flex items-center gap-4 mt-8">
-              <Image
-                src="/user3.jpg"
-                alt="Client"
-                width={56}
-                height={56}
-                className="rounded-full object-cover"
-              />
-
-              <div>
-                <h4 className="font-semibold text-gray-900">
-                  Budi Santoso
-                </h4>
-
-                <p className="text-sm text-gray-500">
-                  Lampung
-                </p>
-              </div>
-            </div>
-          </div>
+            </article>
+          ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mt-20 text-center">
-          <div>
-            <h3 className="text-4xl font-bold text-[#0F6A6A]">
-              500+
-            </h3>
-
-            <p className="mt-2 text-gray-500">
-              Klien Puas
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-4xl font-bold text-[#0F6A6A]">
-              4.9/5
-            </h3>
-
-            <p className="mt-2 text-gray-500">
-              Rating Pelanggan
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-4xl font-bold text-[#0F6A6A]">
-              10+
-            </h3>
-
-            <p className="mt-2 text-gray-500">
-              Tahun Pengalaman
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

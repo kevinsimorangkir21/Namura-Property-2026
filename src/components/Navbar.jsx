@@ -146,7 +146,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <Link
               href="/kontak"
-              className="px-5 py-2.5 rounded-full border border-gray-200 text-sm font-medium hover:bg-gray-50 transition"
+              className="px-5 py-2.5 rounded-full border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
             >
               Hubungi Kami
             </Link>
@@ -208,22 +208,8 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Auth Button */}
-            {isLoggedIn ? (
-              <Link
-                href="/admin"
-                className="px-5 py-2.5 rounded-full bg-[#0F6A6A] text-white text-sm font-medium hover:bg-[#0C5A5A] transition hover:-translate-y-0.5 shadow-sm"
-              >
-                Dashboard
-              </Link>
-            ) : (
-              <Link
-                href="/login"
-                className="px-5 py-2.5 rounded-full bg-[#0F6A6A] text-white text-sm font-medium hover:bg-[#0C5A5A] transition hover:-translate-y-0.5 shadow-sm"
-              >
-                Login Admin
-              </Link>
-            )}
+            {/* Admin controls intentionally hidden from public navbar.
+                Admin access should be handled through a private/admin entry point. */}
           </div>
 
           {/* Mobile menu button */}
@@ -278,7 +264,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setOpen(!open)}
-              className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200"
+              className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
             >
               <i className={`bi ${open ? "bi-x-lg" : "bi-list"} text-lg`} />
             </button>
@@ -318,28 +304,12 @@ export default function Navbar() {
                 <Link
                   href="/kontak"
                   onClick={() => setOpen(false)}
-                  className="w-full text-center py-3 rounded-full border border-gray-200 font-medium"
+                  className="w-full text-center py-3 rounded-full border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
                 >
                   Hubungi Kami
                 </Link>
 
-                {isLoggedIn ? (
-                  <Link
-                    href="/admin"
-                    onClick={() => setOpen(false)}
-                    className="w-full text-center py-3 rounded-full bg-[#0F6A6A] text-white font-medium"
-                  >
-                    Dashboard
-                  </Link>
-                ) : (
-                  <Link
-                    href="/login"
-                    onClick={() => setOpen(false)}
-                    className="w-full text-center py-3 rounded-full bg-[#0F6A6A] text-white font-medium"
-                  >
-                    Login Admin
-                  </Link>
-                )}
+                {/* Admin controls intentionally hidden from public mobile menu. */}
               </div>
             </div>
           </div>
