@@ -33,10 +33,11 @@ func LoadConfig() (*Config, error) {
 	// Priority 1: Check DATABASE_URL (Railway/Heroku/Render standard for production)
 	databaseURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if databaseURL != "" {
-		cfg.DatabaseURL = databaseURL
 		// DATABASE_URL contains all connection info, no need for individual vars
+		cfg.DatabaseURL = databaseURL
 	} else {
 		// Priority 2: Individual environment variables (local development/backward compatibility)
+		// Only require individual vars if DATABASE_URL is not provided
 		requiredVars := []string{"DB_HOST", "DB_PORT", "DB_USER", "DB_PASS", "DB_NAME"}
 
 		for _, v := range requiredVars {
