@@ -3,140 +3,319 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { API_URL, getImageUrl } from "@/lib/api";
+import {
+  ArrowRight,
+  FileText,
+  CalendarDays,
+} from "lucide-react";
 
 export default function LatestArticles() {
-    const [articles, setArticles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    useEffect(() => {
-        async function fetchArticles() {
-            try {
-                const res = await fetch(
-                    `${API_URL}/api/articles`
-                );
-                if (!res.ok) throw new Error("Gagal memuat artikel");
-                const data = await res.json();
-                // Sort newest first, filter published, take 3
-                const sorted = (data || [])
-                    .filter((a) => (a.status || "").toLowerCase() === "published")
-                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                    .slice(0, 3);
-                setArticles(sorted);
-            } catch (err) {
-                setError("Gagal memuat artikel");
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchArticles();
-    }, []);
+  useEffect(() => {
+    const controller = new AbortController();
 
-    const formatDate = (dateStr) => {
-        if (!dateStr) return "-";
-        return new Date(dateStr).toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
+    async function fetchArticles() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const res = await fetch(`${API_URL}/api/articles`, {
+          signal: controller.signal,
+          cache: "no-store",
         });
-    };
 
-    return (
-        <section className="bg-white">
-            <div className="max-w-[1200px] mx-auto px-6 py-24">
-                <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
-                    <div>
-                        <span className="inline-flex items-center rounded-full bg-[#0F6A6A]/10 px-4 py-2 text-sm font-medium text-[#0F6A6A]">
-                            Artikel Terbaru
-                        </span>
+        if (!res.ok) {
+          throw new Error("Gagal memuat artikel");
+        }
 
-                        <h2 className="mt-6 text-4xl lg:text-5xl font-bold text-gray-900">
-                            Insight &amp; Informasi
-                            <br />
-                            Seputar Properti
-                        </h2>
+        const data = await res.json();
 
-                        <p className="mt-4 max-w-2xl text-lg text-gray-600">
-                            Temukan tips, panduan, dan informasi terbaru untuk membantu
-                            Anda membuat keputusan investasi properti yang tepat.
-                        </p>
-                    </div>
+        const sorted = Array.isArray(data)
+          ? data
+              .filter(
+                (article) =>
+                  String(article?.status || "").toLowerCase() ===
+                  "published"
+              )
+              .sort(
+                (a, b) =>
+                  new Date(b?.created_at || 0).getTime() -
+                  new Date(a?.created_at || 0).getTime()
+              )
+              .slice(0, 3)
+          : [];
 
-                    <Link
-                        href="/artikel"
-                        className="inline-flex items-center justify-center h-12 px-6 rounded-full border border-gray-200 bg-white text-gray-900 font-medium hover:bg-gray-50 transition"
-                    >
-                        Lihat Semua Artikel
-                    </Link>
-                </div>
+        setArticles(sorted);
+      } catch (err) {
+        if (err?.name !== "AbortError") {
+          setError("Gagal memuat artikel. Silakan coba lagi.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
 
-                {loading ? (
-                    <div className="py-24 text-center text-gray-400">
-                        Memuat artikel...
-                    </div>
-                ) : error ? (
-                    <div className="py-24 text-center text-red-500">
-                        {error}
-                    </div>
-                ) : articles.length > 0 ? (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {articles.map((item) => {
-                            const imageSrc = item.thumbnail || item.image;
-                            const imageUrl = getImageUrl(imageSrc);
+    fetchArticles();
 
-                            return (
-                                <Link
-                                    key={item.id}
-                                    href={`/artikel/${item.slug}`}
-                                    className="group"
-                                >
-                                    <article className="bg-white border border-gray-100 rounded-[28px] overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-2">
-                                        <div className="overflow-hidden">
-                                            {imageUrl ? (
-                                                <img
-                                                    src={imageUrl}
-                                                    alt={item.title}
-                                                    className="w-full h-[240px] object-cover transition-transform duration-500 group-hover:scale-105"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-[240px] bg-gray-100 flex items-center justify-center text-gray-300">
-                                                    <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                        </div>
+    return () => controller.abort();
+  }, []);
 
-                                        <div className="p-6">
-                                            <p className="text-sm text-gray-400">
-                                                {formatDate(item.created_at)}
-                                            </p>
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
 
-                                            <h3 className="mt-3 text-xl font-semibold text-gray-900 group-hover:text-[#0F6A6A] transition">
-                                                {item.title}
-                                            </h3>
+    const date = new Date(dateStr);
 
-                                            {item.excerpt && (
-                                                <p className="mt-3 text-gray-600 line-clamp-3">
-                                                    {item.excerpt}
-                                                </p>
-                                            )}
+    if (Number.isNaN(date.getTime())) {
+      return "-";
+    }
 
-                                            <span className="inline-flex mt-5 text-[#0F6A6A] font-medium">
-                                                Baca Selengkapnya →
-                                            </span>
-                                        </div>
-                                    </article>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                ) : (
-                    <div className="py-24 text-center text-gray-400">
-                        Belum ada artikel tersedia.
-                    </div>
-                )}
+    return date.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+
+        {/* HEADER */}
+        <div className="mb-10 flex flex-col gap-7 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
+
+          <div className="max-w-[680px]">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#0F6A6A]/10">
+                <FileText
+                  size={12}
+                  className="text-[#0F6A6A]"
+                />
+              </span>
+
+              <span className="text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
+                Artikel Terbaru
+              </span>
             </div>
-        </section>
-    );
+
+            {/* Heading */}
+            <h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
+              Insight & Informasi
+              <span className="block text-[#0F6A6A]">
+                Seputar Properti
+              </span>
+            </h2>
+
+            {/* Description */}
+            <p className="mt-5 max-w-[600px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
+              Temukan tips, panduan, dan informasi terbaru untuk
+              membantu Anda memahami dunia properti dan membuat
+              keputusan yang lebih tepat.
+            </p>
+          </div>
+
+          {/* Desktop CTA */}
+          <Link
+            href="/artikel"
+            className="group hidden shrink-0 items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] hover:shadow-sm lg:inline-flex"
+          >
+            Lihat Semua Artikel
+
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            />
+          </Link>
+        </div>
+
+        {/* MOBILE CTA */}
+        <div className="mb-8 lg:hidden">
+          <Link
+            href="/artikel"
+            className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] active:scale-[0.98]"
+          >
+            Lihat Semua Artikel
+
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            />
+          </Link>
+        </div>
+
+        {/* LOADING */}
+        {loading ? (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className="overflow-hidden rounded-[28px] border border-gray-100 bg-white"
+              >
+                {/* Image skeleton */}
+                <div className="aspect-[16/10] animate-pulse bg-gray-100" />
+
+                {/* Content skeleton */}
+                <div className="space-y-4 p-5 sm:p-6">
+                  <div className="h-3 w-28 animate-pulse rounded bg-gray-100" />
+
+                  <div className="h-6 w-full animate-pulse rounded bg-gray-100" />
+
+                  <div className="h-4 w-5/6 animate-pulse rounded bg-gray-100" />
+
+                  <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
+
+                  <div className="h-4 w-32 animate-pulse rounded bg-gray-100" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          /* ERROR STATE */
+          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
+              <FileText
+                size={20}
+                className="text-red-400"
+              />
+            </div>
+
+            <p className="mt-4 text-sm font-medium text-gray-700">
+              {error}
+            </p>
+
+            <Link
+              href="/artikel"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+            >
+              Buka Artikel
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        ) : articles.length > 0 ? (
+          /* ARTICLES */
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {articles.map((item) => {
+              const imageSrc = item?.thumbnail || item?.image;
+              const imageUrl = imageSrc
+                ? getImageUrl(imageSrc)
+                : null;
+
+              return (
+                <Link
+                  key={item.id}
+                  href={`/artikel/${item.slug}`}
+                  className="group block"
+                >
+                  <article className="h-full overflow-hidden rounded-[28px] border border-gray-100 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-gray-200 group-hover:shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+
+                    {/* IMAGE */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={item.title || "Artikel properti"}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <FileText
+                            size={42}
+                            strokeWidth={1.2}
+                            className="text-gray-300"
+                          />
+                        </div>
+                      )}
+
+                      {/* Image Overlay */}
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    </div>
+
+                    {/* CONTENT */}
+                    <div className="flex min-h-[250px] flex-col p-5 sm:p-6">
+
+                      {/* DATE */}
+                      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                        <CalendarDays size={13} />
+
+                        <time dateTime={item.created_at}>
+                          {formatDate(item.created_at)}
+                        </time>
+                      </div>
+
+                      {/* TITLE */}
+                      <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-gray-950 transition-colors duration-200 group-hover:text-[#0F6A6A] sm:text-xl">
+                        {item.title}
+                      </h3>
+
+                      {/* EXCERPT */}
+                      {item.excerpt && (
+                        <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">
+                          {item.excerpt}
+                        </p>
+                      )}
+
+                      {/* READ MORE */}
+                      <div className="mt-auto pt-5">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F6A6A]">
+                          Baca Selengkapnya
+
+                          <ArrowRight
+                            size={15}
+                            className="transition-transform duration-200 group-hover:translate-x-1"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          /* EMPTY STATE */
+          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0F6A6A]/[0.07]">
+              <FileText
+                size={20}
+                className="text-[#0F6A6A]"
+              />
+            </div>
+
+            <p className="mt-4 text-sm font-medium text-gray-700">
+              Belum ada artikel tersedia.
+            </p>
+
+            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
+              Silakan kembali lagi nanti untuk membaca artikel
+              terbaru dari kami.
+            </p>
+          </div>
+        )}
+
+        {/* BOTTOM CTA */}
+        {!loading && !error && articles.length > 0 && (
+          <div className="mt-12 flex justify-center lg:mt-14">
+            <Link
+              href="/artikel"
+              className="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] hover:shadow-sm"
+            >
+              Jelajahi Semua Artikel
+
+              <ArrowRight
+                size={15}
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              />
+            </Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }

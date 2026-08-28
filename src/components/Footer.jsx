@@ -9,183 +9,220 @@ import {
   Phone,
   Mail,
   MapPin,
+  ArrowUpRight,
 } from "lucide-react";
+
+const navigation = [
+  {
+    title: "Navigasi",
+    links: [
+      { label: "Beranda", href: "/" },
+      { label: "Daftar Properti", href: "/daftar-properti" },
+      { label: "Tentang Kami", href: "/tentang-kami" },
+      { label: "Artikel", href: "/artikel" },
+      { label: "Karir", href: "/karir" },
+      { label: "Kontak", href: "/kontak" },
+    ],
+  },
+  {
+    title: "Perusahaan",
+    links: [
+      { label: "Tentang Kami", href: "/tentang-kami" },
+      { label: "Layanan", href: "/layanan" },
+      { label: "Kebijakan Privasi", href: "/kebijakan-privasi" },
+      { label: "Syarat & Ketentuan", href: "/syarat-ketentuan" },
+    ],
+  },
+];
 
 export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white">
-      <div className="max-w-[1200px] mx-auto px-6 pt-20">
-        <div className="grid lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
-          {/* LOGO & ABOUT */}
-          <div>
-            <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto max-w-[1280px] px-5 pt-16 sm:px-6 sm:pt-20 lg:px-8">
+
+        {/* MAIN FOOTER */}
+        <div className="grid gap-12 pb-14 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1fr] lg:gap-16 lg:pb-16">
+
+          {/* BRAND */}
+          <div className="max-w-[380px]">
+            <Link
+              href="/"
+              className="inline-flex items-center"
+              aria-label="Namura Property"
+            >
               <Image
                 src="/Logo/Namura_Property2.png"
                 alt="Namura Property"
                 width={160}
                 height={60}
-                className="object-contain"
+                priority
+                className="h-auto w-[145px] object-contain sm:w-[160px]"
               />
             </Link>
 
-            <p className="mt-6 text-sm leading-relaxed text-white/60">
+            <p className="mt-6 max-w-[350px] text-sm leading-7 text-white/55">
               Menyediakan solusi properti modern dengan kualitas terbaik,
-              lokasi strategis, dan nilai investasi yang terus berkembang.
+              lokasi strategis, dan nilai investasi yang terus berkembang
+              untuk kebutuhan hunian Anda.
             </p>
 
-            <div className="flex gap-3 mt-6">
+            {/* SOCIAL MEDIA */}
+            <div className="mt-7 flex items-center gap-2.5">
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white hover:text-[#0F172A] transition"
+                aria-label="LinkedIn"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white hover:text-[#0F172A]"
               >
-                <Linkedin size={18} />
+                <Linkedin size={17} />
               </a>
 
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white hover:text-[#0F172A] transition"
+                aria-label="Instagram"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white hover:text-[#0F172A]"
               >
-                <Instagram size={18} />
+                <Instagram size={17} />
               </a>
 
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white hover:text-[#0F172A] transition"
+                aria-label="Facebook"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/65 transition-all duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white hover:text-[#0F172A]"
               >
-                <Facebook size={18} />
+                <Facebook size={17} />
               </a>
+            </div>
+
+            {/* PARTNER PEMBIAYAAN */}
+            <div className="mt-8 border-t border-white/10 pt-7">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                Partner Pembiayaan
+              </p>
+
+              <div className="mt-3 inline-flex items-center rounded-xl border border-white/10 bg-white px-5 py-3 shadow-sm">
+                <Image
+                  src="/Partner/btn.png"
+                  alt="BTN"
+                  width={100}
+                  height={40}
+                  className="h-8 w-auto object-contain"
+                />
+              </div>
             </div>
           </div>
 
           {/* NAVIGATION */}
-          <div>
-            <h3 className="font-semibold text-lg mb-6">
-              Navigasi
-            </h3>
+          {navigation.map((column) => (
+            <div key={column.title}>
+              <h3 className="text-sm font-semibold tracking-wide text-white">
+                {column.title}
+              </h3>
 
-            <ul className="space-y-3 text-white/60">
-              <li>
-                <Link href="/" className="hover:text-white transition">
-                  Beranda
-                </Link>
-              </li>
+              <ul className="mt-5 space-y-3.5">
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="group inline-flex items-center gap-1 text-sm text-white/50 transition-colors duration-200 hover:text-white"
+                    >
+                      {link.label}
 
-              <li>
-                <Link
-                  href="/daftar-properti"
-                  className="hover:text-white transition"
-                >
-                  Daftar Properti
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/tentang-kami"
-                  className="hover:text-white transition"
-                >
-                  Tentang Kami
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/artikel"
-                  className="hover:text-white transition"
-                >
-                  Artikel
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/karir"
-                  className="hover:text-white transition"
-                >
-                  Karir
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/kontak"
-                  className="hover:text-white transition"
-                >
-                  Kontak
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* COMPANY */}
-          <div>
-            <h3 className="font-semibold text-lg mb-6">
-              Perusahaan
-            </h3>
-
-            <ul className="space-y-3 text-white/60">
-              <li>
-                <Link href="#" className="hover:text-white transition">
-                  Tentang Kami
-                </Link>
-              </li>
-
-              <li>
-                <Link href="#" className="hover:text-white transition">
-                  Layanan
-                </Link>
-              </li>
-
-              <li>
-                <Link href="#" className="hover:text-white transition">
-                  Kebijakan Privasi
-                </Link>
-              </li>
-
-              <li>
-                <Link href="#" className="hover:text-white transition">
-                  Syarat & Ketentuan
-                </Link>
-              </li>
-            </ul>
-          </div>
+                      <ArrowUpRight
+                        size={12}
+                        className="opacity-0 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-70"
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* CONTACT */}
           <div>
-            <h3 className="font-semibold text-lg mb-6">
-              Kontak
+            <h3 className="text-sm font-semibold tracking-wide text-white">
+              Hubungi Kami
             </h3>
 
-            <ul className="space-y-4 text-white/60">
-              <li className="flex items-start gap-3">
-                <Phone size={18} className="mt-0.5" />
-                <span>+62 813 6938 1111</span>
-              </li>
+            <ul className="mt-5 space-y-4">
 
+              {/* PHONE */}
               <li className="flex items-start gap-3">
-                <Mail size={18} className="mt-0.5" />
-                <span>namuraproperty@gmail.com</span>
-              </li>
-
-              <li className="flex items-start gap-3">
-                <MapPin size={18} className="mt-0.5" />
-                <span>
-                  Jl. Karimun Sukarame, Bandar Lampung, Indonesia
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0F6A6A]/15 text-[#5FB8B8]">
+                  <Phone size={15} />
                 </span>
+
+                <div>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-white/35">
+                    Telepon
+                  </p>
+
+                  <a
+                    href="tel:+6281369381111"
+                    className="mt-0.5 block text-sm text-white/65 transition hover:text-white"
+                  >
+                    +62 813 6938 1111
+                  </a>
+                </div>
               </li>
+
+              {/* EMAIL */}
+              <li className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0F6A6A]/15 text-[#5FB8B8]">
+                  <Mail size={15} />
+                </span>
+
+                <div className="min-w-0">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-white/35">
+                    Email
+                  </p>
+
+                  <a
+                    href="mailto:namuraproperty@gmail.com"
+                    className="mt-0.5 block truncate text-sm text-white/65 transition hover:text-white"
+                  >
+                    namuraproperty@gmail.com
+                  </a>
+                </div>
+              </li>
+
+              {/* ADDRESS */}
+              <li className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0F6A6A]/15 text-[#5FB8B8]">
+                  <MapPin size={15} />
+                </span>
+
+                <div>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-white/35">
+                    Alamat
+                  </p>
+
+                  <p className="mt-0.5 text-sm leading-6 text-white/65">
+                    Jl. Karimun Sukarame,
+                    <br />
+                    Bandar Lampung, Indonesia
+                  </p>
+                </div>
+              </li>
+
             </ul>
           </div>
         </div>
 
         {/* BOTTOM */}
-        <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
-          <p>
-            © {new Date().getFullYear()} Namura Property. All rights reserved.
-          </p>
+        <div className="flex flex-col gap-4 border-t border-white/10 py-7 text-xs text-white/35 sm:text-sm md:flex-row md:items-center md:justify-between">
 
           <p>
-            Designed & Developed with ❤️ by Namura Property
+            © {new Date().getFullYear()} Namura Property.
+            All rights reserved.
           </p>
+
+          <p className="text-white/30">
+            Designed & Developed with{" "}
+            <span className="text-white/50">♥</span>{" "}
+            by Namura Property
+          </p>
+
         </div>
       </div>
     </footer>

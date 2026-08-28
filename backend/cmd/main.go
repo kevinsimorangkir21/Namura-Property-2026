@@ -18,6 +18,7 @@ import (
 
 func seedAdmin() {
 	var count int64
+
 	database.DB.Model(&models.User{}).Count(&count)
 
 	if count > 0 {
@@ -25,7 +26,11 @@ func seedAdmin() {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte("123456"),
+		bcrypt.DefaultCost,
+	)
+
 	if err != nil {
 		log.Printf("[SEED] Failed to hash password: %v", err)
 		return
@@ -50,56 +55,108 @@ func seedAdmin() {
 func main() {
 	log.Println("[START] Namura Property API starting...")
 
-	// Load configuration
+	// =========================================================
+	// LOAD CONFIGURATION
+	// =========================================================
+
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("[CONFIG] Failed to load: %v", err)
 	}
+
 	log.Println("[CONFIG] Environment variables loaded")
 
-	// Connect to database
+	// =========================================================
+	// CONNECT DATABASE
+	// =========================================================
+
 	if err := database.Connect(cfg); err != nil {
 		log.Fatalf("[DATABASE] Failed to connect: %v", err)
 	}
+
 	log.Println("[DATABASE] Connected and migrated successfully")
 
-	// Seed admin user
+	// =========================================================
+	// SEED DATA
+	// =========================================================
+
 	seedAdmin()
 
-	// Seed legacy properties
 	seeds.SeedProperties(database.DB)
 
-	// Set JWT secret for handlers
+	// =========================================================
+	// JWT
+	// =========================================================
+
 	handlers.JWTSecret = cfg.JWTSecret
 
-	// Create Fiber app
+	// =========================================================
+	// CREATE FIBER APP
+	// =========================================================
+
 	app := fiber.New(fiber.Config{
 		AppName: "Namura Property API",
 	})
 
-	// Configure CORS
+	// =========================================================
+	// CORS
+	// =========================================================
+
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: "GET,POST,PUT,DELETE",
 		AllowHeaders: "Authorization,Content-Type",
 	}))
 
-	// Ensure uploads directory exists
+	// =========================================================
+	// HEALTHCHECK
+	// =========================================================
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+			"status":  "ok",
+			"service": "Namura Property API",
+		})
+	})
+
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+			"status": "ok",
+		})
+	})
+
+	// =========================================================
+	// UPLOADS
+	// =========================================================
+
 	if err := os.MkdirAll("./uploads", 0755); err != nil {
-		log.Printf("[UPLOADS] Warning: could not create uploads directory: %v", err)
+		log.Printf(
+			"[UPLOADS] Warning: could not create uploads directory: %v",
+			err,
+		)
 	}
 
-	// Serve static uploads directory
 	app.Static("/uploads", "./uploads")
 
-	// Setup routes
+	// =========================================================
+	// API ROUTES
+	// =========================================================
+
 	routes.SetupRoutes(app, cfg.JWTSecret)
 
-	// Start server
+	// =========================================================
+	// SERVER
+	// =========================================================
+
 	port := os.Getenv("PORT")
+
 	if port == "" {
 		port = "8080"
 	}
-	log.Printf("[SERVER] Listening on :%s", port)
-	log.Fatal(app.Listen(":" + port))
+
+	log.Printf("[SERVER] Listening on 0.0.0.0:%s", port)
+
+	if err := app.Listen("0.0.0.0:" + port); err != nil {
+		log.Fatalf("[SERVER] Failed to start: %v", err)
+	}
 }

@@ -1,48 +1,66 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Email dan password harus diisi");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const res = await apiFetch("/api/auth/login", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
       if (res.token) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("user", JSON.stringify(res.user));
         localStorage.setItem("isLoggedIn", "true");
+
         sessionStorage.setItem("showWelcome", "true");
 
-        toast.success("✓ Login berhasil", {
-          description: `Selamat datang kembali, ${res.user?.name || "Admin"}`,
+        toast.success("Login berhasil", {
+          description: `Selamat datang kembali, ${
+            res.user?.name || "Admin"
+          }`,
         });
 
         router.push("/admin");
       }
     } catch (err) {
       if (err.message === "API URL is not configured.") {
-        toast.error("API URL belum dikonfigurasi. Hubungi administrator.");
+        toast.error("API URL belum dikonfigurasi", {
+          description: "Hubungi administrator.",
+        });
       } else if (err.status === 401) {
         toast.error("Email atau password salah");
       } else if (err.status === 400) {
         toast.error("Email dan password harus diisi");
       } else {
-        toast.error("Terjadi kesalahan. Coba lagi nanti.");
+        toast.error("Terjadi kesalahan", {
+          description: "Silakan coba lagi nanti.",
+        });
       }
     } finally {
       setLoading(false);
@@ -50,111 +68,184 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="h-screen overflow-hidden bg-[#F8FAFC]">
-      <div className="flex h-screen">
+    <main className="min-h-screen bg-white">
+      <div className="flex min-h-screen">
 
-        {/* Left panel */}
-        <div className="hidden lg:flex w-[42%] bg-[#0F6A6A] relative overflow-hidden">
-          <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-white/5" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-white/5" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-white/5" />
+        {/* =====================================================
+            LEFT / BRAND PANEL
+        ===================================================== */}
+        <div className="relative hidden w-[44%] overflow-hidden bg-[#0F6A6A] lg:flex">
+          <div className="relative z-10 flex w-full flex-col justify-between p-12 xl:p-16">
 
-          <div className="relative z-10 flex flex-col justify-center h-full px-14">
+            {/* LOGO */}
             <div>
-              <h2 className="text-3xl font-bold text-white">Namura Property</h2>
-              <p className="text-white/60 mt-2">Property Management System</p>
+              <Image
+                src="/Logo/Namura_Property2.png"
+                alt="Namura Property"
+                width={180}
+                height={68}
+                priority
+                className="h-auto w-[180px] object-contain object-left"
+              />
             </div>
-            <div className="mt-12">
-              <h1 className="text-5xl font-bold text-white leading-tight">
-                Dashboard<br />Management
+
+            {/* MESSAGE */}
+            <div className="max-w-[440px]">
+              <p className="mb-4 text-sm font-medium tracking-wide text-white/60">
+                ADMINISTRATION
+              </p>
+
+              <h1 className="text-4xl font-bold leading-[1.12] tracking-tight text-white xl:text-5xl">
+                Kelola bisnis properti
+                <span className="block text-white/75">
+                  dengan lebih sederhana.
+                </span>
               </h1>
-              <p className="mt-6 text-lg text-white/75 max-w-md leading-relaxed">
-                Akses seluruh sistem operasional Namura Property dalam satu dashboard
-                terintegrasi untuk mengelola properti, artikel, marketing, dan aktivitas bisnis.
+
+              <p className="mt-6 max-w-[400px] text-base leading-7 text-white/65">
+                Satu dashboard untuk mengelola properti, artikel,
+                marketing, dan aktivitas bisnis Namura Property.
               </p>
             </div>
-            <div className="mt-10 space-y-4 max-w-xl">
-              {["Kelola Properti", "Kolaborasi Tim", "Monitoring Bisnis"].map((item, i) => (
-                <div key={i} className="flex items-center gap-4 rounded-2xl bg-white/10 backdrop-blur-md px-5 py-4">
-                  <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
-                    <CheckCircle2 size={18} className="text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">{item}</h3>
-                    <p className="text-white/70 text-sm">
-                      {i === 0 && "Tambah, edit, dan monitor seluruh listing."}
-                      {i === 1 && "Admin dan marketing dalam satu sistem."}
-                      {i === 2 && "Pantau performa properti dan lead secara real-time."}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+
+            {/* LEFT FOOTER */}
+            <p className="text-xs text-white/40">
+              © {new Date().getFullYear()} Namura Property
+            </p>
           </div>
         </div>
 
-        {/* Right panel */}
-        <div className="w-full lg:w-[58%] flex items-center justify-center px-8">
-          <div className="w-full max-w-[480px]">
-            <div className="mb-10">
-              <div className="lg:hidden mb-6">
-                <h2 className="text-2xl font-bold text-[#0F6A6A]">Namura Property</h2>
-              </div>
-              <h1 className="text-5xl font-bold text-gray-900">Login</h1>
-              <p className="mt-3 text-gray-500">Masuk untuk mengakses dashboard Namura Property</p>
+        {/* =====================================================
+            RIGHT / LOGIN PANEL
+        ===================================================== */}
+        <div className="flex w-full items-center justify-center px-6 py-10 sm:px-8 lg:w-[56%] lg:px-12">
+          <div className="w-full max-w-[420px]">
+
+            {/* MOBILE LOGO */}
+            <div className="mb-12 lg:hidden">
+              <Image
+                src="/Logo/Namura_Property2.png"
+                alt="Namura Property"
+                width={180}
+                height={68}
+                priority
+                className="h-auto w-[180px] object-contain object-left"
+              />
             </div>
 
-            <form onSubmit={handleLogin} className="space-y-5">
+            {/* HEADER */}
+            <div>
+              <p className="text-sm font-semibold text-[#0F6A6A]">
+                ADMIN
+              </p>
+
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl">
+                Selamat datang
+              </h1>
+
+              <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
+                Masuk ke dashboard Namura Property untuk melanjutkan.
+              </p>
+            </div>
+
+            {/* FORM */}
+            <form
+              onSubmit={handleLogin}
+              className="mt-9 space-y-5"
+            >
+
+              {/* EMAIL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <div className="h-14 rounded-2xl bg-white border border-gray-200 flex items-center px-4">
-                  <Mail size={18} className="text-gray-400" />
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm font-semibold text-gray-800"
+                >
+                  Email
+                </label>
+
+                <div className="relative">
+                  <Mail
+                    size={18}
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+
                   <input
+                    id="email"
+                    name="email"
                     type="email"
-                    placeholder="admin@namura.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 ml-3 bg-transparent outline-none"
+                    placeholder="Masukkan email"
+                    autoComplete="email"
                     required
+                    className="h-13 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
                   />
                 </div>
               </div>
 
+              {/* PASSWORD */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                <div className="h-14 rounded-2xl bg-white border border-gray-200 flex items-center px-4">
-                  <Lock size={18} className="text-gray-400" />
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-sm font-semibold text-gray-800"
+                >
+                  Password
+                </label>
+
+                <div className="relative">
+                  <Lock
+                    size={18}
+                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+
                   <input
+                    id="password"
+                    name="password"
                     type="password"
-                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="flex-1 ml-3 bg-transparent outline-none"
+                    placeholder="Masukkan password"
+                    autoComplete="current-password"
                     required
+                    className="h-13 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
                   />
                 </div>
               </div>
 
+              {/* SUBMIT */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 rounded-2xl bg-[#0F6A6A] text-white font-semibold hover:bg-[#0C5A5A] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="group mt-2 flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0F6A6A] text-sm font-semibold text-white transition-all duration-200 hover:bg-[#0C5A5A] hover:shadow-lg hover:shadow-[#0F6A6A]/15 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                     Memproses...
                   </>
-                ) : "Masuk"}
+                ) : (
+                  <>
+                    Masuk ke Dashboard
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    />
+                  </>
+                )}
               </button>
             </form>
 
-            <div className="mt-8 text-center text-sm text-gray-400">
-              © 2026 Namura Property. All rights reserved.
+            {/* SECURITY NOTE */}
+            <div className="mt-7 border-t border-gray-100 pt-6">
+              <p className="text-center text-xs leading-5 text-gray-400">
+                Akses ini hanya diperuntukkan bagi administrator
+                Namura Property.
+              </p>
             </div>
+
           </div>
         </div>
       </div>
-    </section>
+    </main>
   );
 }
