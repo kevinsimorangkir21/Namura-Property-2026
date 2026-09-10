@@ -87,8 +87,8 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/Logo/Namura.png",
-    apple: "/Logo/Namura.png",
+    icon: "/Logo/favicon.ico",
+    apple: "/Logo/favicon.ico",
   },
 };
 

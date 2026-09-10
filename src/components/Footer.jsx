@@ -279,7 +279,7 @@ export default function Footer() {
 
               <div className="mt-3 inline-flex items-center rounded-xl bg-white px-5 py-3">
                 <Image
-                  src="/Partner/btn.png"
+                  src="/Logo/btn.png"
                   alt="BTN"
                   width={100}
                   height={40}
