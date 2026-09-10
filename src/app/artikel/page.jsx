@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+
 import {
   Search,
   X,
@@ -9,7 +10,11 @@ import {
   ArrowRight,
   FileText,
   CalendarDays,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+
 import { API_URL, getImageUrl } from "@/lib/api";
 
 export default function ArtikelPage() {
@@ -22,6 +27,9 @@ export default function ArtikelPage() {
 
   const perPage = 6;
 
+  /* =========================================================
+     FETCH ARTICLES
+  ========================================================= */
   useEffect(() => {
     const controller = new AbortController();
 
@@ -71,7 +79,9 @@ export default function ArtikelPage() {
     return () => controller.abort();
   }, []);
 
-  /* TAGS */
+  /* =========================================================
+     TAGS
+  ========================================================= */
   const tags = useMemo(() => {
     const allTags = articles.flatMap((article) => {
       if (!Array.isArray(article?.tags)) return [];
@@ -84,14 +94,19 @@ export default function ArtikelPage() {
     return ["semua", ...new Set(allTags)];
   }, [articles]);
 
-  /* FILTER */
+  /* =========================================================
+     FILTER
+  ========================================================= */
   const filtered = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
     return articles.filter((item) => {
       const title = String(item?.title || "").toLowerCase();
       const excerpt = String(item?.excerpt || "").toLowerCase();
-      const articleTags = Array.isArray(item?.tags) ? item.tags : [];
+
+      const articleTags = Array.isArray(item?.tags)
+        ? item.tags
+        : [];
 
       const matchSearch =
         !keyword ||
@@ -105,7 +120,9 @@ export default function ArtikelPage() {
     });
   }, [search, tag, articles]);
 
-  /* PAGINATION */
+  /* =========================================================
+     PAGINATION
+  ========================================================= */
   const totalPages = Math.ceil(filtered.length / perPage);
 
   const paginated = useMemo(() => {
@@ -114,12 +131,16 @@ export default function ArtikelPage() {
     return filtered.slice(start, start + perPage);
   }, [filtered, page]);
 
-  /* RESET PAGE WHEN FILTER CHANGES */
+  /* =========================================================
+     RESET PAGE WHEN FILTER CHANGES
+  ========================================================= */
   useEffect(() => {
     setPage(1);
   }, [search, tag]);
 
-  /* FORMAT DATE */
+  /* =========================================================
+     FORMAT DATE
+  ========================================================= */
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
 
@@ -136,6 +157,9 @@ export default function ArtikelPage() {
     });
   };
 
+  /* =========================================================
+     HELPERS
+  ========================================================= */
   const clearSearch = () => {
     setSearch("");
   };
@@ -147,36 +171,33 @@ export default function ArtikelPage() {
   };
 
   return (
-    <main className="bg-white">
-
+    <main className="overflow-hidden bg-white text-[var(--foreground)]">
       {/* =========================================================
           HERO
       ========================================================= */}
-      <section className="border-b border-gray-100 bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 pb-12 pt-16 sm:px-6 sm:pb-14 sm:pt-20 lg:px-8 lg:pb-16 lg:pt-24">
-
-          <div className="mx-auto max-w-[760px] text-center">
-
-            {/* BADGE */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2 text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-              <FileText size={13} />
+      <section className="bg-white">
+        <div className="container py-12 sm:py-14 lg:py-16">
+          <div className="max-w-[780px]">
+            {/* EYEBROW */}
+            <span className="eyebrow">
+              <span className="eyebrow-dot" />
               Artikel & Insight
             </span>
 
             {/* HEADING */}
-            <h1 className="mt-5 text-3xl font-bold leading-[1.08] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
-              Informasi Properti
-              <span className="block text-[#0F6A6A]">
-                Untuk Keputusan Terbaik
+            <h1 className="heading-xl mt-4">
+              Insight properti untuk
+              <span className="block text-[var(--primary)]">
+                keputusan yang lebih tepat.
               </span>
             </h1>
 
             {/* DESCRIPTION */}
-            <p className="mx-auto mt-5 max-w-[650px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
-              Temukan berbagai tips, panduan, dan informasi terbaru
-              seputar properti, investasi, serta tren hunian modern.
+            <p className="text-body mt-5 max-w-[680px]">
+              Temukan berbagai tips, panduan, dan informasi terbaru seputar
+              properti, investasi, serta tren hunian untuk membantu Anda
+              mengambil keputusan dengan lebih percaya diri.
             </p>
-
           </div>
         </div>
       </section>
@@ -185,87 +206,90 @@ export default function ArtikelPage() {
           CONTENT
       ========================================================= */}
       <section className="bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+        <div className="container pb-14 sm:pb-16 lg:pb-20">
+          {/* =====================================================
+              SEARCH & FILTER
+          ===================================================== */}
+          <div className="rounded-[24px] border border-[var(--border)] bg-white p-3 shadow-[var(--shadow-sm)] sm:p-4">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+              {/* SEARCH */}
+              <div className="relative flex-1">
+                <Search
+                  size={18}
+                  className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--soft)]"
+                />
 
-          {/* SEARCH */}
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Cari artikel..."
+                  aria-label="Cari artikel"
+                  className="h-12 w-full rounded-xl border border-transparent bg-[var(--surface-muted)] pl-11 pr-11 text-sm text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--soft)] focus:border-[var(--primary)]/20 focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/10"
+                />
 
-            <div className="relative w-full lg:max-w-[480px]">
-              <Search
-                size={19}
-                className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
+                {search && (
+                  <button
+                    type="button"
+                    onClick={clearSearch}
+                    aria-label="Hapus pencarian"
+                    className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-[var(--soft)] transition hover:bg-white hover:text-[var(--foreground)]"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
 
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Cari artikel..."
-                aria-label="Cari artikel"
-                className="h-13 w-full rounded-full border border-gray-200 bg-white pl-12 pr-12 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.07]"
-              />
+              {/* TAG FILTER */}
+              {tags.length > 1 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-0.5 lg:max-w-[650px]">
+                  <div className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-muted)] text-[var(--muted)] sm:flex">
+                    <Tag size={14} />
+                  </div>
 
-              {search && (
-                <button
-                  type="button"
-                  onClick={clearSearch}
-                  aria-label="Hapus pencarian"
-                  className="absolute right-4 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                >
-                  <X size={15} />
-                </button>
+                  {tags.map((item) => {
+                    const isActive = tag === item;
+
+                    return (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setTag(item)}
+                        className={`h-9 shrink-0 rounded-lg px-4 text-xs font-semibold capitalize transition-all duration-200 ${
+                          isActive
+                            ? "bg-[var(--primary)] text-white shadow-sm"
+                            : "bg-[var(--surface-muted)] text-[var(--muted)] hover:bg-[var(--primary-light)] hover:text-[var(--primary)]"
+                        }`}
+                      >
+                        {item === "semua" ? "Semua" : item}
+                      </button>
+                    );
+                  })}
+                </div>
               )}
             </div>
-
-            {/* TAG FILTER */}
-            {tags.length > 1 && (
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:max-w-[650px] lg:justify-end lg:pb-0">
-                <div className="mr-1 hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-400 sm:flex">
-                  <Tag size={15} />
-                </div>
-
-                {tags.map((item) => {
-                  const isActive = tag === item;
-
-                  return (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => setTag(item)}
-                      className={`h-10 shrink-0 rounded-full px-5 text-sm font-semibold capitalize transition-all duration-200 ${
-                        isActive
-                          ? "bg-[#0F6A6A] text-white shadow-sm"
-                          : "border border-gray-200 bg-white text-gray-600 hover:border-[#0F6A6A]/40 hover:text-[#0F6A6A]"
-                      }`}
-                    >
-                      {item === "semua" ? "Semua" : item}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
           </div>
 
-          {/* RESULT INFO */}
+          {/* =====================================================
+              RESULT HEADER
+          ===================================================== */}
           {!loading && !error && (
-            <div className="mt-8 flex flex-col gap-2 border-b border-gray-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
-
+            <div className="mt-7 flex flex-col gap-2 border-b border-[var(--border-soft)] pb-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
-                <p className="text-sm text-gray-500">
-                  Menampilkan{" "}
-                  <span className="font-semibold text-gray-900">
+                <p className="text-sm text-[var(--muted)]">
+                  <span className="font-semibold text-[var(--foreground)]">
                     {filtered.length}
                   </span>{" "}
-                  artikel
+                  artikel tersedia
                 </p>
 
                 {search && (
                   <>
-                    <span className="hidden text-gray-300 sm:inline">
+                    <span className="hidden text-[var(--soft)] sm:inline">
                       •
                     </span>
 
-                    <p className="hidden max-w-[220px] truncate text-sm text-gray-400 sm:block">
+                    <p className="hidden max-w-[220px] truncate text-sm text-[var(--muted)] sm:block">
                       “{search}”
                     </p>
                   </>
@@ -276,7 +300,7 @@ export default function ArtikelPage() {
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="inline-flex items-center gap-1.5 self-start text-xs font-semibold text-[#0F6A6A] hover:underline sm:self-auto"
+                  className="inline-flex items-center gap-1.5 self-start text-xs font-semibold text-[var(--primary)] transition hover:opacity-70 sm:self-auto"
                 >
                   <X size={13} />
                   Reset filter
@@ -289,20 +313,24 @@ export default function ArtikelPage() {
               LOADING
           ===================================================== */}
           {loading ? (
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {[...Array(6)].map((_, index) => (
                 <div
                   key={index}
-                  className="overflow-hidden rounded-[28px] border border-gray-100 bg-white"
+                  className="overflow-hidden rounded-[24px] border border-[var(--border-soft)] bg-white"
                 >
-                  <div className="aspect-[16/10] animate-pulse bg-gray-100" />
+                  <div className="aspect-[16/10] animate-pulse bg-[var(--surface-muted)]" />
 
-                  <div className="space-y-4 p-5 sm:p-6">
-                    <div className="h-3 w-28 animate-pulse rounded bg-gray-100" />
-                    <div className="h-6 w-full animate-pulse rounded bg-gray-100" />
-                    <div className="h-4 w-5/6 animate-pulse rounded bg-gray-100" />
-                    <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
-                    <div className="h-4 w-32 animate-pulse rounded bg-gray-100" />
+                  <div className="space-y-3 p-5">
+                    <div className="h-3 w-24 animate-pulse rounded bg-[var(--surface-muted)]" />
+
+                    <div className="h-5 w-full animate-pulse rounded bg-[var(--surface-muted)]" />
+
+                    <div className="h-4 w-5/6 animate-pulse rounded bg-[var(--surface-muted)]" />
+
+                    <div className="h-4 w-2/3 animate-pulse rounded bg-[var(--surface-muted)]" />
+
+                    <div className="h-4 w-28 animate-pulse rounded bg-[var(--surface-muted)]" />
                   </div>
                 </div>
               ))}
@@ -311,7 +339,7 @@ export default function ArtikelPage() {
             /* ===================================================
                ERROR
             =================================================== */
-            <div className="mt-8 rounded-[28px] border border-gray-100 px-6 py-20 text-center">
+            <div className="mt-7 rounded-[24px] border border-[var(--border)] px-6 py-16 text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
                 <FileText
                   size={20}
@@ -319,18 +347,18 @@ export default function ArtikelPage() {
                 />
               </div>
 
-              <h3 className="mt-4 text-base font-semibold text-gray-900">
+              <h3 className="mt-4 text-base font-semibold text-[var(--foreground)]">
                 Tidak dapat memuat artikel
               </h3>
 
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-[var(--muted)]">
                 {error}
               </p>
 
               <button
                 type="button"
                 onClick={() => window.location.reload()}
-                className="mt-5 inline-flex h-10 items-center rounded-full bg-[#0F6A6A] px-5 text-sm font-semibold text-white transition hover:bg-[#0C5A5A]"
+                className="mt-5 inline-flex h-10 items-center rounded-full bg-[var(--primary)] px-5 text-sm font-semibold text-white transition hover:bg-[var(--primary-hover)]"
               >
                 Coba Lagi
               </button>
@@ -340,9 +368,11 @@ export default function ArtikelPage() {
               {/* =================================================
                   ARTICLE GRID
               ================================================= */}
-              <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              <div className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {paginated.map((item) => {
-                  const imageSrc = item?.thumbnail || item?.image;
+                  const imageSrc =
+                    item?.thumbnail || item?.image;
+
                   const imageUrl = imageSrc
                     ? getImageUrl(imageSrc)
                     : null;
@@ -353,35 +383,42 @@ export default function ArtikelPage() {
                       href={`/artikel/${item.slug}`}
                       className="group block"
                     >
-                      <article className="flex h-full flex-col overflow-hidden rounded-[28px] border border-gray-100 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-gray-200 group-hover:shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
-
+                      <article className="flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--border)] bg-white shadow-[var(--shadow-sm)] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[var(--primary)]/20 group-hover:shadow-[var(--shadow-lg)]">
                         {/* IMAGE */}
-                        <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                        <div className="relative aspect-[16/10] overflow-hidden bg-[var(--surface-muted)]">
                           {imageUrl ? (
                             <img
                               src={imageUrl}
                               alt={item.title || "Artikel properti"}
                               loading="lazy"
-                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.045]"
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center">
                               <FileText
-                                size={42}
+                                size={40}
                                 strokeWidth={1.2}
-                                className="text-gray-300"
+                                className="text-[var(--soft)]"
                               />
                             </div>
                           )}
 
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                          {/* IMAGE OVERLAY */}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                          {/* ARTICLE BADGE */}
+                          <div className="absolute left-4 top-4">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/90 px-3 py-1.5 text-[10px] font-semibold text-[var(--primary)] shadow-sm backdrop-blur-md">
+                              <BookOpen size={11} />
+                              Artikel
+                            </span>
+                          </div>
                         </div>
 
                         {/* CONTENT */}
-                        <div className="flex min-h-[250px] flex-1 flex-col p-5 sm:p-6">
-
+                        <div className="flex flex-1 flex-col p-5 sm:p-5.5">
                           {/* DATE */}
-                          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                          <div className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
                             <CalendarDays size={13} />
 
                             <time dateTime={item.created_at}>
@@ -398,7 +435,7 @@ export default function ArtikelPage() {
                                   .map((itemTag) => (
                                     <span
                                       key={itemTag}
-                                      className="rounded-full bg-[#0F6A6A]/[0.06] px-2.5 py-1 text-[10px] font-semibold capitalize text-[#0F6A6A]"
+                                      className="rounded-full bg-[var(--primary-light)] px-2.5 py-1 text-[10px] font-semibold capitalize text-[var(--primary)]"
                                     >
                                       {itemTag}
                                     </span>
@@ -407,20 +444,20 @@ export default function ArtikelPage() {
                             )}
 
                           {/* TITLE */}
-                          <h2 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-gray-950 transition-colors duration-200 group-hover:text-[#0F6A6A] sm:text-xl">
+                          <h2 className="mt-3 line-clamp-2 text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] transition-colors duration-200 group-hover:text-[var(--primary)] sm:text-xl">
                             {item.title}
                           </h2>
 
                           {/* EXCERPT */}
                           {item.excerpt && (
-                            <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">
+                            <p className="mt-2.5 line-clamp-3 text-sm leading-6 text-[var(--muted)]">
                               {item.excerpt}
                             </p>
                           )}
 
                           {/* READ MORE */}
                           <div className="mt-auto pt-5">
-                            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F6A6A]">
+                            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--primary)]">
                               Baca Selengkapnya
 
                               <ArrowRight
@@ -440,16 +477,18 @@ export default function ArtikelPage() {
                   PAGINATION
               ================================================= */}
               {totalPages > 1 && (
-                <div className="mt-12 flex items-center justify-center gap-2 sm:mt-14">
-
+                <div className="mt-9 flex items-center justify-center gap-2">
                   {/* PREVIOUS */}
                   <button
                     type="button"
                     disabled={page === 1}
-                    onClick={() => setPage((prev) => prev - 1)}
-                    className="hidden h-10 rounded-full border border-gray-200 px-4 text-sm font-medium text-gray-600 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A] disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex sm:items-center"
+                    onClick={() =>
+                      setPage((prev) => prev - 1)
+                    }
+                    aria-label="Halaman sebelumnya"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] text-[var(--muted)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-35"
                   >
-                    Sebelumnya
+                    <ChevronLeft size={17} />
                   </button>
 
                   {/* PAGE NUMBERS */}
@@ -464,12 +503,14 @@ export default function ArtikelPage() {
                         onClick={() => setPage(num)}
                         aria-label={`Halaman ${num}`}
                         aria-current={
-                          page === num ? "page" : undefined
+                          page === num
+                            ? "page"
+                            : undefined
                         }
                         className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all duration-200 ${
                           page === num
-                            ? "bg-[#0F6A6A] text-white shadow-sm"
-                            : "border border-gray-200 text-gray-600 hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                            ? "bg-[var(--primary)] text-white shadow-sm"
+                            : "border border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
                         }`}
                       >
                         {num}
@@ -481,10 +522,13 @@ export default function ArtikelPage() {
                   <button
                     type="button"
                     disabled={page === totalPages}
-                    onClick={() => setPage((prev) => prev + 1)}
-                    className="hidden h-10 rounded-full border border-gray-200 px-4 text-sm font-medium text-gray-600 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A] disabled:cursor-not-allowed disabled:opacity-40 sm:inline-flex sm:items-center"
+                    onClick={() =>
+                      setPage((prev) => prev + 1)
+                    }
+                    aria-label="Halaman berikutnya"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] text-[var(--muted)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-35"
                   >
-                    Selanjutnya
+                    <ChevronRight size={17} />
                   </button>
                 </div>
               )}
@@ -493,35 +537,34 @@ export default function ArtikelPage() {
             /* ===================================================
                EMPTY STATE
             =================================================== */
-            <div className="mt-8 rounded-[28px] border border-dashed border-gray-200 px-6 py-20 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#0F6A6A]/[0.06]">
+            <div className="mt-7 rounded-[24px] border border-dashed border-[var(--border)] px-6 py-16 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[var(--primary-light)]">
                 <Search
                   size={22}
-                  className="text-[#0F6A6A]"
+                  className="text-[var(--primary)]"
                 />
               </div>
 
-              <h3 className="mt-5 text-lg font-semibold text-gray-900">
+              <h3 className="mt-4 text-lg font-semibold text-[var(--foreground)]">
                 Artikel Tidak Ditemukan
               </h3>
 
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                Tidak ada artikel yang sesuai dengan pencarian atau
-                filter yang Anda pilih.
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--muted)]">
+                Tidak ada artikel yang sesuai dengan pencarian
+                atau filter yang Anda pilih.
               </p>
 
               {(search || tag !== "semua") && (
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="mt-5 inline-flex h-10 items-center justify-center rounded-full bg-[#0F6A6A] px-5 text-sm font-semibold text-white transition hover:bg-[#0C5A5A]"
+                  className="mt-5 inline-flex h-10 items-center justify-center rounded-full bg-[var(--primary)] px-5 text-sm font-semibold text-white transition hover:bg-[var(--primary-hover)]"
                 >
                   Tampilkan Semua Artikel
                 </button>
               )}
             </div>
           )}
-
         </div>
       </section>
     </main>

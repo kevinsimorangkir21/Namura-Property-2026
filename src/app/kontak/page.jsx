@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
+
 import {
-  Phone,
+  ArrowRight,
+  CheckCircle2,
   MapPin,
   MessageCircle,
-  ArrowRight,
+  Phone,
+  Clock,
+  ArrowUpRight,
 } from "lucide-react";
 
 const WHATSAPP_NUMBER = "6281369381111";
@@ -64,32 +68,29 @@ export default function KontakPage() {
   };
 
   return (
-    <main className="bg-white">
+    <main className="overflow-hidden bg-white text-[var(--foreground)]">
       {/* =========================================================
           HERO
       ========================================================= */}
       <section className="bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-20 lg:px-8 lg:pb-20 lg:pt-24">
-          <div className="mx-auto max-w-[780px] text-center">
-
-            {/* BADGE */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2 text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-              <MessageCircle size={13} />
+        <div className="container py-12 sm:py-14 lg:py-16">
+          <div className="max-w-[760px]">
+            <span className="eyebrow">
+              <span className="eyebrow-dot" />
               Hubungi Kami
             </span>
 
-            {/* HEADING */}
-            <h1 className="mt-5 text-3xl font-bold leading-[1.08] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl xl:text-[54px]">
-              Kami Siap Membantu
-              <span className="block text-[#0F6A6A]">
-                Kebutuhan Properti Anda
+            <h1 className="heading-xl mt-4">
+              Mari bicarakan
+              <span className="block text-[var(--primary)]">
+                kebutuhan properti Anda.
               </span>
             </h1>
 
-            {/* DESCRIPTION */}
-            <p className="mx-auto mt-5 max-w-[650px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
+            <p className="text-body mt-5 max-w-[650px]">
               Punya pertanyaan, ingin konsultasi, atau sedang mencari
-              properti impian? Hubungi tim Namura Property melalui WhatsApp.
+              properti? Tim Namura Property siap membantu Anda menemukan
+              pilihan yang sesuai dengan kebutuhan.
             </p>
           </div>
         </div>
@@ -98,44 +99,39 @@ export default function KontakPage() {
       {/* =========================================================
           CONTACT CONTENT
       ========================================================= */}
-      <section className="border-t border-gray-100 bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-
-            {/* ===================================================
-                WHATSAPP FORM
-            =================================================== */}
-            <div className="rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
-
+      <section className="bg-white">
+        <div className="container pb-14 sm:pb-16 lg:pb-20">
+          <div className="grid items-start gap-7 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
+            {/* =================================================
+                FORM
+            ================================================= */}
+            <div className="rounded-[26px] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-sm)] sm:p-8 lg:p-9">
+              {/* HEADER */}
               <div>
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#0F6A6A]/[0.07]">
-                  <MessageCircle
-                    size={19}
-                    className="text-[#0F6A6A]"
-                  />
-                </span>
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)]">
+                  <MessageCircle size={20} />
+                </div>
 
-                <h2 className="mt-5 text-2xl font-bold tracking-tight text-gray-950">
+                <h2 className="mt-5 text-2xl font-bold tracking-tight text-[var(--foreground)]">
                   Konsultasi via WhatsApp
                 </h2>
 
-                <p className="mt-2 max-w-lg text-sm leading-6 text-gray-500 sm:text-base">
-                  Isi data di bawah ini. Setelah menekan tombol, Anda akan
-                  diarahkan langsung ke WhatsApp untuk mengirim pesan kepada
-                  tim kami.
+                <p className="mt-2 max-w-[560px] text-sm leading-6 text-[var(--muted)] sm:text-base">
+                  Isi data singkat di bawah ini. Setelah dikirim, Anda akan
+                  diarahkan langsung ke WhatsApp tim Namura Property.
                 </p>
               </div>
 
+              {/* FORM */}
               <form
                 onSubmit={handleSubmit}
-                className="mt-8 space-y-5"
+                className="mt-7 space-y-4.5"
               >
                 {/* NAME */}
                 <div>
                   <label
                     htmlFor="name"
-                    className="mb-2 block text-sm font-semibold text-gray-800"
+                    className="mb-2 block text-sm font-semibold text-[var(--foreground)]"
                   >
                     Nama Lengkap
                   </label>
@@ -148,7 +144,7 @@ export default function KontakPage() {
                     onChange={handleChange}
                     placeholder="Masukkan nama lengkap"
                     autoComplete="name"
-                    className="h-13 w-full rounded-2xl border border-gray-200 bg-white px-5 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.07]"
+                    className="h-12 w-full rounded-xl border border-[var(--border)] bg-white px-4 text-sm text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--soft)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                   />
                 </div>
 
@@ -156,7 +152,7 @@ export default function KontakPage() {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="mb-2 block text-sm font-semibold text-gray-800"
+                    className="mb-2 block text-sm font-semibold text-[var(--foreground)]"
                   >
                     Nomor WhatsApp
                   </label>
@@ -170,7 +166,7 @@ export default function KontakPage() {
                     placeholder="Contoh: 081234567890"
                     autoComplete="tel"
                     inputMode="tel"
-                    className="h-13 w-full rounded-2xl border border-gray-200 bg-white px-5 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.07]"
+                    className="h-12 w-full rounded-xl border border-[var(--border)] bg-white px-4 text-sm text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--soft)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                   />
                 </div>
 
@@ -178,7 +174,7 @@ export default function KontakPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="mb-2 block text-sm font-semibold text-gray-800"
+                    className="mb-2 block text-sm font-semibold text-[var(--foreground)]"
                   >
                     Pesan
                   </label>
@@ -188,9 +184,9 @@ export default function KontakPage() {
                     name="message"
                     value={form.message}
                     onChange={handleChange}
-                    rows={6}
+                    rows={5}
                     placeholder="Contoh: Saya tertarik dengan rumah di Lampung Selatan..."
-                    className="w-full resize-none rounded-2xl border border-gray-200 bg-white px-5 py-4 text-sm leading-6 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.07]"
+                    className="w-full resize-none rounded-xl border border-[var(--border)] bg-white px-4 py-3.5 text-sm leading-6 text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--soft)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10"
                   />
                 </div>
 
@@ -198,16 +194,17 @@ export default function KontakPage() {
                 {error && (
                   <div
                     role="alert"
-                    className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600"
+                    className="flex items-start gap-3 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600"
                   >
-                    {error}
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
+                    <span>{error}</span>
                   </div>
                 )}
 
                 {/* SUBMIT */}
                 <button
                   type="submit"
-                  className="group inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-[#0F6A6A] px-6 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,106,106,0.15)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0C5A5A] hover:shadow-[0_12px_30px_rgba(15,106,106,0.2)] active:translate-y-0"
+                  className="btn btn-primary group h-12 w-full justify-center rounded-xl"
                 >
                   <MessageCircle size={17} />
 
@@ -215,51 +212,62 @@ export default function KontakPage() {
 
                   <ArrowRight
                     size={16}
-                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    className="transition-transform duration-200 group-hover:translate-x-1"
                   />
                 </button>
 
-                <p className="text-center text-xs leading-5 text-gray-400">
-                  Anda akan diarahkan ke WhatsApp untuk mengirim pesan.
-                </p>
+                <div className="flex items-center justify-center gap-2 pt-1 text-xs text-[var(--soft)]">
+                  <CheckCircle2
+                    size={14}
+                    className="text-[var(--primary)]"
+                  />
+
+                  <span>
+                    Pesan akan diteruskan langsung ke WhatsApp Namura Property
+                  </span>
+                </div>
               </form>
             </div>
 
-            {/* ===================================================
+            {/* =================================================
                 CONTACT INFORMATION
-            =================================================== */}
-            <div className="flex flex-col gap-5">
-
+            ================================================= */}
+            <div className="space-y-4">
               {/* WHATSAPP */}
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0F6A6A]/20 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] sm:p-7"
+                className="group block rounded-[24px] border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-lg)] sm:p-6"
               >
                 <div className="flex items-start gap-4">
-
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#0F6A6A]/[0.07]">
-                    <MessageCircle
-                      size={21}
-                      className="text-[#0F6A6A]"
-                    />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)] transition-colors duration-300 group-hover:bg-[var(--primary)] group-hover:text-white">
+                    <MessageCircle size={20} />
                   </div>
 
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-400">
-                      WhatsApp
-                    </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                          WhatsApp
+                        </p>
 
-                    <h3 className="mt-1 text-lg font-bold text-gray-900">
-                      +62 813 6938 1111
-                    </h3>
+                        <h3 className="mt-1 text-lg font-bold text-[var(--foreground)]">
+                          +62 813 6938 1111
+                        </h3>
+                      </div>
 
-                    <p className="mt-1 text-sm leading-6 text-gray-500">
+                      <ArrowUpRight
+                        size={17}
+                        className="shrink-0 text-[var(--soft)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--primary)]"
+                      />
+                    </div>
+
+                    <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
                       Chat langsung dengan tim Namura Property.
                     </p>
 
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F6A6A]">
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--primary)]">
                       Mulai Percakapan
                       <ArrowRight
                         size={14}
@@ -267,80 +275,122 @@ export default function KontakPage() {
                       />
                     </span>
                   </div>
-
                 </div>
               </a>
 
               {/* PHONE */}
               <a
                 href="tel:+6281369381111"
-                className="group rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0F6A6A]/20 hover:shadow-[0_18px_40px_rgba(0,0,0,0.06)] sm:p-7"
+                className="group block rounded-[24px] border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-lg)] sm:p-6"
               >
                 <div className="flex items-start gap-4">
-
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#0F6A6A]/[0.07]">
-                    <Phone
-                      size={20}
-                      className="text-[#0F6A6A]"
-                    />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)] transition-colors duration-300 group-hover:bg-[var(--primary)] group-hover:text-white">
+                    <Phone size={19} />
                   </div>
 
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-400">
-                      Telepon
-                    </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                          Telepon
+                        </p>
 
-                    <h3 className="mt-1 text-lg font-bold text-gray-900">
-                      +62 813 6938 1111
-                    </h3>
+                        <h3 className="mt-1 text-lg font-bold text-[var(--foreground)]">
+                          +62 813 6938 1111
+                        </h3>
+                      </div>
 
-                    <p className="mt-1 text-sm leading-6 text-gray-500">
+                      <ArrowUpRight
+                        size={17}
+                        className="shrink-0 text-[var(--soft)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--primary)]"
+                      />
+                    </div>
+
+                    <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
                       Hubungi kami untuk kebutuhan informasi properti.
                     </p>
                   </div>
-
                 </div>
               </a>
 
-              {/* ADDRESS */}
-              <div className="rounded-[28px] border border-gray-100 bg-white p-6 shadow-sm sm:p-7">
+              {/* OFFICE */}
+              <div className="rounded-[24px] border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-sm)] sm:p-6">
                 <div className="flex items-start gap-4">
-
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#0F6A6A]/[0.07]">
-                    <MapPin
-                      size={20}
-                      className="text-[#0F6A6A]"
-                    />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)]">
+                    <MapPin size={19} />
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-400">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
                       Alamat
                     </p>
 
-                    <h3 className="mt-1 text-lg font-bold text-gray-900">
+                    <h3 className="mt-1 text-lg font-bold text-[var(--foreground)]">
                       Kantor Namura Property
                     </h3>
 
-                    <p className="mt-1 text-sm leading-6 text-gray-500">
+                    <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
                       Jl. Karimun Sukarame,
                       <br />
                       Bandar Lampung, Indonesia
                     </p>
                   </div>
-
                 </div>
               </div>
 
+              {/* OFFICE HOURS */}
+              <div className="rounded-[24px] border border-[var(--border)] bg-[var(--surface-muted)] p-5 sm:p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--primary)]">
+                    <Clock size={19} />
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                      Layanan
+                    </p>
+
+                    <h3 className="mt-1 text-lg font-bold text-[var(--foreground)]">
+                      Konsultasi Properti
+                    </h3>
+
+                    <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
+                      Hubungi tim kami melalui WhatsApp untuk mendapatkan
+                      informasi lebih lanjut.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* =====================================================
               MAP
           ===================================================== */}
-          <div className="mt-10 overflow-hidden rounded-[28px] border border-gray-100 bg-gray-50 shadow-sm sm:mt-12 sm:rounded-[32px]">
+          <div className="mt-8 overflow-hidden rounded-[26px] border border-[var(--border)] bg-[var(--surface-muted)] shadow-[var(--shadow-sm)] sm:mt-10 sm:rounded-[28px]">
+            <div className="flex flex-col gap-3 border-b border-[var(--border)] bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--primary-light)] text-[var(--primary)]">
+                  <MapPin size={17} />
+                </div>
 
-            <div className="relative h-[320px] sm:h-[400px] lg:h-[450px]">
+                <div>
+                  <h2 className="text-sm font-bold text-[var(--foreground)] sm:text-base">
+                    Lokasi Namura Property
+                  </h2>
+
+                  <p className="text-xs text-[var(--muted)]">
+                    Bandar Lampung, Indonesia
+                  </p>
+                </div>
+              </div>
+
+              <span className="text-xs font-medium text-[var(--primary)]">
+                Jl. Karimun Sukarame
+              </span>
+            </div>
+
+            <div className="relative h-[280px] sm:h-[360px] lg:h-[420px]">
               <iframe
                 src="https://maps.google.com/maps?q=-5.3909822,105.3110481&z=17&output=embed"
                 title="Lokasi Namura Property"
@@ -349,9 +399,7 @@ export default function KontakPage() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-
           </div>
-
         </div>
       </section>
     </main>

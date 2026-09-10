@@ -10,6 +10,7 @@ import {
   X,
   Building2,
   MapPin,
+  ArrowRight,
 } from "lucide-react";
 
 export default function DaftarPropertiPage() {
@@ -86,189 +87,316 @@ export default function DaftarPropertiPage() {
 
   return (
     <main className="bg-white">
-      {/* HERO / HEADER */}
-      <section className="border-b border-gray-100 bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 pb-12 pt-16 sm:px-6 sm:pb-14 sm:pt-20 lg:px-8 lg:pb-16 lg:pt-24">
-          <div className="mx-auto max-w-[760px] text-center">
-
-            {/* Badge */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2 text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-              <Building2 size={13} />
+      {/* =====================================================
+          HERO
+      ====================================================== */}
+      <section className="bg-white">
+        <div className="container section-sm">
+          <div className="mx-auto max-w-4xl text-center">
+            {/* Eyebrow */}
+            <div className="eyebrow justify-center">
+              <span className="eyebrow-dot" />
               Daftar Properti
-            </span>
+            </div>
 
             {/* Heading */}
-            <h1 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
+            <h1 className="heading-xl mt-5">
               Temukan Properti
-              <span className="block text-[#0F6A6A]">
+              <span className="block text-[var(--primary)]">
                 Impian Anda
               </span>
             </h1>
 
             {/* Description */}
-            <p className="mx-auto mt-5 max-w-[650px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
+            <p className="text-body mx-auto mt-6 max-w-2xl">
               Jelajahi berbagai pilihan properti dengan lokasi strategis,
-              desain modern, dan pilihan yang sesuai dengan kebutuhan Anda.
+              kualitas terbaik, dan pilihan yang sesuai dengan kebutuhan
+              Anda.
             </p>
+          </div>
+
+          {/* =================================================
+              SEARCH PANEL
+          ================================================== */}
+          <div className="mx-auto mt-10 max-w-5xl sm:mt-12">
+            <div
+              className="
+                rounded-[var(--radius-xl)]
+                border border-[var(--border)]
+                bg-white
+                p-3
+                shadow-[var(--shadow-md)]
+                sm:p-4
+              "
+            >
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+                {/* Search */}
+                <div className="relative flex-1">
+                  <Search
+                    className="
+                      pointer-events-none
+                      absolute left-5 top-1/2
+                      h-5 w-5
+                      -translate-y-1/2
+                      text-[var(--foreground-soft)]
+                    "
+                    strokeWidth={1.8}
+                  />
+
+                  <input
+                    type="search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Cari nama, lokasi, atau tipe properti..."
+                    aria-label="Cari properti"
+                    className="
+                      h-14 w-full
+                      rounded-2xl
+                      border border-[var(--border)]
+                      bg-[var(--surface-soft)]
+                      pl-13 pr-12
+                      text-sm
+                      text-[var(--foreground)]
+                      outline-none
+                      transition-all
+                      placeholder:text-[var(--foreground-soft)]
+                      focus:border-[var(--primary)]
+                      focus:bg-white
+                      focus:ring-4
+                      focus:ring-[var(--primary)]/[0.07]
+                    "
+                  />
+
+                  {search && (
+                    <button
+                      type="button"
+                      onClick={clearSearch}
+                      aria-label="Hapus pencarian"
+                      className="
+                        absolute right-4 top-1/2
+                        flex h-8 w-8
+                        -translate-y-1/2
+                        items-center justify-center
+                        rounded-full
+                        text-[var(--foreground-soft)]
+                        transition
+                        hover:bg-[var(--border-soft)]
+                        hover:text-[var(--foreground)]
+                      "
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Filter */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
+                  <div
+                    className="
+                      hidden h-11 w-11
+                      shrink-0
+                      items-center justify-center
+                      rounded-xl
+                      bg-[var(--primary-light)]
+                      text-[var(--primary)]
+                      sm:flex
+                    "
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                  </div>
+
+                  {["semua", "jual", "sewa"].map((item) => {
+                    const isActive = activeFilter === item;
+
+                    return (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setActiveFilter(item)}
+                        className={`
+                          h-11
+                          shrink-0
+                          rounded-xl
+                          px-5
+                          text-sm
+                          font-semibold
+                          transition-all
+                          duration-200
+                          ${
+                            isActive
+                              ? "bg-[var(--primary)] text-white shadow-[var(--shadow-primary)]"
+                              : "border border-[var(--border)] bg-white text-[var(--foreground-muted)] hover:border-[var(--primary)]/30 hover:text-[var(--primary)]"
+                          }
+                        `}
+                      >
+                        {item === "semua"
+                          ? "Semua"
+                          : item === "jual"
+                            ? "Dijual"
+                            : "Disewa"}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CONTENT */}
+      {/* =====================================================
+          PROPERTY CONTENT
+      ====================================================== */}
       <section className="bg-white">
-        <div className="mx-auto max-w-[1280px] px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-
-          {/* SEARCH & FILTER */}
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
-            {/* Search */}
-            <div className="relative w-full lg:max-w-[480px]">
-              <Search
-                size={19}
-                className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Cari nama atau lokasi properti..."
-                aria-label="Cari properti"
-                className="h-13 w-full rounded-full border border-gray-200 bg-white pl-12 pr-12 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.07]"
-              />
-
-              {search && (
-                <button
-                  type="button"
-                  onClick={clearSearch}
-                  aria-label="Hapus pencarian"
-                  className="absolute right-4 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                >
-                  <X size={15} />
-                </button>
-              )}
-            </div>
-
-            {/* Filter */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
-              <div className="mr-1 hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-400 sm:flex">
-                <SlidersHorizontal size={15} />
-              </div>
-
-              {["semua", "jual", "sewa"].map((item) => {
-                const isActive = activeFilter === item;
-
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setActiveFilter(item)}
-                    className={`h-10 shrink-0 rounded-full px-5 text-sm font-semibold transition-all duration-200 ${
-                      isActive
-                        ? "bg-[#0F6A6A] text-white shadow-sm"
-                        : "border border-gray-200 bg-white text-gray-600 hover:border-[#0F6A6A]/40 hover:text-[#0F6A6A]"
-                    }`}
-                  >
-                    {item === "semua"
-                      ? "Semua"
-                      : item === "jual"
-                        ? "Dijual"
-                        : "Disewa"}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* RESULT INFO */}
+        <div className="container section-tight">
+          {/* =================================================
+              RESULT HEADER
+          ================================================== */}
           {!loading && !error && (
-            <div className="mt-8 flex flex-col gap-2 border-b border-gray-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2">
-                <p className="text-sm text-gray-500">
+            <div
+              className="
+                flex flex-col gap-4
+                border-b border-[var(--border-soft)]
+                pb-6
+                sm:flex-row
+                sm:items-center
+                sm:justify-between
+              "
+            >
+              <div>
+                <p className="text-sm text-[var(--foreground-muted)]">
                   Menampilkan{" "}
-                  <span className="font-semibold text-gray-900">
+                  <span className="font-semibold text-[var(--foreground)]">
                     {filteredData.length}
                   </span>{" "}
                   properti
+                  {search && (
+                    <>
+                      {" "}
+                      untuk{" "}
+                      <span className="font-semibold text-[var(--primary)]">
+                        “{search}”
+                      </span>
+                    </>
+                  )}
                 </p>
-
-                {search && (
-                  <span className="hidden text-sm text-gray-300 sm:inline">
-                    •
-                  </span>
-                )}
-
-                {search && (
-                  <p className="max-w-[220px] truncate text-sm text-gray-400">
-                    “{search}”
-                  </p>
-                )}
               </div>
 
               {activeFilter !== "semua" && (
                 <button
                   type="button"
                   onClick={() => setActiveFilter("semua")}
-                  className="self-start text-xs font-semibold text-[#0F6A6A] hover:underline sm:self-auto"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    self-start
+                    text-xs
+                    font-semibold
+                    text-[var(--primary)]
+                    transition
+                    hover:opacity-70
+                    sm:self-auto
+                  "
                 >
                   Reset filter
+                  <X className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
           )}
 
-          {/* LOADING */}
+          {/* =================================================
+              LOADING
+          ================================================== */}
           {loading ? (
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
               {[...Array(6)].map((_, index) => (
                 <div
                   key={index}
-                  className="overflow-hidden rounded-[28px] border border-gray-100 bg-white"
+                  className="
+                    overflow-hidden
+                    rounded-[var(--radius-lg)]
+                    border border-[var(--border)]
+                    bg-white
+                  "
                 >
-                  <div className="aspect-[4/3] animate-pulse bg-gray-100" />
+                  {/* Image */}
+                  <div className="aspect-[4/3] animate-pulse bg-[var(--surface-muted)]" />
 
-                  <div className="space-y-3 p-5">
-                    <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
-                    <div className="h-6 w-1/2 animate-pulse rounded bg-gray-100" />
-                    <div className="h-4 w-3/4 animate-pulse rounded bg-gray-100" />
-                    <div className="h-10 w-full animate-pulse rounded-xl bg-gray-100" />
+                  {/* Content */}
+                  <div className="space-y-4 p-5 sm:p-6">
+                    <div className="h-4 w-2/3 animate-pulse rounded-md bg-[var(--surface-muted)]" />
+
+                    <div className="h-6 w-1/2 animate-pulse rounded-md bg-[var(--surface-muted)]" />
+
+                    <div className="h-4 w-3/4 animate-pulse rounded-md bg-[var(--surface-muted)]" />
+
+                    <div className="h-10 w-full animate-pulse rounded-xl bg-[var(--surface-muted)]" />
                   </div>
                 </div>
               ))}
             </div>
           ) : error ? (
-            /* ERROR */
-            <div className="mt-8 rounded-[28px] border border-gray-100 px-6 py-20 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
+            /* =================================================
+               ERROR
+            ================================================== */
+            <div
+              className="
+                mt-8
+                rounded-[var(--radius-lg)]
+                border border-[var(--border)]
+                bg-white
+                px-6 py-20
+                text-center
+                shadow-[var(--shadow-sm)]
+              "
+            >
+              <div
+                className="
+                  mx-auto
+                  flex h-14 w-14
+                  items-center justify-center
+                  rounded-full
+                  bg-red-50
+                "
+              >
                 <Building2
-                  size={20}
-                  className="text-red-400"
+                  className="h-6 w-6 text-red-400"
+                  strokeWidth={1.6}
                 />
               </div>
 
-              <h3 className="mt-4 text-base font-semibold text-gray-900">
+              <h3 className="mt-5 text-lg font-semibold text-[var(--foreground)]">
                 Tidak dapat memuat properti
               </h3>
 
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--foreground-muted)]">
                 {error}
               </p>
 
               <button
                 type="button"
                 onClick={() => window.location.reload()}
-                className="mt-5 inline-flex h-10 items-center rounded-full bg-[#0F6A6A] px-5 text-sm font-semibold text-white transition hover:bg-[#0C5A5A]"
+                className="btn btn-primary mt-6"
               >
                 Coba Lagi
+                <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           ) : filteredData.length > 0 ? (
-            /* PROPERTY GRID */
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            /* =================================================
+               PROPERTY GRID
+            ================================================== */
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
               {filteredData.map((item) => (
                 <div
                   key={item.id}
-                  className="transition-transform duration-300 hover:-translate-y-1.5"
+                  className="
+                    transition-transform
+                    duration-300
+                    hover:-translate-y-1
+                  "
                 >
                   <PropertyCard
                     id={item.id}
@@ -283,30 +411,50 @@ export default function DaftarPropertiPage() {
               ))}
             </div>
           ) : (
-            /* EMPTY SEARCH STATE */
-            <div className="mt-8 rounded-[28px] border border-dashed border-gray-200 px-6 py-20 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#0F6A6A]/[0.06]">
+            /* =================================================
+               EMPTY SEARCH STATE
+            ================================================== */
+            <div
+              className="
+                mt-8
+                rounded-[var(--radius-lg)]
+                border border-dashed
+                border-[var(--border)]
+                bg-[var(--surface-soft)]
+                px-6 py-20
+                text-center
+              "
+            >
+              <div
+                className="
+                  mx-auto
+                  flex h-14 w-14
+                  items-center justify-center
+                  rounded-full
+                  bg-[var(--primary-light)]
+                "
+              >
                 <Search
-                  size={22}
-                  className="text-[#0F6A6A]"
+                  className="h-6 w-6 text-[var(--primary)]"
+                  strokeWidth={1.7}
                 />
               </div>
 
-              <h3 className="mt-5 text-lg font-semibold text-gray-900">
+              <h3 className="mt-5 text-lg font-semibold text-[var(--foreground)]">
                 Properti Tidak Ditemukan
               </h3>
 
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                Tidak ada properti yang sesuai dengan pencarian atau
-                filter Anda. Coba gunakan kata kunci lain.
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[var(--foreground-muted)]">
+                Tidak ada properti yang sesuai dengan pencarian atau filter
+                Anda. Coba gunakan kata kunci lain.
               </p>
 
-              <div className="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+              <div className="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
                 {search && (
                   <button
                     type="button"
                     onClick={clearSearch}
-                    className="inline-flex h-10 items-center justify-center rounded-full border border-gray-200 px-5 text-sm font-semibold text-gray-700 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+                    className="btn btn-outline"
                   >
                     Hapus Pencarian
                   </button>
@@ -316,7 +464,7 @@ export default function DaftarPropertiPage() {
                   <button
                     type="button"
                     onClick={() => setActiveFilter("semua")}
-                    className="inline-flex h-10 items-center justify-center rounded-full bg-[#0F6A6A] px-5 text-sm font-semibold text-white transition hover:bg-[#0C5A5A]"
+                    className="btn btn-primary"
                   >
                     Tampilkan Semua
                   </button>
@@ -325,23 +473,53 @@ export default function DaftarPropertiPage() {
             </div>
           )}
 
-          {/* BOTTOM INFORMATION */}
+          {/* =================================================
+              BOTTOM HELP
+          ================================================== */}
           {!loading && !error && filteredData.length > 0 && (
-            <div className="mt-12 flex flex-col items-center justify-center gap-2 border-t border-gray-100 pt-8 text-center">
-              <div className="flex items-center gap-2 text-xs text-gray-400">
-                <MapPin
-                  size={14}
-                  className="text-[#0F6A6A]"
-                />
-                Temukan hunian yang sesuai dengan kebutuhan Anda
-              </div>
+            <div
+              className="
+                mt-12
+                border-t border-[var(--border-soft)]
+                pt-8
+                text-center
+                lg:mt-14
+              "
+            >
+              <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-3">
+                <div className="flex items-center gap-2 text-xs text-[var(--foreground-soft)] sm:text-sm">
+                  <MapPin
+                    className="h-3.5 w-3.5 text-[var(--primary)]"
+                    strokeWidth={1.8}
+                  />
 
-              <Link
-                href="/kontak"
-                className="text-sm font-semibold text-[#0F6A6A] transition hover:text-[#0C5A5A]"
-              >
-                Butuh bantuan memilih properti?
-              </Link>
+                  Temukan hunian yang sesuai dengan kebutuhan Anda
+                </div>
+
+                <span className="hidden text-[var(--border)] sm:inline">
+                  •
+                </span>
+
+                <Link
+                  href="/kontak"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    text-sm
+                    font-semibold
+                    text-[var(--primary)]
+                    transition
+                    hover:opacity-70
+                  "
+                >
+                  Butuh bantuan memilih properti?
+                  <ArrowRight
+                    className="h-3.5 w-3.5"
+                    strokeWidth={2}
+                  />
+                </Link>
+              </div>
             </div>
           )}
         </div>

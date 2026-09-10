@@ -2,111 +2,225 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 /* ==========================================
-   NAMURA PROPERTY DESIGN SYSTEM v2
-========================================== */
+   NAMURA PROPERTY — DESIGN SYSTEM
+   Modern Property Experience
+   ========================================== */
 
 :root {
-  /* BRAND */
+  /* ==========================================
+     BRAND
+     ========================================== */
+
   --primary: #0f6a6a;
-  --primary-hover: #0c5a5a;
-  --primary-light: #e6f5f5;
+  --primary-hover: #0b5c5c;
+  --primary-dark: #084c4c;
+  --primary-light: #e8f5f4;
+  --primary-lighter: #f2f9f8;
 
-  /* SURFACE */
-  --background: #f8fafc;
+  /* ==========================================
+     BACKGROUND / SURFACE
+     ========================================== */
+
+  --background: #fafcfb;
   --surface: #ffffff;
-  --surface-soft: #f1f5f9;
+  --surface-soft: #f4f7f6;
+  --surface-muted: #eef3f2;
 
-  /* TEXT */
-  --foreground: #111827;
-  --foreground-muted: #6b7280;
-  --foreground-soft: #9ca3af;
+  /* ==========================================
+     TEXT
+     ========================================== */
 
-  /* BORDER */
-  --border: #e5e7eb;
-  --border-soft: #f1f5f9;
+  --foreground: #101918;
+  --foreground-secondary: #344240;
+  --foreground-muted: #667370;
+  --foreground-soft: #94a09d;
+  --foreground-white: #ffffff;
 
-  /* STATUS */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  /* ==========================================
+     BORDER
+     ========================================== */
 
-  /* RADIUS */
+  --border: #e3e9e7;
+  --border-soft: #edf1f0;
+  --border-primary: rgba(15, 106, 106, 0.2);
+
+  /* ==========================================
+     STATUS
+     ========================================== */
+
+  --success: #159570;
+  --warning: #e7a72f;
+  --danger: #dc5a5a;
+  --info: #4387a8;
+
+  /* ==========================================
+     RADIUS
+     ========================================== */
+
   --radius-xs: 8px;
   --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
 
-  /* SHADOW */
+  /* ==========================================
+     SHADOW
+     ========================================== */
+
+  --shadow-xs:
+    0 1px 3px rgba(15, 23, 42, 0.04);
+
   --shadow-sm:
-    0 2px 8px rgba(15, 23, 42, 0.04);
+    0 4px 12px rgba(15, 23, 42, 0.05);
 
   --shadow-md:
-    0 8px 24px rgba(15, 23, 42, 0.06);
+    0 10px 30px rgba(15, 23, 42, 0.07);
 
   --shadow-lg:
-    0 16px 48px rgba(15, 23, 42, 0.08);
+    0 20px 55px rgba(15, 23, 42, 0.09);
 
-  /* SPACING */
-  --section-padding: 120px;
+  --shadow-xl:
+    0 30px 80px rgba(15, 23, 42, 0.12);
+
+  --shadow-primary:
+    0 12px 32px rgba(15, 106, 106, 0.18);
+
+  /* ==========================================
+     LAYOUT
+     ========================================== */
+
   --container-width: 1280px;
+  --container-wide: 1440px;
 
-  /* EFFECT */
-  --blur: blur(16px);
+  --section-padding: 112px;
+  --section-padding-sm: 80px;
+
+  /* ==========================================
+     EFFECTS
+     ========================================== */
+
+  --blur-sm: blur(8px);
+  --blur-md: blur(16px);
+  --blur-lg: blur(24px);
+
+  --transition-fast: 0.18s ease;
+  --transition: 0.25s ease;
+  --transition-slow: 0.4s ease;
 }
 
 /* ==========================================
    BASE
-========================================== */
+   ========================================== */
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
+
   font-family:
     Inter,
+    ui-sans-serif,
     system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Better selection */
+
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* Remove default image gap */
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Better buttons */
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
    CONTAINER
-========================================== */
+   ========================================== */
 
 .container {
   width: 100%;
   max-width: var(--container-width);
-  margin: 0 auto;
+  margin-inline: auto;
   padding-inline: 24px;
+}
+
+.container-wide {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (max-width: 640px) {
+
+  .container,
+  .container-wide {
+    padding-inline: 18px;
+  }
 }
 
 /* ==========================================
    TYPOGRAPHY
-========================================== */
+   ========================================== */
 
 .heading-xl {
-  font-size: clamp(42px, 6vw, 72px);
+  font-size: clamp(44px, 6vw, 76px);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
 }
 
 .heading-lg {
-  font-size: clamp(32px, 5vw, 56px);
+  font-size: clamp(34px, 5vw, 58px);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.04;
+  letter-spacing: -0.038em;
 }
 
 .heading-md {
-  font-size: clamp(24px, 4vw, 40px);
-  font-weight: 600;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+}
+
+.heading-sm {
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 650;
   line-height: 1.2;
+  letter-spacing: -0.018em;
+}
+
+.text-body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--foreground-secondary);
 }
 
 .text-muted {
@@ -117,189 +231,621 @@ body {
   color: var(--foreground-soft);
 }
 
+.text-primary {
+  color: var(--primary);
+}
+
 /* ==========================================
-   BUTTONS
-========================================== */
+   EYEBROW / LABEL
+   ========================================== */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--primary);
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.eyebrow-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* ==========================================
+   BUTTON SYSTEM
+   ========================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 9px;
 
-  height: 52px;
-  padding: 0 24px;
+  min-height: 50px;
+  padding-inline: 22px;
 
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
 
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 650;
+  line-height: 1;
 
-  transition: all .25s ease;
   cursor: pointer;
+
+  transition:
+    transform var(--transition),
+    background-color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition),
+    color var(--transition);
 }
 
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary */
+
 .btn-primary {
-  background: var(--primary);
   color: white;
+  background: var(--primary);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
 }
 
+/* Outline */
+
 .btn-outline {
-  border: 1px solid var(--border);
-  background: white;
   color: var(--foreground);
+  background: white;
+  border: 1px solid var(--border);
 }
 
 .btn-outline:hover {
   background: var(--surface-soft);
+  border-color: #d4ddda;
+  transform: translateY(-1px);
 }
 
+/* Soft */
+
+.btn-soft {
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.btn-soft:hover {
+  background: #dcefed;
+}
+
+/* Ghost */
+
 .btn-ghost {
-  color: var(--foreground);
+  color: var(--foreground-secondary);
+  background: transparent;
 }
 
 .btn-ghost:hover {
-  background: var(--surface-soft);
+  color: var(--primary);
+  background: var(--primary-lighter);
 }
 
 /* ==========================================
-   CARD
-========================================== */
+   CARD SYSTEM
+   ========================================== */
 
 .card {
   background: var(--surface);
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 
   transition:
-    transform .25s ease,
-    box-shadow .25s ease;
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
 }
 
 .card:hover {
   transform: translateY(-4px);
+  border-color: #d8e2df;
   box-shadow: var(--shadow-md);
 }
 
-/* ==========================================
-   GLASS CARD
-========================================== */
+/* Flat card */
 
-.glass {
-  background:
-    rgba(255, 255, 255, .75);
-
-  backdrop-filter: var(--blur);
-
-  border: 1px solid rgba(255, 255, 255, .4);
-
-  box-shadow: var(--shadow-md);
+.card-flat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 /* ==========================================
    PROPERTY CARD
-========================================== */
+   ========================================== */
 
 .property-card {
+  position: relative;
+
   overflow: hidden;
-  border-radius: var(--radius-md);
-  background: white;
+
+  background: var(--surface);
+
   border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-xs);
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  border-color: #d5dfdc;
+  box-shadow: var(--shadow-lg);
+}
+
+.property-card-image {
+  position: relative;
+  overflow: hidden;
+
+  aspect-ratio: 4 / 3;
+
+  background: var(--surface-soft);
 }
 
 .property-card img {
-  transition: transform .4s ease;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .property-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.045);
+}
+
+/* ==========================================
+   PROPERTY BADGES
+   ========================================== */
+
+.property-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 11px;
+
+  border-radius: var(--radius-full);
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: var(--foreground);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  box-shadow: var(--shadow-xs);
+
+  backdrop-filter: var(--blur-sm);
+}
+
+.property-badge-primary {
+  color: white;
+  background: var(--primary);
+}
+
+/* ==========================================
+   GLASS
+   ========================================== */
+
+.glass {
+  background: rgba(255, 255, 255, 0.78);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  box-shadow: var(--shadow-md);
+
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.72);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
 }
 
 /* ==========================================
    SECTION
-========================================== */
+   ========================================== */
 
 .section {
   padding-block: var(--section-padding);
 }
 
 .section-sm {
-  padding-block: 80px;
+  padding-block: var(--section-padding-sm);
+}
+
+.section-tight {
+  padding-block: 64px;
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-header.center {
+  text-align: center;
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: 52px;
 }
 
 /* ==========================================
    BADGE
-========================================== */
+   ========================================== */
 
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
 
-  padding: 8px 14px;
+  padding: 7px 12px;
 
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 
   background: var(--primary-light);
-
   color: var(--primary);
 
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-outline {
+  background: white;
+  border: 1px solid var(--border);
+  color: var(--foreground-muted);
+}
+
+/* ==========================================
+   SEARCH BOX
+   ========================================== */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 64px;
+  padding: 8px 10px 8px 20px;
+
+  background: white;
+
+  border: 1px solid rgba(15, 106, 106, 0.12);
+  border-radius: var(--radius-full);
+
+  box-shadow: var(--shadow-lg);
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.search-box:focus-within {
+  border-color: rgba(15, 106, 106, 0.35);
+
+  box-shadow:
+    0 0 0 4px rgba(15, 106, 106, 0.08),
+    var(--shadow-lg);
+}
+
+.search-box input {
+  flex: 1;
+
+  min-width: 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--foreground);
+
+  font-size: 14px;
+}
+
+.search-box input::placeholder {
+  color: var(--foreground-soft);
 }
 
 /* ==========================================
    NAVBAR
-========================================== */
+   ========================================== */
 
 .navbar {
   position: sticky;
   top: 0;
   z-index: 999;
 
-  background:
-    rgba(255, 255, 255, .85);
+  background: rgba(255, 255, 255, 0.88);
+
+  border-bottom: 1px solid rgba(227, 233, 231, 0.8);
 
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
-  border-bottom:
-    1px solid rgba(229, 231, 235, .8);
+  transition:
+    background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ==========================================
-   HERO GRADIENT
-========================================== */
+   HERO
+   ========================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
 
 .hero-gradient {
   background:
-    radial-gradient(circle at top left,
-      rgba(15, 106, 106, .12),
-      transparent 40%),
-    radial-gradient(circle at bottom right,
-      rgba(15, 106, 106, .08),
-      transparent 40%);
+    radial-gradient(circle at 8% 15%,
+      rgba(15, 106, 106, 0.13),
+      transparent 34%),
+    radial-gradient(circle at 92% 85%,
+      rgba(15, 106, 106, 0.08),
+      transparent 36%);
+}
+
+.hero-glow {
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background: rgba(15, 106, 106, 0.08);
+
+  filter: blur(80px);
+
+  pointer-events: none;
+}
+
+/* ==========================================
+   LOCATION CARD
+   ========================================== */
+
+.location-card {
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: 260px;
+
+  border-radius: var(--radius-xl);
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform var(--transition-slow),
+    box-shadow var(--transition-slow);
+}
+
+.location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.location-card img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.location-card:hover img {
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   STATS
+   ========================================== */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-value {
+  color: var(--foreground);
+
+  font-size: 30px;
+  font-weight: 700;
+
+  letter-spacing: -0.035em;
+}
+
+.stat-label {
+  color: var(--foreground-muted);
+
+  font-size: 13px;
+}
+
+/* ==========================================
+   DIVIDER
+   ========================================== */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-soft);
+}
+
+/* ==========================================
+   LINK
+   ========================================== */
+
+.link-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: var(--primary);
+
+  font-size: 14px;
+  font-weight: 650;
+
+  transition: gap var(--transition), color var(--transition);
+}
+
+.link-primary:hover {
+  color: var(--primary-hover);
+  gap: 10px;
+}
+
+/* ==========================================
+   CTA SECTION
+   ========================================== */
+
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+
+  background: var(--primary);
+
+  border-radius: var(--radius-2xl);
+
+  color: white;
+
+  box-shadow: var(--shadow-primary);
+}
+
+.cta-primary::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  top: -220px;
+  right: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  pointer-events: none;
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 80px;
+    --section-padding-sm: 60px;
+  }
+
+  .heading-xl {
+    font-size: clamp(40px, 12vw, 58px);
+  }
+
+  .heading-lg {
+    font-size: clamp(32px, 9vw, 46px);
+  }
+
+  .section-header {
+    margin-bottom: 32px;
+  }
+
+  .search-box {
+    min-height: 58px;
+    border-radius: 18px;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ==========================================
    DARK MODE
-========================================== */
+   ========================================== */
 
 .dark {
-  --background: #0f172a;
-  --surface: #111827;
-  --surface-soft: #1f2937;
+  --background: #0b1515;
+  --surface: #101d1d;
+  --surface-soft: #172525;
+  --surface-muted: #1c2c2b;
 
-  --foreground: #f8fafc;
-  --foreground-muted: #cbd5e1;
-  --foreground-soft: #94a3b8;
+  --foreground: #f4f8f7;
+  --foreground-secondary: #d1dcda;
+  --foreground-muted: #9aa9a6;
+  --foreground-soft: #71817e;
 
-  --border: #334155;
+  --border: #263735;
+  --border-soft: #1d2b2a;
+  --border-primary: rgba(70, 180, 174, 0.25);
+
+  --primary-light: #153a39;
+  --primary-lighter: #122f2e;
+}
+
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
 }
