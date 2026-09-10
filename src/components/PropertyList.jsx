@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { API_URL } from "@/lib/api";
 import PropertyCard from "./PropertyCard";
+
 import {
   ArrowRight,
   Building2,
@@ -65,207 +66,303 @@ export default function PropertyList() {
   }, [properties]);
 
   return (
-    <section className="relative overflow-hidden bg-white">
-      <div className="relative mx-auto max-w-[1280px] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section className="relative overflow-hidden bg-[var(--surface)]">
+      <div className="container section">
 
-        {/* HEADER */}
-        <div className="mb-10 flex flex-col gap-7 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
+        {/* ==========================================
+            SECTION HEADER
+            ========================================== */}
 
-          {/* Heading */}
-          <div className="max-w-[680px]">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#0F6A6A]/10">
-                <Building2
-                  size={12}
-                  className="text-[#0F6A6A]"
-                />
-              </span>
+        <div className="section-header flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-[700px]">
 
-              <span className="text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-                Properti Pilihan
-              </span>
+            {/* Eyebrow */}
+
+            <div className="eyebrow">
+              <span className="eyebrow-dot" />
+              Properti Pilihan
             </div>
 
-            <h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
+            {/* Heading */}
+
+            <h2 className="heading-lg mt-5 text-[var(--foreground)]">
               Temukan Properti
               <span className="block text-[#0F6A6A]">
-                Impian Anda
+                yang Tepat untukmu.
               </span>
             </h2>
 
-            <p className="mt-5 max-w-[600px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
-              Jelajahi pilihan properti dengan lokasi strategis,
-              desain modern, dan karakter hunian yang sesuai dengan
-              kebutuhan Anda.
+            {/* Description */}
+
+            <p className="text-body mt-5 max-w-[600px] text-base">
+              Jelajahi pilihan rumah, tanah, dan properti
+              pilihan di Lampung untuk kebutuhan hunian
+              maupun investasi.
             </p>
           </div>
 
           {/* Desktop CTA */}
+
           <Link
             href="/daftar-properti"
-            className="group hidden shrink-0 items-center gap-2 rounded-full bg-[#0F6A6A] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,106,106,0.15)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0C5A5A] hover:shadow-[0_12px_30px_rgba(15,106,106,0.2)] lg:inline-flex"
+            className="btn btn-primary hidden shrink-0 lg:inline-flex"
           >
             Lihat Semua Properti
 
             <ArrowRight
               size={16}
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
+              className="transition-transform duration-200 group-hover:translate-x-1"
             />
           </Link>
         </div>
 
-        {/* Mobile CTA */}
-        <div className="mb-8 lg:hidden">
+        {/* ==========================================
+            MOBILE CTA
+            ========================================== */}
+
+        <div className="mb-9 lg:hidden">
           <Link
             href="/daftar-properti"
-            className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0F6A6A] px-6 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,106,106,0.15)] transition-all duration-200 hover:bg-[#0C5A5A] active:scale-[0.98]"
+            className="btn btn-primary w-full"
           >
             Lihat Semua Properti
 
-            <ArrowRight
-              size={16}
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
-            />
+            <ArrowRight size={16} />
           </Link>
         </div>
 
-        {/* QUICK INFO */}
+        {/* ==========================================
+            QUICK INFO
+            ========================================== */}
+
         {!loading && !error && properties.length > 0 && (
-          <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-gray-100 py-4 lg:mb-12">
+          <div
+            className="
+              mb-10
+              flex
+              flex-wrap
+              items-center
+              gap-x-7
+              gap-y-3
+              border-y
+              border-[var(--border-soft)]
+              py-4
+              lg:mb-12
+            "
+          >
             <div className="flex items-center gap-2">
               <CheckCircle2
                 size={16}
+                strokeWidth={2}
                 className="text-[#0F6A6A]"
               />
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[var(--foreground-muted)]">
                 {totalProperty} properti pilihan
               </span>
             </div>
 
-            <div className="hidden h-4 w-px bg-gray-200 sm:block" />
+            <div className="hidden h-4 w-px bg-[var(--border)] sm:block" />
 
             <div className="flex items-center gap-2">
               <MapPin
                 size={16}
+                strokeWidth={2}
                 className="text-[#0F6A6A]"
               />
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[var(--foreground-muted)]">
                 Lokasi strategis
               </span>
             </div>
 
-            <div className="hidden h-4 w-px bg-gray-200 sm:block" />
+            <div className="hidden h-4 w-px bg-[var(--border)] sm:block" />
 
             <div className="flex items-center gap-2">
               <CheckCircle2
                 size={16}
+                strokeWidth={2}
                 className="text-[#0F6A6A]"
               />
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[var(--foreground-muted)]">
                 Pilihan terverifikasi
               </span>
             </div>
           </div>
         )}
 
-        {/* LOADING */}
+        {/* ==========================================
+            LOADING STATE
+            ========================================== */}
+
         {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {[...Array(6)].map((_, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-3xl border border-gray-100 bg-white"
+                className="
+                  overflow-hidden
+                  rounded-[var(--radius-lg)]
+                  border
+                  border-[var(--border)]
+                  bg-[var(--surface)]
+                "
               >
-                <div className="aspect-[4/3] animate-pulse bg-gray-100" />
+                {/* Image Skeleton */}
+
+                <div
+                  className="
+                    aspect-[4/3]
+                    animate-pulse
+                    bg-[var(--surface-soft)]
+                  "
+                />
+
+                {/* Content Skeleton */}
 
                 <div className="space-y-3 p-5">
-                  <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
-                  <div className="h-6 w-1/2 animate-pulse rounded bg-gray-100" />
-                  <div className="h-4 w-3/4 animate-pulse rounded bg-gray-100" />
-                  <div className="h-10 w-full animate-pulse rounded-xl bg-gray-100" />
+                  <div className="h-3.5 w-2/3 animate-pulse rounded bg-[var(--surface-soft)]" />
+
+                  <div className="h-6 w-1/2 animate-pulse rounded bg-[var(--surface-soft)]" />
+
+                  <div className="h-4 w-3/4 animate-pulse rounded bg-[var(--surface-soft)]" />
+
+                  <div className="mt-5 h-10 w-full animate-pulse rounded-xl bg-[var(--surface-soft)]" />
                 </div>
               </div>
             ))}
           </div>
         ) : error ? (
-          /* ERROR STATE */
-          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
+
+          /* ==========================================
+             ERROR STATE
+             ========================================== */
+
+          <div
+            className="
+              rounded-[var(--radius-xl)]
+              border
+              border-[var(--border)]
+              bg-[var(--surface)]
+              px-6
+              py-20
+              text-center
+              shadow-[var(--shadow-xs)]
+            "
+          >
+            <div
+              className="
+                mx-auto
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                bg-red-50
+              "
+            >
               <Building2
-                size={20}
+                size={22}
                 className="text-red-400"
               />
             </div>
 
-            <p className="mt-4 text-sm font-medium text-gray-700">
+            <p className="mt-5 text-sm font-semibold text-[var(--foreground)]">
               {error}
             </p>
 
             <Link
               href="/daftar-properti"
-              className="mt-5 inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+              className="btn btn-outline mt-6"
             >
               Lihat Daftar Properti
-              <ArrowRight size={14} />
+
+              <ArrowRight size={15} />
             </Link>
           </div>
         ) : properties.length > 0 ? (
-          <>
-            {/* PROPERTY GRID */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {properties.map((item) => (
-                <div
-                  key={item.id}
-                  className="group transition-all duration-300 hover:-translate-y-1.5"
-                >
-                  <PropertyCard
-                    id={item.id}
-                    slug={item.slug}
-                    title={item.title}
-                    price={item.price}
-                    location={item.location}
-                    image={item.image}
-                    type={item.type}
-                  />
-                </div>
-              ))}
-            </div>
 
-            {/* BOTTOM CTA */}
-            <div className="mt-12 flex justify-center lg:mt-14">
-              <Link
-                href="/daftar-properti"
-                className="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] hover:shadow-sm"
+          /* ==========================================
+             PROPERTY GRID
+             ========================================== */
+
+          <div
+            className="
+              grid
+              grid-cols-1
+              gap-6
+              sm:grid-cols-2
+              lg:grid-cols-3
+              lg:gap-7
+            "
+          >
+            {properties.map((item) => (
+              <div
+                key={item.id}
+                className="
+                  group
+                  transition-transform
+                  duration-300
+                  hover:-translate-y-1
+                "
               >
-                Lihat Lebih Banyak
-
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                <PropertyCard
+                  id={item.id}
+                  slug={item.slug}
+                  title={item.title}
+                  price={item.price}
+                  location={item.location}
+                  image={item.image}
+                  type={item.type}
                 />
-              </Link>
-            </div>
-          </>
+              </div>
+            ))}
+          </div>
         ) : (
-          /* EMPTY STATE */
-          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0F6A6A]/[0.07]">
+
+          /* ==========================================
+             EMPTY STATE
+             ========================================== */
+
+          <div
+            className="
+              rounded-[var(--radius-xl)]
+              border
+              border-[var(--border)]
+              bg-[var(--surface)]
+              px-6
+              py-20
+              text-center
+              shadow-[var(--shadow-xs)]
+            "
+          >
+            <div
+              className="
+                mx-auto
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                bg-[#0F6A6A]/[0.07]
+              "
+            >
               <Building2
-                size={20}
+                size={22}
                 className="text-[#0F6A6A]"
               />
             </div>
 
-            <p className="mt-4 text-sm font-medium text-gray-700">
+            <p className="mt-5 text-sm font-semibold text-[var(--foreground)]">
               Belum ada properti tersedia.
             </p>
 
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
-              Silakan kembali lagi nanti untuk melihat pilihan
-              properti terbaru kami.
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[var(--foreground-muted)]">
+              Silakan kembali lagi nanti untuk melihat
+              pilihan properti terbaru dari Namura Property.
             </p>
           </div>
         )}

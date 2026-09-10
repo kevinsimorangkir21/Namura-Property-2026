@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CheckCircle2,
   MapPin,
+  Search,
   Star,
 } from "lucide-react";
 
@@ -83,7 +84,7 @@ export default function Hero() {
 
   const propertyLocation =
     featuredProperty?.location ||
-    "Lokasi tersedia di daftar properti";
+    "Lampung, Indonesia";
 
   const formatPrice = (price) => {
     if (!price || Number.isNaN(Number(price))) {
@@ -94,108 +95,220 @@ export default function Hero() {
   };
 
   return (
-    <section
-      aria-label="Namura Property"
-      className="relative isolate overflow-hidden bg-white"
-    >
-      {/* Background Decoration */}
+    <section className="hero hero-gradient relative isolate overflow-hidden">
+      {/* ==========================================
+          BACKGROUND
+          ========================================== */}
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="absolute -right-40 -top-48 h-[520px] w-[520px] rounded-full bg-[#0F6A6A]/[0.045] sm:h-[650px] sm:w-[650px]" />
+        <div className="hero-glow -right-40 -top-40" />
 
-        <div className="absolute -bottom-48 -left-40 h-[420px] w-[420px] rounded-full bg-[#0F6A6A]/[0.035]" />
+        <div
+          className="
+            absolute
+            -bottom-56
+            -left-40
+            h-[420px]
+            w-[420px]
+            rounded-full
+            bg-[#0F6A6A]/[0.035]
+            blur-3xl
+          "
+        />
 
-        <div className="absolute left-[8%] top-[18%] hidden h-2 w-2 rounded-full bg-[#0F6A6A]/20 lg:block" />
+        <div
+          className="
+            absolute
+            left-[8%]
+            top-[18%]
+            hidden
+            h-1.5
+            w-1.5
+            rounded-full
+            bg-[#0F6A6A]/30
+            lg:block
+          "
+        />
 
-        <div className="absolute left-[12%] top-[23%] hidden h-1.5 w-1.5 rounded-full bg-[#0F6A6A]/15 lg:block" />
+        <div
+          className="
+            absolute
+            left-[12%]
+            top-[23%]
+            hidden
+            h-1
+            w-1
+            rounded-full
+            bg-[#0F6A6A]/20
+            lg:block
+          "
+        />
       </div>
 
-      <div className="relative mx-auto max-w-[1280px] px-5 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24 xl:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 xl:gap-24">
+      {/* ==========================================
+          CONTENT
+          ========================================== */}
 
-          {/* LEFT — CONTENT */}
+      <div className="container relative py-16 sm:py-20 lg:py-24 xl:py-28">
+        <div className="grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 xl:gap-24">
+
+          {/* ========================================
+              LEFT CONTENT
+              ======================================== */}
+
           <div className="max-w-[620px]">
 
-            {/* Trust Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.07] px-3.5 py-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#0F6A6A]/10">
-                <Star
-                  size={11}
-                  strokeWidth={2.5}
-                  className="fill-[#0F6A6A] text-[#0F6A6A]"
-                />
-              </span>
+            {/* Eyebrow */}
 
-              <span className="text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-                Properti Terpercaya
-              </span>
+            <div className="eyebrow">
+              <span className="eyebrow-dot" />
+              Properti Terpercaya di Lampung
             </div>
 
             {/* Heading */}
-            <h1 className="mt-6 max-w-[680px] text-[40px] font-bold leading-[1.08] tracking-[-0.03em] text-gray-950 sm:text-5xl lg:text-[58px] xl:text-[64px]">
-              Hunian Berkualitas
-              <span className="block text-[#0F6A6A]">
-                untuk Masa Depan
+
+            <h1 className="heading-xl mt-6 max-w-[700px] text-[var(--foreground)]">
+              Temukan Hunian
+              <span className="block text-primary">
+                yang Tepat untukmu.
               </span>
-              Anda
             </h1>
 
             {/* Description */}
-            <p className="mt-6 max-w-[560px] text-[15px] leading-7 text-gray-500 sm:text-base sm:leading-7 lg:text-lg">
-              Temukan properti dengan lokasi strategis, desain modern,
-              dan pilihan hunian yang dirancang untuk memberikan kenyamanan
-              sekaligus nilai jangka panjang bagi keluarga Anda.
+
+            <p className="text-body mt-6 max-w-[560px] text-base sm:text-lg">
+              Temukan rumah, tanah, dan properti pilihan
+              dengan lokasi strategis untuk hunian maupun
+              investasi jangka panjang.
             </p>
 
-            {/* CTA */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/daftar-properti"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#0F6A6A] px-7 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,106,106,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0C5A5A] hover:shadow-[0_12px_30px_rgba(15,106,106,0.22)] active:translate-y-0"
-              >
-                Lihat Properti
+            {/* ======================================
+                SEARCH
+                ====================================== */}
 
-                <ArrowRight
-                  size={16}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+            <div className="mt-8 max-w-[600px]">
+
+              <div className="search-box">
+                <Search
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0 text-[var(--foreground-soft)]"
                 />
-              </Link>
 
-              <Link
-                href="/kontak"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-gray-200 bg-white px-7 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 active:scale-[0.98]"
-              >
-                Hubungi Kami
-              </Link>
+                <input
+                  type="text"
+                  placeholder="Cari lokasi, tipe, atau nama properti..."
+                  aria-label="Cari properti"
+                />
+
+                <Link
+                  href="/daftar-properti"
+                  className="
+                    hidden
+                    h-11
+                    shrink-0
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-full
+                    bg-[#0F6A6A]
+                    px-5
+                    text-sm
+                    font-semibold
+                    text-white
+                    transition-all
+                    duration-200
+                    hover:-translate-y-0.5
+                    hover:bg-[#0C5A5A]
+                    sm:inline-flex
+                  "
+                >
+                  Cari
+                  <ArrowRight size={15} />
+                </Link>
+              </div>
+
+              {/* Quick filters */}
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link
+                  href="/daftar-properti?type=rumah"
+                  className="badge-outline rounded-full px-3.5 py-2 text-xs font-medium transition hover:border-[#0F6A6A]/30 hover:bg-[#0F6A6A]/5 hover:text-[#0F6A6A]"
+                >
+                  Rumah
+                </Link>
+
+                <Link
+                  href="/daftar-properti?type=tanah"
+                  className="badge-outline rounded-full px-3.5 py-2 text-xs font-medium transition hover:border-[#0F6A6A]/30 hover:bg-[#0F6A6A]/5 hover:text-[#0F6A6A]"
+                >
+                  Tanah
+                </Link>
+
+                <Link
+                  href="/daftar-properti?type=ruko"
+                  className="badge-outline rounded-full px-3.5 py-2 text-xs font-medium transition hover:border-[#0F6A6A]/30 hover:bg-[#0F6A6A]/5 hover:text-[#0F6A6A]"
+                >
+                  Ruko
+                </Link>
+
+                <Link
+                  href="/daftar-properti"
+                  className="px-3.5 py-2 text-xs font-semibold text-[#0F6A6A]"
+                >
+                  Lihat Semua →
+                </Link>
+              </div>
             </div>
 
-            {/* Trust Points */}
-            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-gray-500 sm:text-sm">
-              <div className="flex items-center gap-1.5">
+            {/* ======================================
+                TRUST POINTS
+                ====================================== */}
+
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+              <div className="flex items-center gap-2 text-sm text-[var(--foreground-muted)]">
                 <CheckCircle2
-                  size={15}
+                  size={16}
                   className="text-[#0F6A6A]"
                 />
-                Lokasi Strategis
+                Properti Pilihan
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2 text-sm text-[var(--foreground-muted)]">
                 <CheckCircle2
-                  size={15}
+                  size={16}
                   className="text-[#0F6A6A]"
                 />
-                Pilihan Terverifikasi
+                Informasi Transparan
               </div>
+            </div>
+
+            {/* Mobile CTA */}
+
+            <div className="mt-7 flex sm:hidden">
+              <Link
+                href="/daftar-properti"
+                className="btn btn-primary w-full"
+              >
+                Lihat Semua Properti
+                <ArrowRight size={16} />
+              </Link>
             </div>
           </div>
 
-          {/* RIGHT — PROPERTY VISUAL */}
-          <div className="relative mx-auto w-full max-w-[560px] lg:max-w-none">
+          {/* ========================================
+              RIGHT — FEATURED PROPERTY
+              ======================================== */}
 
-            {/* Main Image */}
-            <div className="relative aspect-[4/4.7] overflow-hidden rounded-[28px] bg-gray-100 shadow-[0_24px_70px_rgba(0,0,0,0.12)] sm:rounded-[32px]">
+          <div className="relative mx-auto w-full max-w-[620px] lg:max-w-none">
+
+            {/* Main image */}
+
+            <div className="property-card-image aspect-[4/4.6] overflow-hidden rounded-[28px] shadow-xl sm:rounded-[34px]">
+
               {!imageError ? (
                 <img
                   src={heroImage}
@@ -203,7 +316,7 @@ export default function Hero() {
                     featuredProperty?.name ||
                     "Properti unggulan Namura Property"
                   }
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+                  className="h-full w-full object-cover"
                   loading="eager"
                   fetchPriority="high"
                   onError={() => setImageError(true)}
@@ -214,92 +327,145 @@ export default function Hero() {
                   alt="Properti unggulan Namura Property"
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 560px"
+                  sizes="(max-width: 1024px) 100vw, 620px"
                   className="object-cover"
                 />
               )}
 
-              {/* Image Gradient */}
+              {/* Gradient */}
+
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/5"
+                className="
+                  absolute
+                  inset-0
+                  bg-gradient-to-t
+                  from-black/55
+                  via-black/5
+                  to-transparent
+                "
               />
 
-              {/* Brand Label */}
-              <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
-                <div className="rounded-full bg-black/20 px-3 py-1.5 backdrop-blur-md">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/90">
-                    Namura Property
-                  </span>
+              {/* Top label */}
+
+              <div className="absolute left-5 top-5 sm:left-7 sm:top-7">
+                <div className="property-badge gap-2">
+                  <Star
+                    size={12}
+                    className="fill-[#0F6A6A] text-[#0F6A6A]"
+                  />
+
+                  Properti Unggulan
                 </div>
               </div>
 
-              {/* Featured Property Card */}
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-[310px]">
-                <div className="rounded-2xl border border-white/60 bg-white/[0.94] p-4 shadow-xl backdrop-blur-xl sm:p-5">
+              {/* Bottom property info */}
 
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-400">
-                    Properti Unggulan
+              <div className="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-auto sm:max-w-[360px]">
+
+                <div className="rounded-[22px] border border-white/50 bg-white/[0.94] p-5 shadow-xl backdrop-blur-xl">
+
+                  <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--foreground-soft)]">
+                    Featured Property
                   </p>
 
-                  <p className="mt-1.5 truncate text-lg font-bold leading-tight text-gray-950 sm:text-xl">
+                  <h2 className="mt-2 truncate text-lg font-bold tracking-tight text-[var(--foreground)] sm:text-xl">
                     {featuredProperty?.name ||
                       "Pilihan Properti Terbaik"}
-                  </p>
+                  </h2>
 
                   <div className="mt-2 flex items-center gap-1.5">
                     <MapPin
-                      size={13}
+                      size={14}
                       className="shrink-0 text-[#0F6A6A]"
                     />
 
-                    <p className="truncate text-xs text-gray-500">
+                    <p className="truncate text-xs text-[var(--foreground-muted)]">
                       {propertyLocation}
                     </p>
                   </div>
 
-                  <div className="mt-3 border-t border-gray-100 pt-3">
-                    <p className="text-sm font-bold text-[#0F6A6A]">
-                      {featuredProperty
-                        ? formatPrice(featuredProperty.price)
-                        : "Lihat pilihan properti"}
-                    </p>
-                  </div>
+                  <div className="mt-4 flex items-center justify-between border-t border-[var(--border-soft)] pt-4">
+                    <div>
+                      <p className="text-[10px] text-[var(--foreground-soft)]">
+                        Mulai dari
+                      </p>
 
+                      <p className="mt-0.5 text-base font-bold text-[#0F6A6A]">
+                        {featuredProperty
+                          ? formatPrice(featuredProperty.price)
+                          : "Hubungi Kami"}
+                      </p>
+                    </div>
+
+                    {featuredProperty && (
+                      <Link
+                        href={`/daftar-properti/${featuredProperty.id}`}
+                        className="
+                          flex
+                          h-10
+                          w-10
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-[#0F6A6A]
+                          text-white
+                          transition
+                          hover:-translate-y-0.5
+                          hover:bg-[#0C5A5A]
+                        "
+                        aria-label="Lihat properti"
+                      >
+                        <ArrowRight size={16} />
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Available Unit Card */}
-            <div className="absolute right-3 top-3 sm:right-5 sm:top-5">
-              <div className="rounded-2xl bg-[#0F6A6A] px-4 py-3 shadow-xl sm:px-5 sm:py-4">
+            {/* ======================================
+                AVAILABLE UNIT
+                ====================================== */}
 
-                <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-white/65 sm:text-[10px]">
+            <div className="absolute right-3 top-3 sm:right-6 sm:top-6">
+              <div className="rounded-[20px] bg-[#0F6A6A] px-4 py-3.5 text-white shadow-xl sm:px-5 sm:py-4">
+
+                <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-white/60">
                   Unit Tersedia
                 </p>
 
-                <p className="mt-1 text-2xl font-bold leading-none text-white sm:text-3xl">
+                <p className="mt-1 text-2xl font-bold leading-none sm:text-3xl">
                   {loading
                     ? "..."
                     : unitAvailable > 0
                       ? `${unitAvailable}+`
                       : "0"}
                 </p>
-
               </div>
             </div>
 
-            {/* Decorative Dot Grid */}
+            {/* Decorative grid */}
+
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-7 -right-7 hidden h-32 w-32 opacity-20 sm:block"
+              className="
+                pointer-events-none
+                absolute
+                -bottom-8
+                -right-8
+                hidden
+                h-36
+                w-36
+                opacity-20
+                sm:block
+              "
               style={{
                 backgroundImage:
                   "radial-gradient(circle, #0F6A6A 1.5px, transparent 1.5px)",
                 backgroundSize: "12px 12px",
               }}
             />
-
           </div>
         </div>
       </div>

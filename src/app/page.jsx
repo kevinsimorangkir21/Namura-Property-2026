@@ -1,35 +1,81 @@
 import Hero from "@/components/Hero";
-import About from "@/components/About";
 import PropertyList from "@/components/PropertyList";
+import About from "@/components/About";
 import LatestArticles from "@/components/LatestArticles";
 import Testimonials from "@/components/Testimonials";
 
 export const metadata = {
   title: "Namura Property | Hunian Berkualitas di Lampung",
+
   description:
-    "Namura Property menyediakan pilihan properti terbaik dengan lokasi strategis, desain modern, dan nilai investasi yang menjanjikan di Lampung dan Indonesia.",
+    "Temukan rumah, tanah, ruko, dan properti pilihan di Lampung bersama Namura Property. Informasi properti yang transparan dan pendampingan profesional untuk kebutuhan hunian maupun investasi.",
+
   keywords: [
+    "Namura Property",
     "properti Lampung",
     "rumah dijual Lampung",
+    "rumah dijual Bandar Lampung",
     "tanah dijual Lampung",
-    "investasi properti",
-    "Namura Property",
+    "ruko dijual Lampung",
+    "investasi properti Lampung",
+    "jual beli properti",
+    "real estate Lampung",
   ],
+
   openGraph: {
     title: "Namura Property | Hunian Berkualitas di Lampung",
+
     description:
-      "Temukan properti impian Anda bersama Namura Property. Hunian modern, lokasi strategis, dan nilai investasi terjamin.",
+      "Temukan rumah, tanah, ruko, dan properti pilihan di Lampung bersama Namura Property.",
+
+    url: "https://namuraproperty.com",
+
+    siteName: "Namura Property",
+
+    locale: "id_ID",
+
+    type: "website",
+
+    images: [
+      {
+        url: "/Logo/Namura.png",
+        width: 200,
+        height: 200,
+        alt: "Namura Property",
+      },
+    ],
   },
 };
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-hidden">
+
+      {/* ==========================================
+          HERO
+          ========================================== */}
       <Hero />
+
+      {/* ==========================================
+          FEATURED PROPERTIES
+          ========================================== */}
       <PropertyList />
+
+      {/* ==========================================
+          ABOUT / TRUST
+          ========================================== */}
       <About />
+
+      {/* ==========================================
+          LATEST ARTICLES
+          ========================================== */}
       <LatestArticles />
+
+      {/* ==========================================
+          TESTIMONIALS
+          ========================================== */}
       <Testimonials />
+
     </main>
   );
 }

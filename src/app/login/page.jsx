@@ -3,7 +3,16 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  Building2,
+  CheckCircle2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
 
@@ -12,6 +21,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
@@ -68,14 +78,34 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="flex min-h-screen">
+    <main className="h-dvh overflow-hidden bg-white">
+      <div className="flex h-full min-h-0">
 
         {/* =====================================================
             LEFT / BRAND PANEL
         ===================================================== */}
-        <div className="relative hidden w-[44%] overflow-hidden bg-[#0F6A6A] lg:flex">
-          <div className="relative z-10 flex w-full flex-col justify-between p-12 xl:p-16">
+        <section className="relative hidden h-full w-[46%] overflow-hidden bg-[#0F6A6A] lg:block">
+
+          {/* DECORATION */}
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -left-32 -top-32 h-[420px] w-[420px] rounded-full border border-white/[0.07]" />
+
+            <div className="absolute -left-16 -top-16 h-[260px] w-[260px] rounded-full border border-white/[0.06]" />
+
+            <div className="absolute -bottom-48 -right-48 h-[600px] w-[600px] rounded-full border border-white/[0.08]" />
+
+            <div className="absolute -bottom-20 -right-20 h-[360px] w-[360px] rounded-full border border-white/[0.06]" />
+
+            <div className="absolute right-[20%] top-[24%] h-2 w-2 rounded-full bg-white/25" />
+
+            <div className="absolute right-[28%] top-[30%] h-1.5 w-1.5 rounded-full bg-white/20" />
+
+            <div className="absolute bottom-[27%] left-[18%] h-1.5 w-1.5 rounded-full bg-white/20" />
+
+            <div className="absolute bottom-[32%] left-[25%] h-1 w-1 rounded-full bg-white/15" />
+          </div>
+
+          <div className="relative z-10 flex h-full flex-col px-10 py-8 xl:px-14 xl:py-10">
 
             {/* LOGO */}
             <div>
@@ -85,88 +115,148 @@ export default function LoginPage() {
                 width={180}
                 height={68}
                 priority
-                className="h-auto w-[180px] object-contain object-left"
+                className="h-auto w-[160px] object-contain object-left xl:w-[175px]"
               />
             </div>
 
-            {/* MESSAGE */}
-            <div className="max-w-[440px]">
-              <p className="mb-4 text-sm font-medium tracking-wide text-white/60">
-                ADMINISTRATION
-              </p>
+            {/* CENTER */}
+            <div className="flex flex-1 items-center">
+              <div className="max-w-[460px]">
 
-              <h1 className="text-4xl font-bold leading-[1.12] tracking-tight text-white xl:text-5xl">
-                Kelola bisnis properti
-                <span className="block text-white/75">
-                  dengan lebih sederhana.
-                </span>
-              </h1>
+                {/* LABEL */}
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10">
+                    <Building2
+                      size={11}
+                      className="text-white/80"
+                    />
+                  </span>
 
-              <p className="mt-6 max-w-[400px] text-base leading-7 text-white/65">
-                Satu dashboard untuk mengelola properti, artikel,
-                marketing, dan aktivitas bisnis Namura Property.
-              </p>
+                  <span className="text-[10px] font-semibold tracking-[0.16em] text-white/60">
+                    NAMURA PROPERTY
+                  </span>
+                </div>
+
+                {/* HEADING */}
+                <h1 className="text-[38px] font-bold leading-[1.08] tracking-[-0.035em] text-white xl:text-[48px]">
+                  Kelola properti.
+                  <span className="block text-white/50">
+                    Bangun masa depan.
+                  </span>
+                </h1>
+
+                {/* DESCRIPTION */}
+                <p className="mt-5 max-w-[390px] text-sm leading-6 text-white/55">
+                  Akses dashboard Namura Property untuk mengelola
+                  properti, artikel, dan aktivitas bisnis dalam satu
+                  tempat.
+                </p>
+
+                {/* FEATURES */}
+                <div className="mt-7 space-y-3">
+                  {[
+                    "Kelola data properti dengan mudah",
+                    "Publikasikan artikel terbaru",
+                    "Pantau aktivitas bisnis",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2.5"
+                    >
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10">
+                        <CheckCircle2
+                          size={12}
+                          className="text-white/70"
+                        />
+                      </span>
+
+                      <span className="text-xs text-white/60">
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* LEFT FOOTER */}
-            <p className="text-xs text-white/40">
-              © {new Date().getFullYear()} Namura Property
-            </p>
+            {/* FOOTER */}
+            <div className="flex items-center justify-between border-t border-white/10 pt-5">
+              <p className="text-[10px] text-white/30">
+                © {new Date().getFullYear()} Namura Property
+              </p>
+
+              <div className="flex items-center gap-1.5 text-[10px] text-white/30">
+                <ShieldCheck size={12} />
+                Secure Administration
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
         {/* =====================================================
-            RIGHT / LOGIN PANEL
+            RIGHT / LOGIN
         ===================================================== */}
-        <div className="flex w-full items-center justify-center px-6 py-10 sm:px-8 lg:w-[56%] lg:px-12">
-          <div className="w-full max-w-[420px]">
+        <section className="flex h-full min-h-0 w-full items-center justify-center bg-white px-6 lg:w-[54%] lg:px-10 xl:px-16">
+
+          <div className="w-full max-w-[400px]">
 
             {/* MOBILE LOGO */}
-            <div className="mb-12 lg:hidden">
+            <div className="mb-7 lg:hidden">
               <Image
-                src="/Logo/Namura_Property2.png"
+                src="/Logo/Namura_Property1.png"
                 alt="Namura Property"
                 width={180}
                 height={68}
                 priority
-                className="h-auto w-[180px] object-contain object-left"
+                className="h-auto w-[155px] object-contain object-left"
               />
             </div>
 
             {/* HEADER */}
             <div>
-              <p className="text-sm font-semibold text-[#0F6A6A]">
-                ADMIN
+
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAF5F4]">
+                <Lock
+                  size={18}
+                  strokeWidth={1.8}
+                  className="text-[#0F6A6A]"
+                />
+              </div>
+
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#0F6A6A]">
+                Administrator
               </p>
 
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl">
-                Selamat datang
-              </h1>
+              <h2 className="mt-1.5 text-[30px] font-bold leading-tight tracking-[-0.035em] text-[#101918]">
+                Selamat datang.
+              </h2>
 
-              <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
-                Masuk ke dashboard Namura Property untuk melanjutkan.
+              <p className="mt-2 max-w-[360px] text-xs leading-5 text-[#78837F] sm:text-sm">
+                Masuk ke dashboard Namura Property untuk melanjutkan
+                pengelolaan bisnis Anda.
               </p>
             </div>
 
             {/* FORM */}
             <form
               onSubmit={handleLogin}
-              className="mt-9 space-y-5"
+              className="mt-6"
             >
 
               {/* EMAIL */}
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-2 block text-sm font-semibold text-gray-800"
+                  className="mb-2 block text-xs font-semibold text-[#263331]"
                 >
                   Email
                 </label>
 
-                <div className="relative">
+                <div className="group relative">
                   <Mail
-                    size={18}
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={17}
+                    strokeWidth={1.8}
+                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9AA5A1] transition-colors group-focus-within:text-[#0F6A6A]"
                   />
 
                   <input
@@ -175,48 +265,81 @@ export default function LoginPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Masukkan email"
+                    placeholder="nama@email.com"
                     autoComplete="email"
                     required
-                    className="h-13 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
+                    className="h-[50px] w-full rounded-[13px] border border-[#E1E7E5] bg-white pl-10 pr-4 text-sm text-[#101918] outline-none transition-all duration-200 placeholder:text-[#A4AEAB] hover:border-[#CBD5D2] focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
                   />
                 </div>
               </div>
 
               {/* PASSWORD */}
-              <div>
+              <div className="mt-4">
                 <label
                   htmlFor="password"
-                  className="mb-2 block text-sm font-semibold text-gray-800"
+                  className="mb-2 block text-xs font-semibold text-[#263331]"
                 >
                   Password
                 </label>
 
-                <div className="relative">
+                <div className="group relative">
+
                   <Lock
-                    size={18}
-                    className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={17}
+                    strokeWidth={1.8}
+                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9AA5A1] transition-colors group-focus-within:text-[#0F6A6A]"
                   />
 
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Masukkan password"
                     autoComplete="current-password"
                     required
-                    className="h-13 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 hover:border-gray-300 focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
+                    className="h-[50px] w-full rounded-[13px] border border-[#E1E7E5] bg-white pl-10 pr-12 text-sm text-[#101918] outline-none transition-all duration-200 placeholder:text-[#A4AEAB] hover:border-[#CBD5D2] focus:border-[#0F6A6A] focus:ring-4 focus:ring-[#0F6A6A]/[0.06]"
                   />
+
+                  {/* SHOW / HIDE */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword((prev) => !prev)
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Sembunyikan password"
+                        : "Tampilkan password"
+                    }
+                    title={
+                      showPassword
+                        ? "Sembunyikan password"
+                        : "Tampilkan password"
+                    }
+                    className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-[#98A39F] transition-all duration-200 hover:bg-[#EAF5F4] hover:text-[#0F6A6A] active:scale-95"
+                  >
+                    {showPassword ? (
+                      <EyeOff
+                        size={17}
+                        strokeWidth={1.8}
+                      />
+                    ) : (
+                      <Eye
+                        size={17}
+                        strokeWidth={1.8}
+                      />
+                    )}
+                  </button>
                 </div>
               </div>
 
-              {/* SUBMIT */}
+              {/* LOGIN BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="group mt-2 flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-[#0F6A6A] text-sm font-semibold text-white transition-all duration-200 hover:bg-[#0C5A5A] hover:shadow-lg hover:shadow-[#0F6A6A]/15 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+                className="group mt-6 flex h-[50px] w-full items-center justify-center gap-2 rounded-[13px] bg-[#0F6A6A] text-sm font-semibold text-white shadow-[0_7px_20px_rgba(15,106,106,0.14)] transition-all duration-200 hover:bg-[#0C5A5A] hover:shadow-[0_10px_26px_rgba(15,106,106,0.20)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -226,8 +349,10 @@ export default function LoginPage() {
                 ) : (
                   <>
                     Masuk ke Dashboard
+
                     <ArrowRight
                       size={16}
+                      strokeWidth={2}
                       className="transition-transform duration-200 group-hover:translate-x-0.5"
                     />
                   </>
@@ -235,16 +360,42 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* SECURITY NOTE */}
-            <div className="mt-7 border-t border-gray-100 pt-6">
-              <p className="text-center text-xs leading-5 text-gray-400">
-                Akses ini hanya diperuntukkan bagi administrator
-                Namura Property.
+            {/* SECURITY */}
+            <div className="mt-5 rounded-[13px] border border-[#E8EEEC] bg-[#F8FAF9] px-3.5 py-3">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#EAF5F4]">
+                  <ShieldCheck
+                    size={14}
+                    strokeWidth={1.8}
+                    className="text-[#0F6A6A]"
+                  />
+                </div>
+
+                <div>
+                  <p className="text-[11px] font-semibold text-[#344240]">
+                    Akses administrator
+                  </p>
+
+                  <p className="mt-0.5 text-[10px] leading-4 text-[#899490]">
+                    Hanya untuk administrator resmi Namura Property.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* FOOTER */}
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <span className="h-1 w-1 rounded-full bg-[#0F6A6A]" />
+
+              <p className="text-[10px] text-[#A0AAA7]">
+                Namura Property Administration
               </p>
+
+              <span className="h-1 w-1 rounded-full bg-[#0F6A6A]" />
             </div>
 
           </div>
-        </div>
+        </section>
       </div>
     </main>
   );

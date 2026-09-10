@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function About() {
   const features = [
@@ -20,93 +21,123 @@ export default function About() {
   ];
 
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-[1200px] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-
-          {/* IMAGE */}
+    <section className="relative overflow-hidden bg-white">
+      <div className="container section">
+        <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
+          {/* =========================
+              IMAGE
+          ========================== */}
           <div className="relative">
-            <div className="overflow-hidden rounded-[28px] sm:rounded-[32px]">
+            <div className="relative overflow-hidden rounded-[28px] sm:rounded-[32px]">
               <Image
                 src="/Asset/Banner/Asset1.png"
                 alt="Tentang Namura Property"
                 width={700}
                 height={800}
-                className="h-[480px] w-full object-cover sm:h-[560px] lg:h-[600px]"
+                className="h-[460px] w-full object-cover transition-transform duration-700 hover:scale-[1.02] sm:h-[540px] lg:h-[600px]"
               />
+
+              {/* Image overlay */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
 
-            {/* Experience Badge */}
-            <div className="absolute bottom-5 left-5 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-xl sm:bottom-6 sm:left-6 sm:px-6 sm:py-5">
-              <h3 className="text-2xl font-bold text-[#0F6A6A] sm:text-3xl">
-                10+
-              </h3>
+            {/* Experience badge */}
+            <div className="absolute bottom-5 left-5 sm:bottom-7 sm:left-7">
+              <div className="rounded-2xl border border-white/70 bg-white/95 px-5 py-4 shadow-[0_12px_40px_rgba(15,23,42,0.12)] backdrop-blur-md sm:px-6 sm:py-5">
+                <div className="flex items-end gap-3">
+                  <span className="text-3xl font-bold tracking-tight text-[var(--primary)] sm:text-4xl">
+                    10+
+                  </span>
 
-              <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                Tahun Pengalaman
-              </p>
+                  <div className="pb-1">
+                    <p className="text-xs font-semibold text-[var(--foreground)] sm:text-sm">
+                      Tahun
+                    </p>
+                    <p className="text-xs text-[var(--foreground-muted)] sm:text-sm">
+                      Pengalaman
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* CONTENT */}
-          <div>
-            {/* Badge */}
-            <span className="inline-flex items-center rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2 text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
+          {/* =========================
+              CONTENT
+          ========================== */}
+          <div className="max-w-2xl">
+            {/* Eyebrow */}
+            <div className="eyebrow">
+              <span className="eyebrow-dot" />
               Tentang Kami
-            </span>
+            </div>
 
             {/* Heading */}
-            <h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
+            <h2 className="heading-lg mt-5">
               Membangun Hunian Nyaman
-              <span className="block text-[#0F6A6A]">
+              <span className="block text-[var(--primary)]">
                 untuk Masa Depan Keluarga
               </span>
             </h2>
 
             {/* Description */}
-            <p className="mt-5 max-w-xl text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
+            <p className="text-body mt-6 max-w-xl">
               Kami menghadirkan solusi properti yang tidak hanya nyaman untuk
               dihuni, tetapi juga memberikan nilai investasi yang terus
               berkembang. Dengan pengalaman lebih dari satu dekade, kami telah
               membantu banyak keluarga menemukan rumah impiannya.
             </p>
 
-            {/* FEATURES */}
-            <div className="mt-9 space-y-6">
-              {features.map((item) => (
-                <div
-                  key={item.title}
-                  className="flex gap-4"
-                >
-                  {/* Icon */}
-                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0F6A6A]/[0.07]">
-                    <CheckCircle
-                      className="h-4.5 w-4.5 text-[#0F6A6A]"
-                      strokeWidth={2}
-                    />
-                  </div>
+            {/* Features */}
+            <div className="mt-10">
+              <div className="space-y-7">
+                {features.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="group relative flex gap-4 sm:gap-5"
+                  >
+                    {/* Connecting line */}
+                    {index !== features.length - 1 && (
+                      <div className="absolute left-[19px] top-11 h-[calc(100%+28px)] w-px bg-[var(--border)]" />
+                    )}
 
-                  {/* Text */}
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900 sm:text-base">
-                      {item.title}
-                    </h4>
+                    {/* Icon */}
+                    <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--primary-light)] transition-all duration-300 group-hover:bg-[var(--primary)]">
+                      <CheckCircle2
+                        className="h-5 w-5 text-[var(--primary)] transition-colors duration-300 group-hover:text-white"
+                        strokeWidth={2}
+                      />
+                    </div>
 
-                    <p className="mt-1 text-sm leading-6 text-gray-500 sm:text-[15px]">
-                      {item.desc}
-                    </p>
+                    {/* Text */}
+                    <div className="pt-0.5">
+                      <h3 className="text-base font-semibold tracking-tight text-[var(--foreground)] sm:text-lg">
+                        {item.title}
+                      </h3>
+
+                      <p className="mt-1.5 max-w-lg text-sm leading-6 text-[var(--foreground-muted)] sm:text-[15px]">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* CTA */}
-            <button
-              type="button"
-              className="mt-9 inline-flex h-12 items-center justify-center rounded-full bg-[#0F6A6A] px-7 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(15,106,106,0.15)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#0C5A5A] hover:shadow-[0_12px_30px_rgba(15,106,106,0.2)] active:translate-y-0"
-            >
-              Pelajari Lebih Lanjut
-            </button>
+            <div className="mt-10">
+              <Link
+                href="/tentang-kami"
+                className="btn btn-primary group"
+              >
+                Pelajari Lebih Lanjut
+
+                <ArrowRight
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  strokeWidth={2}
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

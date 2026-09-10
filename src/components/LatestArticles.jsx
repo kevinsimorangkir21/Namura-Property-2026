@@ -5,8 +5,8 @@ import Link from "next/link";
 import { API_URL, getImageUrl } from "@/lib/api";
 import {
   ArrowRight,
-  FileText,
   CalendarDays,
+  FileText,
 } from "lucide-react";
 
 export default function LatestArticles() {
@@ -83,125 +83,141 @@ export default function LatestArticles() {
 
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="container section">
 
-        {/* HEADER */}
-        <div className="mb-10 flex flex-col gap-7 lg:mb-14 lg:flex-row lg:items-end lg:justify-between">
-
-          <div className="max-w-[680px]">
-
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#0F6A6A]/10 bg-[#0F6A6A]/[0.06] px-3.5 py-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#0F6A6A]/10">
-                <FileText
-                  size={12}
-                  className="text-[#0F6A6A]"
-                />
-              </span>
-
-              <span className="text-xs font-semibold tracking-wide text-[#0F6A6A] sm:text-sm">
-                Artikel Terbaru
-              </span>
+        {/* =========================
+            HEADER
+        ========================== */}
+        <div className="section-header">
+          <div className="max-w-2xl">
+            {/* Eyebrow */}
+            <div className="eyebrow">
+              <span className="eyebrow-dot" />
+              Artikel Terbaru
             </div>
 
             {/* Heading */}
-            <h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-gray-950 sm:text-4xl lg:text-5xl">
+            <h2 className="heading-lg mt-5">
               Insight & Informasi
-              <span className="block text-[#0F6A6A]">
+              <span className="block text-[var(--primary)]">
                 Seputar Properti
               </span>
             </h2>
 
             {/* Description */}
-            <p className="mt-5 max-w-[600px] text-[15px] leading-7 text-gray-500 sm:text-base lg:text-lg">
-              Temukan tips, panduan, dan informasi terbaru untuk
-              membantu Anda memahami dunia properti dan membuat
-              keputusan yang lebih tepat.
+            <p className="text-body mt-6 max-w-xl">
+              Temukan tips, panduan, dan informasi terbaru untuk membantu Anda
+              memahami dunia properti dan membuat keputusan yang lebih tepat.
             </p>
           </div>
 
           {/* Desktop CTA */}
           <Link
             href="/artikel"
-            className="group hidden shrink-0 items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] hover:shadow-sm lg:inline-flex"
+            className="btn btn-outline group hidden shrink-0 lg:inline-flex"
           >
             Lihat Semua Artikel
 
             <ArrowRight
-              size={16}
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={2}
             />
           </Link>
         </div>
 
-        {/* MOBILE CTA */}
+        {/* =========================
+            MOBILE CTA
+        ========================== */}
         <div className="mb-8 lg:hidden">
           <Link
             href="/artikel"
-            className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] active:scale-[0.98]"
+            className="btn btn-outline group w-full"
           >
             Lihat Semua Artikel
 
             <ArrowRight
-              size={16}
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={2}
             />
           </Link>
         </div>
 
-        {/* LOADING */}
+        {/* =========================
+            LOADING
+        ========================== */}
         {loading ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {[...Array(3)].map((_, index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-[28px] border border-gray-100 bg-white"
+                className="
+                  overflow-hidden
+                  rounded-[var(--radius-lg)]
+                  border border-[var(--border)]
+                  bg-white
+                "
               >
-                {/* Image skeleton */}
-                <div className="aspect-[16/10] animate-pulse bg-gray-100" />
+                {/* Image */}
+                <div className="aspect-[16/10] animate-pulse bg-[var(--surface-muted)]" />
 
-                {/* Content skeleton */}
+                {/* Content */}
                 <div className="space-y-4 p-5 sm:p-6">
-                  <div className="h-3 w-28 animate-pulse rounded bg-gray-100" />
+                  <div className="h-3 w-28 animate-pulse rounded-full bg-[var(--surface-muted)]" />
 
-                  <div className="h-6 w-full animate-pulse rounded bg-gray-100" />
+                  <div className="h-6 w-full animate-pulse rounded-md bg-[var(--surface-muted)]" />
 
-                  <div className="h-4 w-5/6 animate-pulse rounded bg-gray-100" />
+                  <div className="h-4 w-5/6 animate-pulse rounded-md bg-[var(--surface-muted)]" />
 
-                  <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
+                  <div className="h-4 w-2/3 animate-pulse rounded-md bg-[var(--surface-muted)]" />
 
-                  <div className="h-4 w-32 animate-pulse rounded bg-gray-100" />
+                  <div className="pt-2">
+                    <div className="h-4 w-32 animate-pulse rounded-md bg-[var(--surface-muted)]" />
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : error ? (
-          /* ERROR STATE */
-          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
+          /* =========================
+             ERROR STATE
+          ========================== */
+          <div
+            className="
+              rounded-[var(--radius-lg)]
+              border border-[var(--border)]
+              bg-white
+              px-6 py-16
+              text-center
+              shadow-[var(--shadow-sm)]
+            "
+          >
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
               <FileText
-                size={20}
-                className="text-red-400"
+                className="h-5 w-5 text-red-400"
+                strokeWidth={1.8}
               />
             </div>
 
-            <p className="mt-4 text-sm font-medium text-gray-700">
+            <p className="mt-4 text-sm font-medium text-[var(--foreground)]">
               {error}
             </p>
 
             <Link
               href="/artikel"
-              className="mt-5 inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-[#0F6A6A] hover:text-[#0F6A6A]"
+              className="btn btn-outline mt-6"
             >
               Buka Artikel
-              <ArrowRight size={14} />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         ) : articles.length > 0 ? (
-          /* ARTICLES */
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          /* =========================
+             ARTICLES
+          ========================== */
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {articles.map((item) => {
               const imageSrc = item?.thumbnail || item?.image;
+
               const imageUrl = imageSrc
                 ? getImageUrl(imageSrc)
                 : null;
@@ -210,65 +226,165 @@ export default function LatestArticles() {
                 <Link
                   key={item.id}
                   href={`/artikel/${item.slug}`}
-                  className="group block"
+                  className="group block h-full"
                 >
-                  <article className="h-full overflow-hidden rounded-[28px] border border-gray-100 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-gray-200 group-hover:shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
-
-                    {/* IMAGE */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
+                  <article
+                    className="
+                      flex h-full flex-col
+                      overflow-hidden
+                      rounded-[var(--radius-lg)]
+                      border border-[var(--border)]
+                      bg-white
+                      shadow-[var(--shadow-sm)]
+                      transition-all duration-300
+                      group-hover:-translate-y-1
+                      group-hover:border-[var(--primary)]/20
+                      group-hover:shadow-[var(--shadow-lg)]
+                    "
+                  >
+                    {/* =========================
+                        IMAGE
+                    ========================== */}
+                    <div
+                      className="
+                        relative
+                        aspect-[16/10]
+                        overflow-hidden
+                        bg-[var(--surface-muted)]
+                      "
+                    >
                       {imageUrl ? (
                         <img
                           src={imageUrl}
                           alt={item.title || "Artikel properti"}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          className="
+                            h-full w-full object-cover
+                            transition-transform duration-700
+                            group-hover:scale-[1.045]
+                          "
                           loading="lazy"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <FileText
-                            size={42}
-                            strokeWidth={1.2}
-                            className="text-gray-300"
-                          />
+                          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+                            <FileText
+                              className="h-6 w-6 text-[var(--primary)]"
+                              strokeWidth={1.5}
+                            />
+                          </div>
                         </div>
                       )}
 
-                      {/* Image Overlay */}
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      {/* Image overlay */}
+                      <div
+                        className="
+                          pointer-events-none
+                          absolute inset-0
+                          bg-gradient-to-t
+                          from-black/20
+                          via-transparent
+                          to-transparent
+                          opacity-0
+                          transition-opacity duration-300
+                          group-hover:opacity-100
+                        "
+                      />
+
+                      {/* Article Badge */}
+                      <div className="absolute left-4 top-4">
+                        <span
+                          className="
+                            inline-flex items-center gap-1.5
+                            rounded-full
+                            bg-white/95
+                            px-3 py-1.5
+                            text-[11px]
+                            font-semibold
+                            text-[var(--primary)]
+                            shadow-sm
+                            backdrop-blur-sm
+                          "
+                        >
+                          <FileText className="h-3 w-3" />
+                          Properti
+                        </span>
+                      </div>
                     </div>
 
-                    {/* CONTENT */}
-                    <div className="flex min-h-[250px] flex-col p-5 sm:p-6">
+                    {/* =========================
+                        CONTENT
+                    ========================== */}
+                    <div className="flex min-h-[245px] flex-1 flex-col p-5 sm:p-6">
 
-                      {/* DATE */}
-                      <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                        <CalendarDays size={13} />
+                      {/* Date */}
+                      <div
+                        className="
+                          flex items-center gap-1.5
+                          text-xs font-medium
+                          text-[var(--foreground-soft)]
+                        "
+                      >
+                        <CalendarDays className="h-3.5 w-3.5" />
 
                         <time dateTime={item.created_at}>
                           {formatDate(item.created_at)}
                         </time>
                       </div>
 
-                      {/* TITLE */}
-                      <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug text-gray-950 transition-colors duration-200 group-hover:text-[#0F6A6A] sm:text-xl">
+                      {/* Title */}
+                      <h3
+                        className="
+                          mt-3
+                          line-clamp-2
+                          text-lg
+                          font-bold
+                          leading-snug
+                          tracking-tight
+                          text-[var(--foreground)]
+                          transition-colors duration-200
+                          group-hover:text-[var(--primary)]
+                          sm:text-xl
+                        "
+                      >
                         {item.title}
                       </h3>
 
-                      {/* EXCERPT */}
+                      {/* Excerpt */}
                       {item.excerpt && (
-                        <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">
+                        <p
+                          className="
+                            mt-3
+                            line-clamp-3
+                            text-sm
+                            leading-6
+                            text-[var(--foreground-muted)]
+                          "
+                        >
                           {item.excerpt}
                         </p>
                       )}
 
-                      {/* READ MORE */}
-                      <div className="mt-auto pt-5">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0F6A6A]">
+                      {/* Read More */}
+                      <div className="mt-auto pt-6">
+                        <span
+                          className="
+                            inline-flex
+                            items-center
+                            gap-2
+                            text-sm
+                            font-semibold
+                            text-[var(--primary)]
+                          "
+                        >
                           Baca Selengkapnya
 
                           <ArrowRight
-                            size={15}
-                            className="transition-transform duration-200 group-hover:translate-x-1"
+                            className="
+                              h-4 w-4
+                              transition-transform duration-300
+                              group-hover:translate-x-1
+                            "
+                            strokeWidth={2}
                           />
                         </span>
                       </div>
@@ -279,40 +395,34 @@ export default function LatestArticles() {
             })}
           </div>
         ) : (
-          /* EMPTY STATE */
-          <div className="rounded-3xl border border-gray-100 bg-white px-6 py-16 text-center shadow-sm">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0F6A6A]/[0.07]">
+          /* =========================
+             EMPTY STATE
+          ========================== */
+          <div
+            className="
+              rounded-[var(--radius-lg)]
+              border border-[var(--border)]
+              bg-white
+              px-6 py-16
+              text-center
+              shadow-[var(--shadow-sm)]
+            "
+          >
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary-light)]">
               <FileText
-                size={20}
-                className="text-[#0F6A6A]"
+                className="h-5 w-5 text-[var(--primary)]"
+                strokeWidth={1.8}
               />
             </div>
 
-            <p className="mt-4 text-sm font-medium text-gray-700">
+            <p className="mt-4 text-sm font-semibold text-[var(--foreground)]">
               Belum ada artikel tersedia.
             </p>
 
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
-              Silakan kembali lagi nanti untuk membaca artikel
-              terbaru dari kami.
+            <p className="mx-auto mt-1 max-w-sm text-sm leading-6 text-[var(--foreground-muted)]">
+              Silakan kembali lagi nanti untuk membaca artikel terbaru dari
+              kami.
             </p>
-          </div>
-        )}
-
-        {/* BOTTOM CTA */}
-        {!loading && !error && articles.length > 0 && (
-          <div className="mt-12 flex justify-center lg:mt-14">
-            <Link
-              href="/artikel"
-              className="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#0F6A6A] hover:text-[#0F6A6A] hover:shadow-sm"
-            >
-              Jelajahi Semua Artikel
-
-              <ArrowRight
-                size={15}
-                className="transition-transform duration-200 group-hover:translate-x-0.5"
-              />
-            </Link>
           </div>
         )}
       </div>
