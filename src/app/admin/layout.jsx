@@ -89,9 +89,26 @@ function NavItem({
 }) {
   const Icon = item.icon;
 
+  /*
+   * Dashboard (/admin) harus exact match.
+   *
+   * Sebelumnya:
+   * pathname.startsWith("/admin/")
+   *
+   * membuat Dashboard ikut aktif ketika:
+   * /admin/profile
+   * /admin/properti
+   * /admin/artikel
+   * dll.
+   *
+   * Sekarang Dashboard hanya aktif jika pathname benar-benar
+   * sama dengan /admin.
+   */
   const isActive =
-    pathname === item.href ||
-    pathname.startsWith(item.href + "/");
+    item.href === "/admin"
+      ? pathname === "/admin"
+      : pathname === item.href ||
+        pathname.startsWith(item.href + "/");
 
   return (
     <Link
@@ -99,8 +116,9 @@ function NavItem({
       onClick={onNavigate}
       title={!sidebarOpen ? item.name : undefined}
       className={`
-        group relative flex h-[44px] items-center gap-3 rounded-[12px]
-        px-3 transition-all duration-200
+        group relative flex h-[44px] items-center gap-3
+        rounded-[12px] px-3
+        transition-all duration-200
         ${
           isActive
             ? "bg-white text-[#0F6A6A] shadow-[0_4px_14px_rgba(0,0,0,0.07)]"
@@ -111,13 +129,23 @@ function NavItem({
     >
       {/* ACTIVE INDICATOR */}
       {isActive && (
-        <span className="absolute left-0 top-1/2 h-[22px] w-[3px] -translate-y-1/2 rounded-r-full bg-[#0F6A6A]" />
+        <span
+          className="
+            absolute left-0 top-1/2
+            h-[22px] w-[3px]
+            -translate-y-1/2
+            rounded-r-full
+            bg-[#0F6A6A]
+          "
+        />
       )}
 
       {/* ICON */}
       <span
         className={`
-          flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px]
+          flex h-8 w-8 shrink-0
+          items-center justify-center
+          rounded-[9px]
           transition-all duration-200
           ${
             isActive
@@ -206,7 +234,7 @@ export default function AdminLayout({ children }) {
   }, [router]);
 
   /* ==========================================================
-     CLOSE MOBILE MENU WHEN ROUTE CHANGES
+     CLOSE MOBILE MENU / PROFILE WHEN ROUTE CHANGES
   ========================================================== */
 
   useEffect(() => {
@@ -283,9 +311,25 @@ export default function AdminLayout({ children }) {
       <div className="flex h-dvh items-center justify-center overflow-hidden bg-[#F7FAF9]">
         <div className="flex flex-col items-center">
           <div className="relative h-10 w-10">
-            <div className="absolute inset-0 rounded-full border-2 border-[#0F6A6A]/10" />
+            <div
+              className="
+                absolute inset-0
+                rounded-full
+                border-2
+                border-[#0F6A6A]/10
+              "
+            />
 
-            <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-[#0F6A6A]" />
+            <div
+              className="
+                absolute inset-0
+                animate-spin
+                rounded-full
+                border-2
+                border-transparent
+                border-t-[#0F6A6A]
+              "
+            />
           </div>
 
           <p className="mt-4 text-xs text-[#899490]">
@@ -312,7 +356,8 @@ export default function AdminLayout({ children }) {
       <aside
         className={`
           fixed inset-y-0 left-0 z-50 hidden
-          flex-col overflow-hidden bg-[#0F6A6A]
+          flex-col overflow-hidden
+          bg-[#0F6A6A]
           md:flex
           ${
             sidebarOpen
@@ -323,7 +368,10 @@ export default function AdminLayout({ children }) {
         `}
       >
 
-        {/* SIDEBAR HEADER */}
+        {/* ====================================================
+            SIDEBAR HEADER
+        ==================================================== */}
+
         <div
           className={`
             flex h-[72px] shrink-0 items-center
@@ -335,6 +383,8 @@ export default function AdminLayout({ children }) {
             }
           `}
         >
+
+          {/* LOGO */}
           {sidebarOpen ? (
             <Link
               href="/admin"
@@ -346,14 +396,22 @@ export default function AdminLayout({ children }) {
                 width={155}
                 height={58}
                 priority
-                className="h-auto w-[145px] object-contain object-left"
+                className="
+                  h-auto w-[145px]
+                  object-contain object-left
+                "
               />
             </Link>
           ) : (
             <Link
               href="/admin"
               title="Namura Property"
-              className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white"
+              className="
+                flex h-10 w-10
+                items-center justify-center
+                overflow-hidden rounded-xl
+                bg-white
+              "
             >
               <Image
                 src="/Logo/Namura.png"
@@ -366,7 +424,7 @@ export default function AdminLayout({ children }) {
             </Link>
           )}
 
-          {/* COLLAPSE */}
+          {/* COLLAPSE BUTTON */}
           <button
             type="button"
             onClick={() =>
@@ -379,13 +437,15 @@ export default function AdminLayout({ children }) {
                 ? "Tutup sidebar"
                 : "Buka sidebar"
             }
-            className={`
-              flex h-8 w-8 shrink-0 items-center
-              justify-center rounded-lg
-              text-white/50 transition
+            className="
+              flex h-8 w-8 shrink-0
+              items-center justify-center
+              rounded-lg
+              text-white/50
+              transition
               hover:bg-white/[0.08]
               hover:text-white
-            `}
+            "
           >
             {sidebarOpen ? (
               <PanelLeftClose
@@ -401,7 +461,10 @@ export default function AdminLayout({ children }) {
           </button>
         </div>
 
-        {/* SIDEBAR CONTENT */}
+        {/* ====================================================
+            SIDEBAR CONTENT
+        ==================================================== */}
+
         <nav className="flex-1 overflow-y-auto px-3 py-5 scrollbar-none">
           {menus.map((group) => (
             <div
@@ -411,11 +474,23 @@ export default function AdminLayout({ children }) {
 
               {/* SECTION LABEL */}
               {sidebarOpen ? (
-                <p className="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white/30">
+                <p
+                  className="
+                    mb-2 px-3
+                    text-[9px] font-bold
+                    uppercase tracking-[0.18em]
+                    text-white/30
+                  "
+                >
                   {group.section}
                 </p>
               ) : (
-                <div className="mb-3 h-px bg-white/[0.08]" />
+                <div
+                  className="
+                    mb-3 h-px
+                    bg-white/[0.08]
+                  "
+                />
               )}
 
               {/* ITEMS */}
@@ -436,17 +511,49 @@ export default function AdminLayout({ children }) {
           ))}
         </nav>
 
-        {/* SIDEBAR BOTTOM */}
-        <div className="shrink-0 border-t border-white/[0.09] p-3">
+        {/* ====================================================
+            SIDEBAR BOTTOM
+        ==================================================== */}
 
+        <div
+          className="
+            shrink-0
+            border-t border-white/[0.09]
+            p-3
+          "
+        >
+
+          {/* USER INFO */}
           {sidebarOpen && (
-            <div className="mb-3 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white">
+            <div
+              className="
+                mb-3 flex items-center gap-2.5
+                rounded-xl
+                bg-white/[0.06]
+                px-3 py-2.5
+              "
+            >
+              <div
+                className="
+                  flex h-8 w-8 shrink-0
+                  items-center justify-center
+                  rounded-full
+                  bg-white/10
+                  text-xs font-bold
+                  text-white
+                "
+              >
                 {userName}
               </div>
 
               <div className="min-w-0">
-                <p className="truncate text-[11px] font-semibold text-white/80">
+                <p
+                  className="
+                    truncate
+                    text-[11px] font-semibold
+                    text-white/80
+                  "
+                >
                   {userNameFull}
                 </p>
 
@@ -457,16 +564,19 @@ export default function AdminLayout({ children }) {
             </div>
           )}
 
+          {/* LOGOUT */}
           <button
             type="button"
             onClick={handleLogout}
             title="Logout"
             className={`
-              flex h-[42px] w-full items-center
+              flex h-[42px] w-full
+              items-center
               rounded-[11px]
               border border-red-400/10
               bg-red-500/[0.08]
-              text-red-200 transition-all
+              text-red-200
+              transition-all
               hover:bg-red-500/[0.15]
               hover:text-white
               ${
@@ -496,7 +606,12 @@ export default function AdminLayout({ children }) {
 
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] md:hidden"
+          className="
+            fixed inset-0 z-40
+            bg-black/30
+            backdrop-blur-[2px]
+            md:hidden
+          "
           onClick={() =>
             setMobileMenuOpen(false)
           }
@@ -509,10 +624,14 @@ export default function AdminLayout({ children }) {
 
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 flex w-[280px]
-          flex-col bg-[#0F6A6A]
-          shadow-2xl transition-transform
-          duration-300 md:hidden
+          fixed inset-y-0 left-0 z-50
+          flex w-[280px]
+          flex-col
+          bg-[#0F6A6A]
+          shadow-2xl
+          transition-transform
+          duration-300
+          md:hidden
           ${
             mobileMenuOpen
               ? "translate-x-0"
@@ -520,15 +639,26 @@ export default function AdminLayout({ children }) {
           }
         `}
       >
-        {/* HEADER */}
-        <div className="flex h-[68px] items-center justify-between border-b border-white/[0.09] px-4">
+
+        {/* MOBILE HEADER */}
+        <div
+          className="
+            flex h-[68px]
+            items-center justify-between
+            border-b border-white/[0.09]
+            px-4
+          "
+        >
           <Image
             src="/Logo/Namura_Property2.png"
             alt="Namura Property"
             width={155}
             height={58}
             priority
-            className="h-auto w-[145px] object-contain object-left"
+            className="
+              h-auto w-[145px]
+              object-contain object-left
+            "
           />
 
           <button
@@ -536,20 +666,34 @@ export default function AdminLayout({ children }) {
             onClick={() =>
               setMobileMenuOpen(false)
             }
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-white/60 hover:bg-white/10 hover:text-white"
+            className="
+              flex h-8 w-8
+              items-center justify-center
+              rounded-lg
+              text-white/60
+              hover:bg-white/10
+              hover:text-white
+            "
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* NAV */}
+        {/* MOBILE NAV */}
         <nav className="flex-1 overflow-y-auto px-3 py-5">
           {menus.map((group) => (
             <div
               key={group.section}
               className="mb-6"
             >
-              <p className="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white/30">
+              <p
+                className="
+                  mb-2 px-3
+                  text-[9px] font-bold
+                  uppercase tracking-[0.18em]
+                  text-white/30
+                "
+              >
                 {group.section}
               </p>
 
@@ -559,7 +703,7 @@ export default function AdminLayout({ children }) {
                     key={item.name}
                     item={item}
                     pathname={pathname}
-                    sidebarOpen
+                    sidebarOpen={true}
                     onNavigate={() =>
                       setMobileMenuOpen(false)
                     }
@@ -571,11 +715,27 @@ export default function AdminLayout({ children }) {
         </nav>
 
         {/* MOBILE LOGOUT */}
-        <div className="border-t border-white/[0.09] p-3">
+        <div
+          className="
+            border-t border-white/[0.09]
+            p-3
+          "
+        >
           <button
             type="button"
             onClick={handleLogout}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-red-500/10 text-sm font-medium text-red-200 transition hover:bg-red-500/20 hover:text-white"
+            className="
+              flex h-11 w-full
+              items-center justify-center
+              gap-2
+              rounded-xl
+              bg-red-500/10
+              text-sm font-medium
+              text-red-200
+              transition
+              hover:bg-red-500/20
+              hover:text-white
+            "
           >
             <LogOut size={16} />
             Logout
@@ -589,7 +749,8 @@ export default function AdminLayout({ children }) {
 
       <main
         className={`
-          flex min-h-dvh min-w-0 flex-1 flex-col
+          flex min-h-dvh min-w-0
+          flex-1 flex-col
           transition-[margin] duration-300
           ${
             sidebarOpen
@@ -603,9 +764,22 @@ export default function AdminLayout({ children }) {
             TOPBAR
         ==================================================== */}
 
-        <header className="sticky top-0 z-30 h-[68px] shrink-0 border-b border-[#E7ECEA] bg-white/95 backdrop-blur-xl">
-
-          <div className="flex h-full items-center px-4 sm:px-5 lg:px-6">
+        <header
+          className="
+            sticky top-0 z-30
+            h-[68px] shrink-0
+            border-b border-[#E7ECEA]
+            bg-white/95
+            backdrop-blur-xl
+          "
+        >
+          <div
+            className="
+              flex h-full
+              items-center
+              px-4 sm:px-5 lg:px-6
+            "
+          >
 
             {/* MOBILE MENU BUTTON */}
             <button
@@ -613,7 +787,15 @@ export default function AdminLayout({ children }) {
               onClick={() =>
                 setMobileMenuOpen(true)
               }
-              className="mr-3 flex h-9 w-9 items-center justify-center rounded-lg text-[#5F6B67] hover:bg-[#F3F7F6] md:hidden"
+              className="
+                mr-3
+                flex h-9 w-9
+                items-center justify-center
+                rounded-lg
+                text-[#5F6B67]
+                hover:bg-[#F3F7F6]
+                md:hidden
+              "
             >
               <Menu size={19} />
             </button>
@@ -622,21 +804,39 @@ export default function AdminLayout({ children }) {
             <div className="min-w-0">
               <nav className="flex items-center gap-2">
 
+                {/* DESKTOP HOME */}
                 <Link
                   href="/admin"
-                  className="hidden items-center gap-1.5 text-xs text-[#9AA5A1] transition hover:text-[#0F6A6A] sm:flex"
+                  className="
+                    hidden items-center gap-1.5
+                    text-xs text-[#9AA5A1]
+                    transition
+                    hover:text-[#0F6A6A]
+                    sm:flex
+                  "
                 >
                   <Home size={13} />
                   Dashboard
                 </Link>
 
                 {breadcrumbs.length > 1 && (
-                  <span className="hidden text-[#D1D8D5] sm:block">
+                  <span
+                    className="
+                      hidden text-[#D1D8D5]
+                      sm:block
+                    "
+                  >
                     /
                   </span>
                 )}
 
-                <div className="flex min-w-0 items-center gap-2">
+                {/* BREADCRUMB ITEMS */}
+                <div
+                  className="
+                    flex min-w-0
+                    items-center gap-2
+                  "
+                >
                   {breadcrumbs
                     .filter(
                       (_, index) =>
@@ -645,20 +845,41 @@ export default function AdminLayout({ children }) {
                     .map((bc) => (
                       <div
                         key={bc.href}
-                        className="flex min-w-0 items-center gap-2"
+                        className="
+                          flex min-w-0
+                          items-center gap-2
+                        "
                       >
-                        <span className="hidden text-[#D1D8D5] sm:block">
+                        <span
+                          className="
+                            hidden text-[#D1D8D5]
+                            sm:block
+                          "
+                        >
                           /
                         </span>
 
                         {bc.isLast ? (
-                          <span className="truncate text-xs font-semibold text-[#263331] sm:text-sm">
+                          <span
+                            className="
+                              truncate
+                              text-xs font-semibold
+                              text-[#263331]
+                              sm:text-sm
+                            "
+                          >
                             {bc.label}
                           </span>
                         ) : (
                           <Link
                             href={bc.href}
-                            className="hidden text-xs text-[#9AA5A1] hover:text-[#0F6A6A] sm:block"
+                            className="
+                              hidden
+                              text-xs
+                              text-[#9AA5A1]
+                              hover:text-[#0F6A6A]
+                              sm:block
+                            "
                           >
                             {bc.label}
                           </Link>
@@ -668,30 +889,70 @@ export default function AdminLayout({ children }) {
                 </div>
 
                 {/* MOBILE CURRENT PAGE */}
-                <span className="truncate text-sm font-semibold text-[#263331] sm:hidden">
+                <span
+                  className="
+                    truncate
+                    text-sm font-semibold
+                    text-[#263331]
+                    sm:hidden
+                  "
+                >
                   {currentPage}
                 </span>
               </nav>
 
-              <p className="mt-0.5 hidden text-[10px] text-[#A0AAA7] sm:block">
+              <p
+                className="
+                  mt-0.5 hidden
+                  text-[10px]
+                  text-[#A0AAA7]
+                  sm:block
+                "
+              >
                 Namura Property Administration
               </p>
             </div>
 
             {/* RIGHT */}
-            <div className="ml-auto flex items-center gap-2">
+            <div
+              className="
+                ml-auto flex items-center gap-2
+              "
+            >
 
               {/* SECURITY STATUS */}
-              <div className="hidden items-center gap-1.5 rounded-full border border-[#E6EEEB] bg-[#F8FAF9] px-2.5 py-1.5 lg:flex">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#3FA66B]" />
+              <div
+                className="
+                  hidden items-center gap-1.5
+                  rounded-full
+                  border border-[#E6EEEB]
+                  bg-[#F8FAF9]
+                  px-2.5 py-1.5
+                  lg:flex
+                "
+              >
+                <span
+                  className="
+                    h-1.5 w-1.5
+                    rounded-full
+                    bg-[#3FA66B]
+                  "
+                />
 
-                <span className="text-[10px] font-medium text-[#78837F]">
+                <span
+                  className="
+                    text-[10px]
+                    font-medium
+                    text-[#78837F]
+                  "
+                >
                   System Active
                 </span>
               </div>
 
               {/* PROFILE */}
               <div className="relative">
+
                 <button
                   type="button"
                   onClick={() =>
@@ -699,26 +960,59 @@ export default function AdminLayout({ children }) {
                       (prev) => !prev
                     )
                   }
-                  className="flex items-center gap-2 rounded-xl px-1.5 py-1 transition hover:bg-[#F4F7F6]"
+                  className="
+                    flex items-center gap-2
+                    rounded-xl
+                    px-1.5 py-1
+                    transition
+                    hover:bg-[#F4F7F6]
+                  "
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0F6A6A] text-xs font-bold text-white shadow-sm">
+                  {/* AVATAR */}
+                  <div
+                    className="
+                      flex h-9 w-9
+                      items-center justify-center
+                      rounded-full
+                      bg-[#0F6A6A]
+                      text-xs font-bold
+                      text-white
+                      shadow-sm
+                    "
+                  >
                     {userName}
                   </div>
 
+                  {/* USER NAME */}
                   <div className="hidden text-left sm:block">
-                    <p className="max-w-[130px] truncate text-xs font-semibold text-[#263331]">
+                    <p
+                      className="
+                        max-w-[130px]
+                        truncate
+                        text-xs font-semibold
+                        text-[#263331]
+                      "
+                    >
                       {userNameFull}
                     </p>
 
-                    <p className="text-[10px] text-[#9AA5A1]">
+                    <p
+                      className="
+                        text-[10px]
+                        text-[#9AA5A1]
+                      "
+                    >
                       Administrator
                     </p>
                   </div>
 
+                  {/* CHEVRON */}
                   <ChevronDown
                     size={14}
                     className={`
-                      hidden text-[#9AA5A1] transition-transform
+                      hidden
+                      text-[#9AA5A1]
+                      transition-transform
                       sm:block
                       ${
                         profileOpen
@@ -729,51 +1023,114 @@ export default function AdminLayout({ children }) {
                   />
                 </button>
 
-                {/* PROFILE DROPDOWN */}
+                {/* =================================================
+                    PROFILE DROPDOWN
+                ================================================= */}
+
                 {profileOpen && (
                   <>
+                    {/* OUTSIDE CLICK */}
                     <div
-                      className="fixed inset-0 z-[-1]"
+                      className="
+                        fixed inset-0 z-[-1]
+                      "
                       onClick={() =>
                         setProfileOpen(false)
                       }
                     />
 
-                    <div className="absolute right-0 top-[calc(100%+8px)] w-[220px] overflow-hidden rounded-2xl border border-[#E5EBE8] bg-white p-1.5 shadow-[0_12px_40px_rgba(15,40,35,0.12)]">
+                    {/* DROPDOWN */}
+                    <div
+                      className="
+                        absolute right-0
+                        top-[calc(100%+8px)]
+                        w-[220px]
+                        overflow-hidden
+                        rounded-2xl
+                        border border-[#E5EBE8]
+                        bg-white
+                        p-1.5
+                        shadow-[0_12px_40px_rgba(15,40,35,0.12)]
+                      "
+                    >
 
                       {/* USER INFO */}
-                      <div className="rounded-xl bg-[#F7FAF9] px-3 py-3">
+                      <div
+                        className="
+                          rounded-xl
+                          bg-[#F7FAF9]
+                          px-3 py-3
+                        "
+                      >
                         <div className="flex items-center gap-2.5">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0F6A6A] text-xs font-bold text-white">
+
+                          <div
+                            className="
+                              flex h-9 w-9
+                              items-center justify-center
+                              rounded-full
+                              bg-[#0F6A6A]
+                              text-xs font-bold
+                              text-white
+                            "
+                          >
                             {userName}
                           </div>
 
                           <div className="min-w-0">
-                            <p className="truncate text-xs font-semibold text-[#263331]">
+                            <p
+                              className="
+                                truncate
+                                text-xs font-semibold
+                                text-[#263331]
+                              "
+                            >
                               {userNameFull}
                             </p>
 
-                            <div className="mt-0.5 flex items-center gap-1">
+                            <div
+                              className="
+                                mt-0.5 flex
+                                items-center gap-1
+                              "
+                            >
                               <ShieldCheck
                                 size={11}
                                 className="text-[#0F6A6A]"
                               />
 
-                              <span className="text-[9px] text-[#8B9692]">
+                              <span
+                                className="
+                                  text-[9px]
+                                  text-[#8B9692]
+                                "
+                              >
                                 Administrator
                               </span>
                             </div>
                           </div>
+
                         </div>
                       </div>
 
-                      {/* PROFILE */}
+                      {/* PROFILE LINK */}
                       <Link
                         href="/admin/profile"
                         onClick={() =>
                           setProfileOpen(false)
                         }
-                        className="mt-1.5 flex h-10 items-center gap-2.5 rounded-xl px-3 text-xs font-medium text-[#52605C] transition hover:bg-[#F3F7F6] hover:text-[#0F6A6A]"
+                        className="
+                          mt-1.5
+                          flex h-10
+                          items-center gap-2.5
+                          rounded-xl
+                          px-3
+                          text-xs font-medium
+                          text-[#52605C]
+                          transition
+                          hover:bg-[#F3F7F6]
+                          hover:text-[#0F6A6A]
+                        "
                       >
                         <User size={15} />
                         Profil Saya
@@ -783,7 +1140,16 @@ export default function AdminLayout({ children }) {
                       <button
                         type="button"
                         onClick={handleLogout}
-                        className="flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-xs font-medium text-red-500 transition hover:bg-red-50"
+                        className="
+                          flex h-10 w-full
+                          items-center gap-2.5
+                          rounded-xl
+                          px-3
+                          text-xs font-medium
+                          text-red-500
+                          transition
+                          hover:bg-red-50
+                        "
                       >
                         <LogOut size={15} />
                         Logout
@@ -800,7 +1166,12 @@ export default function AdminLayout({ children }) {
             PAGE CONTENT
         ==================================================== */}
 
-        <div className="min-w-0 flex-1 p-4 sm:p-5 lg:p-6">
+        <div
+          className="
+            min-w-0 flex-1
+            p-4 sm:p-5 lg:p-6
+          "
+        >
           {children}
         </div>
 
