@@ -1,26 +1,36 @@
-"use client";
-
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white">
-      <div className="flex flex-col items-center gap-5">
-        {/* Logo */}
-        <img
-          src="/Logo/Namura.png"
-          alt="Namura Property"
-          className="w-12 h-12 object-contain"
-        />
+    <div
+      role="status"
+      aria-busy="true"
+      aria-label="Memuat"
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[var(--background)]"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 15%, rgba(15,106,106,0.18), transparent 40%), radial-gradient(circle at 80% 85%, rgba(15,106,106,0.12), transparent 42%)",
+        }}
+      />
 
-        {/* Spinner */}
-        <div className="relative w-10 h-10">
-          <div className="absolute inset-0 rounded-full border-2 border-[#0F6A6A]/15" />
-          <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#0F6A6A] animate-spin" />
+      <div
+        aria-hidden="true"
+        className="absolute h-72 w-72 rounded-full bg-[var(--primary)]/10 blur-3xl motion-safe:animate-pulse"
+      />
+
+      <div
+        aria-hidden="true"
+        className="glass-strong relative flex h-28 w-28 items-center justify-center rounded-[var(--radius-xl)]"
+      >
+        <span className="absolute h-14 w-14 rounded-full bg-[var(--primary)]/20 motion-safe:animate-ping" />
+
+        <div className="relative h-12 w-12">
+          <span className="absolute inset-0 rounded-full border-[3px] border-[var(--primary)]/15" />
+          <span className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[var(--primary)] motion-safe:animate-spin" />
+          <span className="absolute inset-[9px] rounded-full border-[3px] border-transparent border-b-[var(--primary)]/45 motion-safe:animate-[spin_1.4s_linear_infinite_reverse]" />
         </div>
-
-        {/* Text */}
-        <p className="text-sm text-gray-400 font-medium tracking-wide">
-          Memuat halaman...
-        </p>
       </div>
     </div>
   );

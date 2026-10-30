@@ -1,13 +1,20 @@
-export const metadata = {
-  title: "Tentang Kami | Namura Property",
+const BASE_URL = "https://namuraproperty.com";
+const PAGE_URL = `${BASE_URL}/tentang-kami`;
+const TITLE = "Tentang Kami";
+const DESCRIPTION =
+  "Kenali Namura Property lebih dekat. Kami menghadirkan solusi properti dan hunian berkualitas dengan lokasi strategis untuk kebutuhan keluarga dan investasi Anda.";
+const SHORT_DESCRIPTION =
+  "Kenali Namura Property dan komitmen kami dalam menghadirkan hunian berkualitas dengan lokasi strategis untuk kebutuhan keluarga dan investasi.";
 
-  description:
-    "Kenali Namura Property lebih dekat. Kami menghadirkan solusi properti dan hunian berkualitas dengan lokasi strategis untuk kebutuhan keluarga dan investasi Anda.",
+export const metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
 
   keywords: [
     "Namura Property",
     "tentang Namura Property",
     "profil Namura Property",
+    "visi misi Namura Property",
     "perusahaan properti Lampung",
     "properti Lampung",
     "developer properti Lampung",
@@ -17,60 +24,75 @@ export const metadata = {
   ],
 
   alternates: {
-    canonical: "https://namuraproperty.com/tentang-kami",
+    canonical: "/tentang-kami",
   },
 
   openGraph: {
-    title: "Tentang Kami | Namura Property",
-
-    description:
-      "Kenali Namura Property dan komitmen kami dalam menghadirkan hunian berkualitas dengan lokasi strategis untuk kebutuhan keluarga dan investasi.",
-
-    url: "https://namuraproperty.com/tentang-kami",
-
-    siteName: "Namura Property",
-
     type: "website",
-
     locale: "id_ID",
-
+    url: PAGE_URL,
+    siteName: "Namura Property",
+    title: `${TITLE} | Namura Property`,
+    description: SHORT_DESCRIPTION,
     images: [
       {
-        url: "https://namuraproperty.com/Logo/Namura.png",
-        width: 1200,
-        height: 630,
+        url: "/Logo/Namura.png",
+        width: 200,
+        height: 200,
         alt: "Namura Property",
       },
     ],
   },
 
   twitter: {
-    card: "summary_large_image",
-
-    title: "Tentang Kami | Namura Property",
-
-    description:
-      "Kenali Namura Property dan komitmen kami dalam menghadirkan hunian berkualitas dengan lokasi strategis.",
-
-    images: [
-      "https://namuraproperty.com/Logo/Namura.png",
-    ],
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+    card: "summary",
+    title: `${TITLE} | Namura Property`,
+    description: SHORT_DESCRIPTION,
+    images: ["/Logo/Namura.png"],
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: `${TITLE} | Namura Property`,
+      description: DESCRIPTION,
+      inLanguage: "id-ID",
+      isPartOf: { "@type": "WebSite", name: "Namura Property", url: BASE_URL },
+      about: {
+        "@type": "RealEstateAgent",
+        name: "Namura Property",
+        url: BASE_URL,
+        logo: `${BASE_URL}/Logo/Namura.png`,
+        areaServed: { "@type": "AdministrativeArea", name: "Lampung" },
+      },
+      breadcrumb: { "@id": `${PAGE_URL}#breadcrumb` },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Beranda", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: TITLE, item: PAGE_URL },
+      ],
+    },
+  ],
+};
+
 export default function TentangKamiLayout({ children }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
+      {children}
+    </>
+  );
 }
